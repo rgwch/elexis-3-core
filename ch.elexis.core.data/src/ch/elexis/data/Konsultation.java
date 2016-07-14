@@ -52,7 +52,7 @@ public class Konsultation extends PersistentObject implements Comparable<Konsult
 	public static final String FLD_BILL_ID = "RechnungsID";
 	public static final String FLD_CASE_ID = "FallID";
 	public static final String FLD_MANDATOR_ID = "MandantID";
-	private static final String TABLENAME = "BEHANDLUNGEN";
+	public static final String TABLENAME = "BEHANDLUNGEN";
 	volatile int actEntry;
 	
 	protected String getTableName(){
@@ -693,8 +693,9 @@ public class Konsultation extends PersistentObject implements Comparable<Konsult
 	public int getKosten(){
 		int sum = 0;
 		/*
-		 * TimeTool mine=new TimeTool(getDatum()); List<Verrechenbar> l=getLeistungen();
-		 * for(Verrechenbar v:l){ sum+=(v.getZahl()v.getKosten(mine)); }
+		 * TimeTool mine=new TimeTool(getDatum()); List<Verrechenbar>
+		 * l=getLeistungen(); for(Verrechenbar v:l){
+		 * sum+=(v.getZahl()v.getKosten(mine)); }
 		 */
 		Stm stm = getDBConnection().getStatement();
 		try {
@@ -769,8 +770,9 @@ public class Konsultation extends PersistentObject implements Comparable<Konsult
 			StringBuilder sb = new StringBuilder();
 			sb.append("UPDATE LEISTUNGEN SET SCALE='").append(scale).append("' WHERE BEHANDLUNG=")
 				.append(getWrappedId()) /*
-										 * .append ( " AND " ) .append ( "KLASSE=" ) .append (
-										 * JdbcLink . wrap (v .getClass ( ).getName ()))
+										 * .append ( " AND " ) .append ( "KLASSE=" )
+										 * .append ( JdbcLink . wrap (v .getClass (
+										 * ).getName ()))
 										 */
 				.append(" AND LEISTG_CODE=").append(JdbcLink.wrap(v.getId()));
 				
@@ -784,7 +786,8 @@ public class Konsultation extends PersistentObject implements Comparable<Konsult
 			StringBuilder sql = new StringBuilder();
 			sql.append("UPDATE LEISTUNGEN SET ZAHL=").append(nz)
 				/*
-				 * .append(" WHERE KLASSE=").append(JdbcLink.wrap(v.getClass().getName ()))
+				 * .append(" WHERE KLASSE="
+				 * ).append(JdbcLink.wrap(v.getClass().getName ()))
 				 */
 				.append(" WHERE LEISTG_CODE=").append(JdbcLink.wrap(v.getId()))
 				.append(" AND BEHANDLUNG=").append(getWrappedId());
@@ -819,7 +822,9 @@ public class Konsultation extends PersistentObject implements Comparable<Konsult
 		return true;
 	}
 	
-	/** Interface Comparable, um die Behandlungen nach Datum sortieren zu können */
+	/**
+	 * Interface Comparable, um die Behandlungen nach Datum sortieren zu können
+	 */
 	public int compareTo(Konsultation b){
 		TimeTool me = new TimeTool(getDatum());
 		TimeTool other = new TimeTool(b.getDatum());
@@ -877,7 +882,8 @@ public class Konsultation extends PersistentObject implements Comparable<Konsult
 	}
 	
 	/*
-	 * public interface Listener { public boolean creatingKons(Konsultation k); }
+	 * public interface Listener { public boolean creatingKons(Konsultation k);
+	 * }
 	 */
 	
 	/**
@@ -887,7 +893,7 @@ public class Konsultation extends PersistentObject implements Comparable<Konsult
 	 *            the initial text to be set, or null if no initial text should be set.
 	 */
 	public static void neueKons(final String initialText){
-		Patient actPatient = ElexisEventDispatcher.getSelectedPatient();		
+		Patient actPatient = ElexisEventDispatcher.getSelectedPatient();
 		Fall actFall = (Fall) ElexisEventDispatcher.getSelected(Fall.class);
 		if (actFall == null) {
 			if (actPatient == null) {
@@ -916,9 +922,9 @@ public class Konsultation extends PersistentObject implements Comparable<Konsult
 			}
 		} else {
 			if (!actFall.getPatient().equals(actPatient)) {
-				if(actPatient != null) {
+				if (actPatient != null) {
 					Konsultation lk = actPatient.getLetzteKons(false);
-					if(lk != null) {
+					if (lk != null) {
 						actFall = lk.getFall();
 					}
 				} else {
