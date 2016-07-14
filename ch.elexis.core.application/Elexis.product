@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?pde version="3.5"?>
 
-<product name="Elexis OpenSource" uid="ch.elexis.core.application.ElexisApp" id="ch.elexis.core.application.product" application="ch.elexis.core.application.ElexisApp" version="3.1.0.qualifier" useFeatures="true" includeLaunchers="true">
+<product name="Elexis" uid="ch.elexis.core.application.ElexisApp" id="ch.elexis.core.application.product" application="ch.elexis.core.application.ElexisApp" version="3.1.0.qualifier" useFeatures="true" includeLaunchers="true">
 
    <aboutInfo>
-      <image path="/ch.elexis.core.application/rsc/elexislogo2.png"/>
+      <image path="/ch.elexis.core.application/rsc/elexis-logo.png"/>
       <text>
-         Elexis 3.0 - www.elexis.info
+         Elexis 3.ungrad
       </text>
    </aboutInfo>
 
@@ -25,21 +25,17 @@
    <splash
       location="ch.elexis.core.application" />
    <launcher name="Elexis3">
-      <linux icon="/rsc/elexis48.xpm"/>
-      <macosx icon="/rsc/elexis-mac.icns"/>
+      <linux icon="/ch.elexis.core.application/rsc/elexis48.xpm"/>
+      <macosx icon="/ch.elexis.core.application/rsc/elexis-mac.icns"/>
       <solaris/>
       <win useIco="true">
-         <ico path="/rsc/elexis.ico"/>
+         <ico path="/ch.elexis.core.application/rsc/elexis.ico"/>
          <bmp/>
       </win>
    </launcher>
 
 
    <vm>
-      <macos include="false">
-      
-      org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7 
-    </macos>
    </vm>
 
    <license>
@@ -65,6 +61,7 @@
       <plugin id="org.eclipse.core.runtime" autoStart="true" startLevel="0" />
       <plugin id="org.eclipse.equinox.common" autoStart="true" startLevel="2" />
       <plugin id="org.eclipse.equinox.ds" autoStart="true" startLevel="2" />
+      <plugin id="org.eclipse.equinox.event" autoStart="true" startLevel="0" />
       <plugin id="org.eclipse.equinox.p2.reconciler.dropins" autoStart="true" startLevel="4" />
       <plugin id="org.eclipse.osgi.services" autoStart="true" startLevel="2" />
       <plugin id="org.eclipse.update.configurator" autoStart="true" startLevel="3" />
@@ -73,5 +70,12 @@
       <plugin id="org.slf4j.jul" autoStart="true" startLevel="1" />
       <plugin id="org.slf4j.log4j" autoStart="true" startLevel="1" />
    </configurations>
+
+   <preferencesInfo>
+      <targetfile overwrite="false"/>
+   </preferencesInfo>
+
+   <cssInfo>
+   </cssInfo>
 
 </product>
