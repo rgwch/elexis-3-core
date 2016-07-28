@@ -6,7 +6,8 @@
          point="org.eclipse.core.runtime.products">
       <product
             application="ch.elexis.core.application.ElexisApp"
-            name="Elexis OpenSource">
+            description="free fork of Elexis"
+            name="Elexis Ungrad">
          <property
                name="appName"
                value="Elexis OpenSource">
@@ -326,13 +327,6 @@
             icon="platform:/plugin/ch.elexis.core.ui.icons/icons/16x16/platzhalter.gif"
             id="ch.elexis.views.textsystem.Platzhalterview"
             name="Platzhalter">
-      </view>
-      <view
-            category="ch.elexis.datenKategorie"
-            class="ch.elexis.core.ui.contacts.views.PatientDetailView"
-            icon="platform:/plugin/ch.elexis.core.ui.icons/icons/16x16/person.ico"
-            id="ch.elexis.PatientDetailView"
-            name="%elexis.patDetailView">
       </view>
       <view
             category="ch.elexis.datenKategorie"
