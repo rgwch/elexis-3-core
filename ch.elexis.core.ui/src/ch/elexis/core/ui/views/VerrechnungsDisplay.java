@@ -339,7 +339,7 @@ public class VerrechnungsDisplay extends Composite {
 				
 				Prescription presc = Prescription.load(v.getDetail(Verrechnet.FLD_EXT_PRESC_ID));
 				presc.stop(null);
-				presc.setPrescType(Prescription.EntryType.APPLICATION.getFlag(), true);
+				presc.setEntryType(Prescription.EntryType.APPLICATION);
 				presc.setExtInfoStoredObjectByKey(Prescription.FLD_EXT_VERRECHNET_ID, v.getId());
 				
 				int packungsGroesse = presc.getArtikel().getPackungsGroesse();
@@ -379,6 +379,7 @@ public class VerrechnungsDisplay extends Composite {
 			public ImageDescriptor getImageDescriptor(){
 				return Images.IMG_PILL.getImageDescriptor();
 			}
+			
 		};
 		
 		removeAction = new Action(REMOVE) {
@@ -405,6 +406,9 @@ public class VerrechnungsDisplay extends Composite {
 			public void run(){
 				TableItem[] items = tVerr.getItems();
 				for (TableItem ti : items) {
+					if (!((Verrechnet) ti.getData()).getKons().isEditable(true)) {
+						return;
+					}
 					Result<Verrechnet> result =
 						((Konsultation) ElexisEventDispatcher.getSelected(Konsultation.class))
 							.removeLeistung((Verrechnet) ti.getData());
@@ -425,6 +429,11 @@ public class VerrechnungsDisplay extends Composite {
 				int sel = tVerr.getSelectionIndex();
 				TableItem ti = tVerr.getItem(sel);
 				Verrechnet v = (Verrechnet) ti.getData();
+				
+				if(!v.getKons().isEditable(true)) {
+					return;
+				}
+				
 				Money oldPrice = v.getBruttoPreis();
 				String p = oldPrice.getAmountAsString();
 				InputDialog dlg =
@@ -464,6 +473,11 @@ public class VerrechnungsDisplay extends Composite {
 				int sel = tVerr.getSelectionIndex();
 				TableItem ti = tVerr.getItem(sel);
 				Verrechnet v = (Verrechnet) ti.getData();
+				
+				if(!v.getKons().isEditable(true)) {
+					return;
+				}
+				
 				String p = Integer.toString(v.getZahl());
 				changeQuantityDialog(p, v);
 			}
@@ -475,6 +489,11 @@ public class VerrechnungsDisplay extends Composite {
 				int sel = tVerr.getSelectionIndex();
 				TableItem ti = tVerr.getItem(sel);
 				Verrechnet v = (Verrechnet) ti.getData();
+				
+				if(!v.getKons().isEditable(true)) {
+					return;
+				}
+				
 				String oldText = v.getText();
 				InputDialog dlg =
 					new InputDialog(UiDesk.getTopShell(),

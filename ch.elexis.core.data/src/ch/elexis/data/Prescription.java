@@ -66,6 +66,7 @@ public class Prescription extends PersistentObject {
 	
 	/**
 	 * Prescription is a direct distribution within a consultation
+	 * @deprecated use {@link Prescription#setEntryType(EntryType)} instead
 	 */
 	public static final String FLD_REZEPTID_VAL_DIREKTABGABE = "Direktabgabe";
 	/**
@@ -102,7 +103,7 @@ public class Prescription extends PersistentObject {
 	 */
 	public Prescription(Prescription other){
 		String[] fields = new String[] {
-			FLD_ARTICLE, FLD_PATIENT_ID, FLD_DOSAGE, FLD_REMARK, FLD_ARTICLE_ID
+			FLD_ARTICLE, FLD_PATIENT_ID, FLD_DOSAGE, FLD_REMARK, FLD_ARTICLE_ID, FLD_PRESC_TYPE
 		};
 		
 		String[] vals = new String[fields.length];
@@ -596,42 +597,13 @@ public class Prescription extends PersistentObject {
 	}
 	
 	/**
-	 * set prescription type flag
-	 * 
-	 * @param flagVal
-	 *            {@link EntryType#flag}
-	 * @param b
-	 *            the boolean value to set to
-	 * @since 3.1.0
-	 */
-	public void setPrescType(int flagVal, boolean b){
-		int val = getInt(FLD_PRESC_TYPE);
-		boolean flag = ((val & flagVal) == flagVal);
-		if (b != flag) {
-			val ^= flagVal;
-			setInt(FLD_PRESC_TYPE, val);
-		}
-	}
-	
-	/**
-	 * get the boolean value of a prescription type flag
-	 * 
-	 * @param flag
-	 *            {@link EntryType#flag}
-	 * @return
-	 */
-	public boolean isPrescType(int flag){
-		return ((getInt(FLD_PRESC_TYPE) & flag) == flag);
-	}
-	
-	/**
 	 * 
 	 * @param reserve
 	 *            this is a medication to keep as reserve or "Reservemedikation"
 	 * @since 3.1.0
 	 */
 	public void setReserveMedication(boolean reserve){
-		setPrescType(EntryType.RESERVE_MEDICATION.getFlag(), reserve);
+		setEntryType(EntryType.RESERVE_MEDICATION);
 	}
 	
 	/**
@@ -640,7 +612,7 @@ public class Prescription extends PersistentObject {
 	 * @since 3.1.0
 	 */
 	public boolean isReserveMedication(){
-		return isPrescType(EntryType.RESERVE_MEDICATION.getFlag());
+		return getEntryType() == EntryType.RESERVE_MEDICATION;
 	}
 	
 	/**
@@ -665,7 +637,7 @@ public class Prescription extends PersistentObject {
 	 * @since 3.1.0
 	 */
 	public boolean isAppliedMedication(){
-		return isPrescType(EntryType.APPLICATION.getFlag());
+		return getEntryType() == EntryType.APPLICATION;
 	}
 	
 	/**
@@ -687,22 +659,39 @@ public class Prescription extends PersistentObject {
 	 * @since 3.1.0
 	 */
 	public EntryType getEntryType(){
-		if (isFixedMediation()) {
-			if (isReserveMedication()) {
-				return EntryType.RESERVE_MEDICATION;
-			}
-			return EntryType.FIXED_MEDICATION;
-		}
-		String rezeptId = get(FLD_REZEPT_ID);
-		if (rezeptId.equals(FLD_REZEPTID_VAL_DIREKTABGABE)) {
-			return (isAppliedMedication()) ? EntryType.APPLICATION : EntryType.SELF_DISPENSED;
-			// SD OR APP
+		int typeNum = getPrescType();
+		if(typeNum != -1) {
+			return EntryType.byNumeric(typeNum);
 		}
 		
-		if (getDosis().equals(StringConstants.ZERO) && !isAppliedMedication()) {
-			return EntryType.FIXED_MEDICATION;
+		String rezeptId = get(FLD_REZEPT_ID);
+		if (rezeptId != null && !rezeptId.isEmpty()) {
+			// this is necessary due to a past impl. where self dispensed was not set as entry type
+			if (rezeptId.equals(Prescription.FLD_REZEPTID_VAL_DIREKTABGABE)) {
+				setEntryType(EntryType.SELF_DISPENSED);
+				set(FLD_REZEPT_ID, "");
+				return EntryType.SELF_DISPENSED;
+			}
+			return EntryType.RECIPE;
 		}
-		return EntryType.RECIPE;
+		
+		return EntryType.FIXED_MEDICATION;
+	}
+	
+	private int getPrescType(){
+		String prescTypeString = get(FLD_PRESC_TYPE);
+		if (prescTypeString != null && !prescTypeString.isEmpty()) {
+			try {
+				return Integer.parseInt(prescTypeString);
+			} catch (NumberFormatException e) {
+				// ignore and return -1
+			}
+		}
+		return -1;
+	}
+	
+	public void setEntryType(EntryType type){
+		setInt(FLD_PRESC_TYPE, type.numericValue());
 	}
 	
 	/**
@@ -710,6 +699,7 @@ public class Prescription extends PersistentObject {
 	 */
 	public enum EntryType {
 		//@formatter:off
+		UNKNOWN(-1),
 		/** Medicine to take over a longer period. <br> i.e. against too high blood pressure, heart medicine **/
 		FIXED_MEDICATION (0), 
 		/** Medicine given in case a need occurs."Reservemedikation" <br>i.e. patient plans a journey and gets medicine against pain, sickness, insect bites to take in case something happens  **/
@@ -722,14 +712,24 @@ public class Prescription extends PersistentObject {
 		APPLICATION (4);
 		//@formatter:on
 		
-		private final int flag;
+		private int numeric;
 		
-		private EntryType(int flag){
-			this.flag = flag;
+		private EntryType(int numeric){
+			this.numeric = numeric;
 		}
 		
-		public int getFlag(){
-			return flag;
+		public int numericValue(){
+			return numeric;
+		}
+		
+		public static EntryType byNumeric(int numeric){
+			EntryType[] entries = values();
+			for (EntryType entryType : entries) {
+				if (entryType.numericValue() == numeric) {
+					return entryType;
+				}
+			}
+			return UNKNOWN;
 		}
 	}
 	
@@ -740,6 +740,10 @@ public class Prescription extends PersistentObject {
 	 * @since 3.1.0
 	 */
 	public @Nullable IPersistentObject getLastDisposed(){
+		EntryType entryType = getEntryType();
+		if (entryType == EntryType.SELF_DISPENSED) {
+			return getVerrechnetForAppliedMedication();
+		}
 		String rezeptId = get(Prescription.FLD_REZEPT_ID);
 		return getLastDisposed(rezeptId);
 	}
@@ -764,8 +768,6 @@ public class Prescription extends PersistentObject {
 			} else {
 				return null;
 			}
-		} else if (Prescription.FLD_REZEPTID_VAL_DIREKTABGABE.equals(rezeptId)) {
-			return getVerrechnetForAppliedMedication();
 		} else {
 			Query<Prescription> qre = new Query<Prescription>(Prescription.class);
 			qre.add(Prescription.FLD_PATIENT_ID, Query.LIKE, get(Prescription.FLD_PATIENT_ID));

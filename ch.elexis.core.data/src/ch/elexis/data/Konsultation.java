@@ -27,6 +27,7 @@ import ch.elexis.core.data.interfaces.IVerrechenbar;
 import ch.elexis.core.data.interfaces.events.MessageEvent;
 import ch.elexis.core.data.status.ElexisStatus;
 import ch.elexis.core.exceptions.PersistenceException;
+import ch.elexis.data.Prescription.EntryType;
 import ch.elexis.core.text.model.Samdas;
 import ch.rgw.tools.ExHandler;
 import ch.rgw.tools.JdbcLink;
@@ -376,11 +377,12 @@ public class Konsultation extends PersistentObject implements Comparable<Konsult
 		checkMandant = !CoreHub.acl.request(AccessControlDefaults.LSTG_CHARGE_FOR_ALL);
 		boolean mandantOK = true;
 		boolean billOK = true;
-		boolean bMandantLoggedIn = CoreHub.actMandant != null;
+		Mandant mandator = ElexisEventDispatcher.getSelectedMandator();
+		boolean bMandantLoggedIn = (mandator != null);
 		
 		// if m is null, ignore checks (return true)
-		if (m != null && bMandantLoggedIn) {
-			if (checkMandant && !(m.getId().equals(CoreHub.actMandant.getId()))) {
+		if (m != null && mandator != null) {
+			if (checkMandant && !(m.getId().equals(mandator.getId()))) {
 				mandantOK = false;
 			}
 			
@@ -637,6 +639,7 @@ public class Konsultation extends PersistentObject implements Comparable<Konsult
 			IOptifier optifier = l.getOptifier();
 			Result<IVerrechenbar> result = optifier.add(l, this);
 			if (result.isOK()) {
+				ElexisEventDispatcher.update(this);
 				// Statistik nachführen
 				getFall().getPatient().countItem(l);
 				CoreHub.actUser.countItem(l);
@@ -645,12 +648,9 @@ public class Konsultation extends PersistentObject implements Comparable<Konsult
 					Artikel art = (Artikel) l;
 					// art.einzelAbgabe(1); -> this is done by the optifier now
 					Prescription p = new Prescription(art, getFall().getPatient(), "", "");
-					p.set(new String[] {
-						Prescription.FLD_REZEPT_ID, Prescription.FLD_DATE_UNTIL
-					}, new String[] {
-						Prescription.FLD_REZEPTID_VAL_DIREKTABGABE,
-						new TimeTool().toString(TimeTool.DATE_GER)
-					});
+					p.stop(null);
+					p.setEntryType(EntryType.SELF_DISPENSED);
+					p.setStopReason("Dispensiert");
 					Verrechnet verrechnet = optifier.getCreatedVerrechnet();
 					if (verrechnet != null) {
 						p.setExtInfoStoredObjectByKey(Prescription.FLD_EXT_VERRECHNET_ID,
@@ -949,7 +949,7 @@ public class Konsultation extends PersistentObject implements Comparable<Konsult
 			}
 		}
 		Konsultation n = actFall.neueKonsultation();
-		n.setMandant(CoreHub.actMandant);
+		n.setMandant(ElexisEventDispatcher.getSelectedMandator());
 		if (initialText != null) {
 			n.updateEintrag(initialText, false);
 		}
