@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?pde version="3.5"?>
 
-<product name="Elexis" uid="ch.elexis.core.application.ElexisApp" id="ch.elexis.core.application.product" application="ch.elexis.core.application.ElexisApp" version="3.1.0.qualifier" useFeatures="true" includeLaunchers="true">
+<product name="Elexis Ungrad" uid="ch.elexis.core.application.ElexisApp" id="ch.elexis.core.application.product" application="ch.elexis.core.application.ElexisApp" version="3.1.0.qualifier" useFeatures="true" includeLaunchers="true">
 
    <aboutInfo>
       <image path="/ch.elexis.core.application/rsc/elexis-logo.png"/>
@@ -24,7 +24,7 @@
 
    <splash
       location="ch.elexis.core.application" />
-   <launcher name="Elexis3">
+   <launcher name="Elexis-Ungrad">
       <linux icon="/ungrad-product/rsc/icon.xpm"/>
       <macosx icon="/ungrad-product/rsc/elexis-mac.icns"/>
       <solaris/>
@@ -33,7 +33,6 @@
          <bmp/>
       </win>
    </launcher>
-
 
    <vm>
    </vm>
@@ -69,6 +68,7 @@
       <plugin id="org.slf4j.jcl" autoStart="true" startLevel="1" />
       <plugin id="org.slf4j.jul" autoStart="true" startLevel="1" />
       <plugin id="org.slf4j.log4j" autoStart="true" startLevel="1" />
+      <property name="variant" value="elexis.ungrad" />
    </configurations>
 
    <preferencesInfo>
