@@ -25,14 +25,15 @@
    <splash
       location="ch.elexis.core.application" />
    <launcher name="Elexis-Ungrad">
-      <linux icon="/ungrad-product/rsc/icon.xpm"/>
-      <macosx icon="/ungrad-product/rsc/elexis-mac.icns"/>
+      <linux icon="rsc/icon.xpm"/>
+      <macosx icon="rsc/elexis-mac.icns"/>
       <solaris/>
       <win useIco="true">
-         <ico path="/ch.elexis.core.application/rsc/elexis.ico"/>
+         <ico path="ch.elexis.core.application/rsc/elexis.ico"/>
          <bmp/>
       </win>
    </launcher>
+
 
    <vm>
    </vm>

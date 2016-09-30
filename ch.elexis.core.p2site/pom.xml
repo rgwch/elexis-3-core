@@ -168,7 +168,7 @@
 							<id>ch.elexis.core.application.ElexisApp</id>
 							<rootFolder></rootFolder>
 							<rootFolders>
-								<macosx>Elexis3.app</macosx>
+								<macosx>Elexis-Ungrad.app</macosx>
 								<win32></win32>
 							</rootFolders>
 						</product>
