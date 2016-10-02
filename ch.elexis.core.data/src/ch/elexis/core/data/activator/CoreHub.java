@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Properties;
 import java.util.UUID;
 
-import org.eclipse.equinox.internal.app.CommandLineArgs;
+import org.eclipse.core.runtime.Platform;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
@@ -79,7 +79,7 @@ public class CoreHub implements BundleActivator {
 	/** Das Singleton-Objekt dieser Klasse */
 	public static CoreHub plugin;
 	
-	private static List<ShutdownJob> shutdownJobs = new LinkedList<ShutdownJob>();
+	private static List<ShutdownJob> shutdownJobs = new LinkedList<>();
 	
 	/** Factory für interne PersistentObjects */
 	public static final PersistentObjectFactory poFactory = new PersistentObjectFactory();
@@ -266,7 +266,8 @@ public class CoreHub implements BundleActivator {
 	}
 	
 	private void startUpBundle(){
-		String[] args = CommandLineArgs.getApplicationArgs();
+		
+		String[] args = Platform.getApplicationArgs(); //CommandLineArgs.getApplicationArgs();
 		String config = "default"; //$NON-NLS-1$
 		for (String s : args) {
 			if (s.startsWith("--use-config=")) { //$NON-NLS-1$
