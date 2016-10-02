@@ -126,7 +126,7 @@ public class Desk implements IApplication {
 		} catch (Exception ex) {
 			log.error("Exception caught", ex);
 			ex.printStackTrace();
-			return -1;
+			return new Integer(-1);
 		}
 	}
 	

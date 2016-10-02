@@ -21,14 +21,12 @@ public class PersistenceException extends RuntimeException {
 	
 	/** Status object. */
 	private final IStatus status;
-	private final int errCode;
 	
 	public static final int NOT_DEFINED = 0;
 	public static final int DB_CONNECTION_NOT_CONFIGURED = 1;
 	
 	public PersistenceException(String message){
 		super(message);
-		errCode = NOT_DEFINED;
 		status = new Status(Status.ERROR, "Persistence", message);
 	}
 	
@@ -41,7 +39,6 @@ public class PersistenceException extends RuntimeException {
 	 */
 	public PersistenceException(IStatus status){
 		super(status.getMessage());
-		errCode = NOT_DEFINED;
 		this.status = status;
 	}
 	
@@ -53,7 +50,6 @@ public class PersistenceException extends RuntimeException {
 	public PersistenceException(int errCode){
 		super();
 		this.status = null;
-		this.errCode = errCode;
 	}
 	
 	/**
