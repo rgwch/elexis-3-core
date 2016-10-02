@@ -53,7 +53,7 @@ public class ACE implements Serializable {
 	private final String name;
 	private String localizedName;
 	private final ACE parent;
-	private List<ACE> children = new ArrayList<ACE>();
+	private List<ACE> children = new ArrayList<>();
 	
 	/**
 	 * initialize all defined ACEs, only performed once
@@ -197,10 +197,10 @@ public class ACE implements Serializable {
 	String getCanonicalName(){
 		StringBuilder sp = new StringBuilder();
 		sp.append(getName());
-		ACE parent = getParent();
-		while ((parent != null) && (!parent.equals(ACE.ACE_ROOT))) {
-			sp.insert(0, parent.getName() + "/"); //$NON-NLS-1$
-			parent = parent.getParent();
+		ACE localParent = getParent();
+		while ((localParent != null) && (!localParent.equals(ACE.ACE_ROOT))) {
+			sp.insert(0, localParent.getName() + "/"); //$NON-NLS-1$
+			localParent = localParent.getParent();
 		}
 		return sp.toString();
 	}
@@ -241,14 +241,14 @@ public class ACE implements Serializable {
 	 * @return this element and its entire parent chain
 	 */
 	public List<ACE> getParentChainIncludingSelf(){
-		List<ACE> aces = new ArrayList<ACE>();
+		List<ACE> aces = new ArrayList<>();
 		aces.add(this);
 		if (this.equals(ACE_ROOT))
 			return aces;
-		ACE parent = getParent();
-		while (parent != ACE_ROOT) {
-			aces.add(parent);
-			parent = parent.getParent();
+		ACE localParent = getParent();
+		while (localParent != ACE_ROOT) {
+			aces.add(localParent);
+			localParent = localParent.getParent();
 		}
 		
 		return aces;

@@ -14,13 +14,10 @@ package ch.elexis.admin;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import ch.elexis.data.Role;
 
 /**
  * Contribution of the basic system's ACLs
@@ -51,7 +48,7 @@ public class ACLContributor implements IACLContributor {
 	 */
 	private ACE[] findAllRightsThroughReflection()
 		throws IllegalArgumentException, IllegalAccessException{
-		List<ACE> list = new ArrayList<ACE>();
+		List<ACE> list = new ArrayList<>();
 		Field[] declaredFields = AccessControlDefaults.class.getFields();
 		for (Field field : declaredFields) {
 			int modifiers = field.getModifiers();

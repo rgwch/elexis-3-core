@@ -11,8 +11,6 @@
  *******************************************************************************/
 package ch.elexis.admin;
 
-import ch.elexis.data.Role;
-
 /**
  * An ACLContributor declares a List of AccessControlElements it will use. Such Elements will define
  * rights a user has, and will be editable via the administrator UI (Settings tab
