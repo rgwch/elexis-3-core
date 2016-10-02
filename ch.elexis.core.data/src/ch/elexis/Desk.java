@@ -10,8 +10,6 @@
  ******************************************************************************/
 package ch.elexis;
 
-import ch.elexis.core.data.activator.CoreHub;
-
 /**
  * Used by {@link CoreHub#loadLocalCfg} to refer to the correct XML configuration node
  * 
