@@ -24,6 +24,7 @@ import ch.elexis.core.data.events.ElexisEventDispatcher;
 import ch.elexis.core.data.status.ElexisStatus;
 import ch.elexis.core.jdt.Nullable;
 import ch.elexis.core.model.IPersistentObject;
+import ch.elexis.data.Prescription.EntryType;
 import ch.rgw.tools.StringTool;
 import ch.rgw.tools.TimeTool;
 
@@ -63,6 +64,7 @@ public class Prescription extends PersistentObject {
 	public static final String FLD_EXT_DISPOSAL_COMMENT = "disposalComment";
 	public static final String FLD_EXT_DATE_LAST_DISPOSAL = "lastDisposal";
 	public static final String FLD_EXT_DISPOSED_BY = "disposedBy";
+	public static final Object FLD_EXT_IS_APPLIED = "isApplied";
 	
 	/**
 	 * Prescription is a direct distribution within a consultation
@@ -380,6 +382,26 @@ public class Prescription extends PersistentObject {
 	}
 	
 	/**
+	 * @return if the prescription marks an applied article
+	 * @since 3.1.0
+	 */
+	public Boolean isApplied(){
+		String value = checkNull((String) getExtInfoStoredObjectByKey(FLD_EXT_IS_APPLIED));
+		return Boolean.valueOf(value);
+	}
+	
+	/**
+	 * Mark this prescription as an applied article. Typically only prescriptions with
+	 * {@link EntryType.SELF_DISPENSED} are marked as applied.
+	 * 
+	 * @param disposalComment
+	 * @since 3.1.0
+	 */
+	public void setApplied(Boolean value){
+		setExtInfoStoredObjectByKey(FLD_EXT_IS_APPLIED, Boolean.toString(value));
+	}
+	
+	/**
 	 * Ein Medikament stoppen
 	 */
 	@Override
@@ -597,16 +619,6 @@ public class Prescription extends PersistentObject {
 	}
 	
 	/**
-	 * 
-	 * @param reserve
-	 *            this is a medication to keep as reserve or "Reservemedikation"
-	 * @since 3.1.0
-	 */
-	public void setReserveMedication(boolean reserve){
-		setEntryType(EntryType.RESERVE_MEDICATION);
-	}
-	
-	/**
 	 * required by JFace data-binding
 	 * 
 	 * @since 3.1.0
@@ -630,14 +642,6 @@ public class Prescription extends PersistentObject {
 	 */
 	public void setStopReason(String stopReason){
 		setExtInfoStoredObjectByKey(FLD_EXT_STOP_REASON, stopReason);
-	}
-	
-	/**
-	 * @return whether this medication was directly applied during a consultation
-	 * @since 3.1.0
-	 */
-	public boolean isAppliedMedication(){
-		return getEntryType() == EntryType.APPLICATION;
 	}
 	
 	/**
@@ -691,6 +695,9 @@ public class Prescription extends PersistentObject {
 	}
 	
 	public void setEntryType(EntryType type){
+		if (type == null) {
+			type = EntryType.FIXED_MEDICATION;
+		}
 		setInt(FLD_PRESC_TYPE, type.numericValue());
 	}
 	
@@ -708,8 +715,8 @@ public class Prescription extends PersistentObject {
 		RECIPE (2),
 		/** For self dispensation **/
 		SELF_DISPENSED (3), 
-		/** Directly applied during consultation **/
-		APPLICATION (4);
+		/** Medicine given because of a current problem, but not intended for a longer period **/
+		SYMPTOMATIC_MEDICATION(5);
 		//@formatter:on
 		
 		private int numeric;
