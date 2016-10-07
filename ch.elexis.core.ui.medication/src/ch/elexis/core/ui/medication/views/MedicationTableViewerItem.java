@@ -1,18 +1,25 @@
 package ch.elexis.core.ui.medication.views;
 
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
-import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.jface.viewers.StructuredViewer;
+import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.widgets.Control;
 
 import ch.elexis.core.constants.StringConstants;
 import ch.elexis.core.data.activator.CoreHub;
 import ch.elexis.core.model.IPersistentObject;
+import ch.elexis.core.ui.icons.Images;
+import ch.elexis.data.Anwender;
 import ch.elexis.data.Artikel;
 import ch.elexis.data.Prescription;
 import ch.elexis.data.Prescription.EntryType;
+import ch.elexis.data.Query;
+import ch.elexis.data.User;
 import ch.rgw.tools.TimeTool;
 
 /**
@@ -21,48 +28,59 @@ import ch.rgw.tools.TimeTool;
  */
 public class MedicationTableViewerItem {
 	
-	private static TableViewer tv;
-	private static ExecutorService executorService = Executors.newFixedThreadPool(10);
+	private static ExecutorService executorService = Executors.newCachedThreadPool();
+	
+	private StructuredViewer viewer;
 	
 	// loaded first run
 	private Prescription prescription;
-	private String artikelsts;
+	private String artikelId;
+	private String artikelStoreToString;
 	private String dateFrom;
 	private String dateUntil;
 	private String dosis;
 	private String bemerkung;
 	private String rezeptId;
 	private String sortOrder;
-	private long lastUpdate;
+	private String prescriptorId;
 	
 	// lazy computed
 	private String artikelLabel;
-	private Object suppliedUntil;
 	private Object lastDisposed;
+	private String prescriptorLabel;
+	private String stopReason;
+	private Image image;
 	
-	public MedicationTableViewerItem(Prescription p){
-		String[] values = p.get(false, Prescription.FLD_ARTICLE, Prescription.FLD_DATE_FROM,
-			Prescription.FLD_DATE_UNTIL, Prescription.FLD_DOSAGE, Prescription.FLD_REMARK,
-			Prescription.FLD_REZEPT_ID, Prescription.FLD_LASTUPDATE, Prescription.FLD_SORT_ORDER);
+	private boolean resolved = false;
+	private boolean resolving = false;
+	
+	private Date endTime;
+	
+	private MedicationTableViewerItem(Prescription p, StructuredViewer viewer){
+		this.viewer = viewer;
+		String[] values = p.get(false, Prescription.FLD_ARTICLE_ID, Prescription.FLD_ARTICLE,
+			Prescription.FLD_DOSAGE,
+			Prescription.FLD_REMARK, Prescription.FLD_REZEPT_ID, Prescription.FLD_SORT_ORDER,
+			Prescription.FLD_PRESCRIPTOR);
 		prescription = p;
-		artikelsts = values[0];
-		dateFrom = values[1];
-		dateUntil = values[2];
-		dosis = values[3];
-		bemerkung = values[4];
-		rezeptId = values[5];
-		lastUpdate = (values[6] != null && values[6].length() > 0) ? Long.valueOf(values[6]) : 0l;
-		sortOrder = values[7];
+		artikelId = values[0];
+		artikelStoreToString = values[1];
+		dosis = values[2];
+		bemerkung = values[3];
+		rezeptId = values[4];
+		sortOrder = values[5];
+		prescriptorId = values[6];
+		
+		dateFrom = p.getBeginDate();
+		dateUntil = p.getEndDate();
+		
+		endTime = new TimeTool(dateUntil).getTime();
 	}
 	
-	public static void setTableViewer(TableViewer medicationTableViewer){
-		MedicationTableViewerItem.tv = medicationTableViewer;
-	}
-	
-	public static List<MedicationTableViewerItem> initFromPrescriptionList(
-		List<Prescription> prescriptionList){
-		List<MedicationTableViewerItem> collect = prescriptionList.stream()
-			.map(p -> new MedicationTableViewerItem(p)).collect(Collectors.toList());
+	public static List<MedicationTableViewerItem> createFromPrescriptionList(
+		List<Prescription> prescriptionList, StructuredViewer viewer){
+		List<MedicationTableViewerItem> collect = prescriptionList.parallelStream()
+			.map(p -> new MedicationTableViewerItem(p, viewer)).collect(Collectors.toList());
 		return collect;
 	}
 	
@@ -75,10 +93,8 @@ public class MedicationTableViewerItem {
 		return bemerkung;
 	}
 	
-	public void setBemerkung(String bemerkung){
-		this.bemerkung = bemerkung;
-		prescription.setBemerkung(bemerkung);
-		tv.update(this, null);
+	public String getDisposalComment(){
+		return prescription.getDisposalComment();
 	}
 	
 	public String getBeginDate(){
@@ -89,6 +105,14 @@ public class MedicationTableViewerItem {
 		return dateUntil;
 	}
 	
+	public Date getEndTime(){
+		return endTime;
+	}
+	
+	public void setEndTime(Date time){
+		endTime = time;
+	}
+	
 	public String getDosis(){
 		return dosis;
 	}
@@ -97,23 +121,14 @@ public class MedicationTableViewerItem {
 		return prescription;
 	}
 	
-	public long getLastUpdate(){
-		return lastUpdate;
-	}
-	
-	public String getArtikelsts(){
-		return artikelsts;
-	}
-	///-------------------
-	
 	public String getStopReason(){
-		// EXT!
-		return prescription.getStopReason();
-	}
-	
-	public void setStopReason(String stopReason){
-		// EXT!
-		prescription.setStopReason(stopReason);
+		if (stopReason == null) {
+			if (!resolved && !resolving) {
+				resolving = true;
+				executorService.execute(new ResolveLazyFieldsRunnable(viewer, this));
+			}
+		}
+		return stopReason != null ? stopReason : "...";
 	}
 	
 	public boolean isFixedMediation(){
@@ -122,58 +137,13 @@ public class MedicationTableViewerItem {
 	
 	public IPersistentObject getLastDisposed(){
 		if (lastDisposed == null) {
-			lazyLoad(this, () -> {
-				IPersistentObject ld = prescription.getLastDisposed(rezeptId);
-				if (ld == null) {
-					lastDisposed = StringConstants.EMPTY;
-				} else {
-					lastDisposed = ld;
-				}
-			});
-			return null;
+			if (!resolved && !resolving) {
+				resolving = true;
+				executorService.execute(new ResolveLazyFieldsRunnable(viewer, this));
+			}
 		}
-		
 		return (lastDisposed instanceof IPersistentObject) ? (IPersistentObject) lastDisposed
 				: null;
-	}
-	
-	public TimeTool getSuppliedUntilDate(){
-		if (suppliedUntil == null) {
-			lazyLoad(this, () -> {
-				TimeTool suppliedUntilDate = prescription.getSuppliedUntilDate();
-				if (suppliedUntilDate == null) {
-					suppliedUntil = StringConstants.EMPTY;
-				} else {
-					suppliedUntil = suppliedUntilDate;
-				}
-			});
-			return null;
-		}
-		return (suppliedUntil instanceof TimeTool) ? (TimeTool) suppliedUntil : null;
-	}
-	
-	private void lazyLoad(MedicationTableViewerItem mtvi, Runnable r){
-		executorService.execute(new Runnable() {
-			public void run(){
-				r.run();
-				
-				tv.getControl().getDisplay().asyncExec(new Runnable() {
-					@Override
-					public void run(){
-						tv.update(mtvi, null);
-					}
-				});
-			}
-		});
-	}
-	
-	public void addTerm(TimeTool begin, String newDose){
-		String[] newValues = prescription.addTerm(begin, newDose);
-		dateFrom = newValues[0];
-		dosis = newValues[1];
-		if (StringConstants.ZERO.equals(dosis)) {
-			dateUntil = newValues[0];
-		}
 	}
 	
 	public EntryType getEntryType(){
@@ -186,21 +156,12 @@ public class MedicationTableViewerItem {
 	
 	public String getArtikelLabel(){
 		if (artikelLabel == null) {
-			lazyLoad(this, () -> {
-				Artikel artikel = (Artikel) CoreHub.poFactory.createFromString(artikelsts);
-				if (artikel == null) {
-					artikel = prescription.getArtikel();
-				}
-				
-				if (artikel == null) {
-					artikelLabel = "?";
-				} else {
-					artikelLabel = artikel.getLabel();
-				}
-			});
-			return "-";
+			if (!resolved && !resolving) {
+				resolving = true;
+				executorService.execute(new ResolveLazyFieldsRunnable(viewer, this));
+			}
 		}
-		return artikelLabel;
+		return artikelLabel != null ? artikelLabel : "...";
 	}
 	
 	public void setOrder(String i){
@@ -212,4 +173,149 @@ public class MedicationTableViewerItem {
 		return sortOrder;
 	}
 	
+	public boolean isStopped(){
+		return dateUntil != null && !dateUntil.isEmpty();
+	}
+	
+	public String getPrescriptorLabel(){
+		if (prescriptorLabel == null) {
+			if (!resolved && !resolving) {
+				resolving = true;
+				executorService.execute(new ResolveLazyFieldsRunnable(viewer, this));
+			}
+		}
+		return prescriptorLabel != null ? prescriptorLabel : "...";
+	}
+	
+	public Image getImage(){
+		if (image == null) {
+			if (!resolved && !resolving) {
+				resolving = true;
+				executorService.execute(new ResolveLazyFieldsRunnable(viewer, this));
+			}
+		}
+		return image != null ? image : Images.IMG_EMPTY_TRANSPARENT.getImage();
+	}
+	
+	private static class ResolveLazyFieldsRunnable implements Runnable {
+		private MedicationTableViewerItem item;
+		private StructuredViewer viewer;
+		
+		public ResolveLazyFieldsRunnable(StructuredViewer viewer, MedicationTableViewerItem item){
+			this.item = item;
+			this.viewer = viewer;
+		}
+		
+		@Override
+		public void run(){
+			resolveImage();
+			resolveArticleLabel();
+			resolveLastDisposed();
+			resolveStopReason();
+			resolvePrescriptorLabel();
+			item.resolved = true;
+			item.resolving = false;
+			updateViewer();
+		}
+		
+		private void updateViewer(){
+			Control control = viewer.getControl();
+			if (control != null && !control.isDisposed()) {
+				viewer.getControl().getDisplay().asyncExec(new Runnable() {
+					@Override
+					public void run(){
+						if (control.isVisible()) {
+							viewer.refresh(item, true);
+						}
+					}
+				});
+			}
+		}
+		
+		private void resolveArticleLabel(){
+			if (item.artikelStoreToString != null && !item.artikelStoreToString.isEmpty()) {
+				Artikel artikel =
+					(Artikel) CoreHub.poFactory.createFromString(item.artikelStoreToString);
+				if (artikel == null) {
+					item.artikelLabel = "?";
+				} else {
+					item.artikelLabel = artikel.getLabel();
+				}
+			} else if (item.artikelId != null && !item.artikelId.isEmpty()) {
+				Artikel artikel = Artikel.load(item.artikelId);
+				if (artikel != null && artikel.exists()) {
+					item.artikelLabel = artikel.getLabel();
+				} else {
+					item.artikelLabel = "?";
+				}
+			} else {
+				item.artikelLabel = "?";
+			}
+		}
+		
+		private void resolveImage(){
+			EntryType et = item.prescription.getEntryType();
+			switch (et) {
+			case FIXED_MEDICATION:
+				item.image = Images.IMG_FIX_MEDI.getImage();
+				break;
+			case RESERVE_MEDICATION:
+				item.image = Images.IMG_RESERVE_MEDI.getImage();
+				break;
+			case SYMPTOMATIC_MEDICATION:
+				item.image = Images.IMG_SYMPTOM_MEDI.getImage();
+				break;
+			case SELF_DISPENSED:
+				if (item.prescription.isApplied()) {
+					item.image = Images.IMG_SYRINGE.getImage();
+					break;
+				}
+				item.image = Images.IMG_VIEW_CONSULTATION_DETAIL.getImage();
+				break;
+			case RECIPE:
+				item.image = Images.IMG_VIEW_RECIPES.getImage();
+				break;
+			default:
+				item.image = Images.IMG_EMPTY_TRANSPARENT.getImage();
+				break;
+			}
+		}
+		
+		private void resolveLastDisposed(){
+			IPersistentObject ld = item.prescription.getLastDisposed(item.rezeptId);
+			if (ld == null) {
+				item.lastDisposed = StringConstants.EMPTY;
+			} else {
+				item.lastDisposed = ld;
+			}
+		}
+		
+		private void resolveStopReason(){
+			String reason = item.prescription.getStopReason();
+			if (reason != null) {
+				item.stopReason = reason;
+			} else {
+				item.stopReason = "";
+			}
+		}
+		
+		private void resolvePrescriptorLabel(){
+			if (item.prescriptorId != null && !item.prescriptorId.isEmpty()) {
+				Anwender prescriptor = Anwender.load(item.prescriptorId);
+				if (prescriptor != null && prescriptor.exists()) {
+					item.prescriptorLabel = prescriptor.getKuerzel();
+					if (item.prescriptorLabel == null || item.prescriptorLabel.isEmpty()) {
+						Query<User> query = new Query<>(User.class);
+						query.add(User.FLD_ASSOC_CONTACT, Query.EQUALS, item.prescriptorId);
+						List<User> users = query.execute();
+						if (!users.isEmpty()) {
+							item.prescriptorLabel = users.get(0).getId();
+						}
+					}
+					return;
+				}
+			}
+			item.prescriptorLabel = "";
+		}
+	}
 }
