@@ -23,9 +23,14 @@
  *******************************************************************************/
 package ch.elexis.importer.div;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Path;
 import java.util.List;
 
@@ -251,6 +256,39 @@ public class Test_HL7_parser {
 		assertEquals(res.getResult(), "1.6");
 	}
 
+	@Test
+	public void testTextResult() throws IOException{
+		removeAllPatientsAndDependants();
+		removeAllLaboWerte();
+		parseOneHL7file(
+			new File(workDir.toString(), "Arnaboldi/1_20090729162631490_6038_09_12100.HL7"), false,
+			true);
+		Query<LabResult> qr = new Query<LabResult>(LabResult.class);
+		List<LabResult> results = qr.execute();
+		assertFalse(results.isEmpty());
+		LabResult result = results.get(0);
+		assertTrue(result.isLongText());
+		String resultString = result.getComment();
+		assertFalse(resultString.contains("\\.br\\"));
+		assertTrue(resultString.contains("\n"));
+	}
+	
+	@Test
+	public void testTextResultMultiLinebreaks() throws IOException {
+		removeAllPatientsAndDependants();
+		removeAllLaboWerte();
+		parseOneHL7file(
+			new File(workDir.toString(), "Analytica/0216370074_6417526401671.hl7"), false,
+			true);
+		Query<LabResult> qr = new Query<LabResult>(LabResult.class);
+		List<LabResult> results = qr.execute();
+		assertFalse(results.isEmpty());
+		LabResult result = results.get(2);
+		String resultString = result.getComment();
+		assertFalse(resultString.contains("\\.br\\"));
+		assertTrue(resultString.contains("\n"));
+	}
+	
 	/**
 	 * Test method Analytica HL7 (Details) Some detailed checks about how a sample hl7-file is
 	 * imported Actually Analytica has a special importer

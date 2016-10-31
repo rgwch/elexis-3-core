@@ -98,22 +98,25 @@ public abstract class HL7Reader {
 	
 	public String parseTextValue(String value){
 		String text = value;
-		value = value.replaceAll("\\\\", "");
-		String[] split = value.split("\\.br");
-		StringBuilder sb = new StringBuilder();
-		for (String s : split) {
-			if (!s.isEmpty()) {
-				sb.append(s);
-				sb.append("\n");
-			}
-		}
-		
-		text = sb.toString();
+		text = text.replaceAll("\\\\.br\\\\", "\n");
+		text = text.replaceAll("\\\\.BR\\\\", "\n");
 		
 		// only return parsed value if it contains reasonable input
 		if (text != null && !text.isEmpty()) {
 			return text;
 		}
 		return value;
+	}
+	
+	/**
+	 * Parse an FT value
+	 * @param ftValue
+	 * @return
+	 * @see http://www.healthintersections.com.au/?page_id=441
+	 */
+	public String parseFormattedTextValue(String ftValue) {
+		// currently we use the default, please augment
+		// on specific requirements
+		return parseTextValue(ftValue);
 	}
 }
