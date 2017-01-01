@@ -88,6 +88,7 @@ public class Rechnung extends PersistentObject {
 	 * @return Ein Result mit ggf. der erstellten Rechnung als Inhalt
 	 */
 	public static Result<Rechnung> build(final List<Konsultation> behandlungen){
+		/*
 		System.out.println("js Rechnung: build() begin");
 		
 		System.out
@@ -99,7 +100,7 @@ public class Rechnung extends PersistentObject {
 		System.out.println("js Rechnung: build(): TO DO: Why are both of them in the code?");
 		System.out
 			.println("js Rechnung: build(): TO DO: !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-		
+		*/
 		Result<Rechnung> result = new Result<Rechnung>();
 		
 		if ((behandlungen == null) || (behandlungen.size() == 0)) {
@@ -116,6 +117,7 @@ public class Rechnung extends PersistentObject {
 		// mit einer Organisations-Adresse für den Patienten kommen sie
 		// jedenfalls nicht durch
 		// die TrustX TCTest Prüfung.
+		/*
 		for (Konsultation b : behandlungen) {
 			Patient pat = b.getFall().getPatient();
 			if (!pat.istPerson()) {
@@ -134,15 +136,20 @@ public class Rechnung extends PersistentObject {
 							+ "fehlte das Häkchen für 'Person' in der Kontaktdatenbank.\n\nIch korrigiere das selbst.");
 				pat.set(Kontakt.FLD_IS_PERSON, StringConstants.ONE);
 			}
-		}
+		}*/
+		// gw 1.1.2017: Da bei allen Konsultationen der Rechnung der Patient derselbe ist, muss das nicht für jede Konsultation geprüft werden. Schon gar nciht in einer separaten Schleife
+		// wird weiter unten geprüft und als Rechnugnsfehler ausgeworfen
 		
-		System.out.println("js Rechnung: build(): number of consultations: " + behandlungen.size());
+		
+		//System.out.println("js Rechnung: build(): number of consultations: " + behandlungen.size());
+		/* Why? --gw 1.1.2017
 		for (Konsultation b : behandlungen) {
+			
 			if (b.getLeistungen().isEmpty() || b.getUmsatz() == 0) {
 				System.out.println("Ignoriere Behandlung mit Umsatz 0");
 			}
 			
-			else {
+			else  { 
 				List<Verrechnet> lstg = b.getLeistungen();
 				for (Verrechnet l : lstg) {
 					if (l.getNettoPreis().isZero()
@@ -172,7 +179,7 @@ public class Rechnung extends PersistentObject {
 					}
 				}
 			}
-		}
+		} */
 		
 		Rechnung ret = new Rechnung();
 		ret.create(null);
@@ -216,6 +223,9 @@ public class Rechnung extends PersistentObject {
 					result.add(Result.SEVERITY.ERROR, 3,
 						"Fehlender Fall bei Konsultation " + b.getLabel(), ret, true);
 				continue;
+			}else if(!bf.getPatient().istPerson()){
+				result.add(Result.SEVERITY.WARNING,5,
+					"Der Patient "+bf.getPatient().getLabel()+" ist keine Person bei "+b.getLabel(), ret, true);
 			}
 			if (f == null) {
 				f = bf;

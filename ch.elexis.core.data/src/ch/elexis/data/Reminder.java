@@ -337,7 +337,7 @@ public class Reminder extends PersistentObject implements Comparable<Reminder> {
 		return qbe.execute();
 	}
 	
-	private static String PS_REMINDERS_DUE_FOR = "SELECT r.ID FROM reminders r LEFT JOIN reminders_responsible_link rrl ON (r.id = rrl.ReminderId) WHERE rrl.ResponsibleID = ? AND r.deleted = '0' AND r.IdentID = ? AND r.Status != ? AND r.DateDue < ?;";
+	private static String PS_REMINDERS_DUE_FOR = "SELECT r.ID FROM REMINDERS r LEFT JOIN REMINDERS_RESPONSIBLE_LINK rrl ON (r.id = rrl.ReminderId) WHERE rrl.ResponsibleID = ? AND r.deleted = '0' AND r.IdentID = ? AND r.Status != ? AND r.DateDue < ?;";
 
 	/**
 	 * Alle Reminder holen, die bei einem bestimmten Patienten für einen

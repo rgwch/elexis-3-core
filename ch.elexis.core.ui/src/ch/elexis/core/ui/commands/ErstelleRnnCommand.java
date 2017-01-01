@@ -37,6 +37,7 @@ import ch.elexis.core.ui.views.rechnung.Messages;
 import ch.elexis.data.Fall;
 import ch.elexis.data.Konsultation;
 import ch.elexis.data.Rechnung;
+import ch.rgw.tools.ExHandler;
 import ch.rgw.tools.Result;
 import ch.rgw.tools.Tree;
 
@@ -120,7 +121,8 @@ public class ErstelleRnnCommand extends AbstractHandler {
 			return handlerService.executeCommand(parmCommand, null);
 			
 		} catch (Exception ex) {
-			throw new RuntimeException("add.command not found"); //$NON-NLS-1$
+			ExHandler.handle(ex);
+			throw new RuntimeException("error executing Command"+ex.getMessage()); //$NON-NLS-1$
 		}
 	}
 }

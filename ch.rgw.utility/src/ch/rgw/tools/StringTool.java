@@ -562,6 +562,9 @@ public class StringTool {
 	 * @return den index von val in arr oder -1 wenn nicht gefunden.
 	 */
 	static public int getIndex(final String[] arr, final String val){
+		if(arr==null || val==null){
+			return -1;
+		}
 		for (int i = 0; i < arr.length; i++) {
 			if (val.equalsIgnoreCase(arr[i])) {
 				return i;

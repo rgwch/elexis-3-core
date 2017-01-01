@@ -419,11 +419,15 @@ public class Fall extends PersistentObject {
 		if (StringTool.isNothing(ret)) {
 			String[] systeme = getAbrechnungsSysteme();
 			String altGesetz = get("xGesetz"); //$NON-NLS-1$
-			int idx = StringTool.getIndex(systeme, altGesetz);
-			if (idx == -1) {
+			if (altGesetz == null) {
 				ret = systeme[0];
 			} else {
-				ret = systeme[idx];
+				int idx = StringTool.getIndex(systeme, altGesetz);
+				if (idx == -1) {
+					ret = systeme[0];
+				} else {
+					ret = systeme[idx];
+				}
 			}
 			setAbrechnungsSystem(ret);
 		}
@@ -598,8 +602,8 @@ public class Fall extends PersistentObject {
 	 */
 	public boolean delete(final boolean force){
 		Konsultation[] bh = getBehandlungen(false);
-		if ((bh.length == 0)
-			|| ((force == true) && (CoreHub.acl.request(AccessControlDefaults.DELETE_FORCED) == true))) {
+		if ((bh.length == 0) || ((force == true)
+			&& (CoreHub.acl.request(AccessControlDefaults.DELETE_FORCED) == true))) {
 			for (Konsultation b : bh) {
 				b.delete(true);
 			}
@@ -708,84 +712,84 @@ public class Fall extends PersistentObject {
 						KVG_NAME);
 					CoreHub.globalCfg.set(Preferences.LEISTUNGSCODES_CFG_KEY + "/KVG/gesetz", //$NON-NLS-1$
 						"KVG"); //$NON-NLS-1$
-					CoreHub.globalCfg.set(Preferences.LEISTUNGSCODES_CFG_KEY
-						+ "/KVG/leistungscodes", CONST_TARMED_LEISTUNG); //$NON-NLS-1$
-					CoreHub.globalCfg.set(Preferences.LEISTUNGSCODES_CFG_KEY
-						+ "/KVG/standardausgabe", CONST_TARMED_DRUCKER); //$NON-NLS-1$
+					CoreHub.globalCfg.set(
+						Preferences.LEISTUNGSCODES_CFG_KEY + "/KVG/leistungscodes", //$NON-NLS-1$
+						CONST_TARMED_LEISTUNG);
+					CoreHub.globalCfg.set(
+						Preferences.LEISTUNGSCODES_CFG_KEY + "/KVG/standardausgabe", //$NON-NLS-1$
+						CONST_TARMED_DRUCKER);
 					CoreHub.globalCfg.set(Preferences.LEISTUNGSCODES_CFG_KEY + "/KVG/bedingungen", //$NON-NLS-1$
 						KVG_REQUIREMENTS);
 					
 					CoreHub.globalCfg.set(Preferences.LEISTUNGSCODES_CFG_KEY + "/UVG/name", //$NON-NLS-1$
 						UVG_NAME);
-					CoreHub.globalCfg.set(Preferences.LEISTUNGSCODES_CFG_KEY
-						+ "/UVG/leistungscodes", CONST_TARMED_LEISTUNG); //$NON-NLS-1$
-					CoreHub.globalCfg.set(Preferences.LEISTUNGSCODES_CFG_KEY
-						+ "/UVG/standardausgabe", CONST_TARMED_DRUCKER); //$NON-NLS-1$
+					CoreHub.globalCfg.set(
+						Preferences.LEISTUNGSCODES_CFG_KEY + "/UVG/leistungscodes", //$NON-NLS-1$
+						CONST_TARMED_LEISTUNG);
+					CoreHub.globalCfg.set(
+						Preferences.LEISTUNGSCODES_CFG_KEY + "/UVG/standardausgabe", //$NON-NLS-1$
+						CONST_TARMED_DRUCKER);
 					CoreHub.globalCfg.set(Preferences.LEISTUNGSCODES_CFG_KEY + "/UVG/bedingungen", //$NON-NLS-1$
 						UVG_REQUIREMENTS);
 					CoreHub.globalCfg.set(Preferences.LEISTUNGSCODES_CFG_KEY + "/UVG/gesetz", //$NON-NLS-1$
 						"UVG"); //$NON-NLS-1$
 					
 					CoreHub.globalCfg.set(Preferences.LEISTUNGSCODES_CFG_KEY + "/IV/name", IV_NAME); //$NON-NLS-1$
-					CoreHub.globalCfg
-						.set(
-							Preferences.LEISTUNGSCODES_CFG_KEY + "/IV/leistungscodes", CONST_TARMED_LEISTUNG); //$NON-NLS-1$
-					CoreHub.globalCfg.set(Preferences.LEISTUNGSCODES_CFG_KEY
-						+ "/IV/standardausgabe", CONST_TARMED_DRUCKER); //$NON-NLS-1$
+					CoreHub.globalCfg.set(Preferences.LEISTUNGSCODES_CFG_KEY + "/IV/leistungscodes", //$NON-NLS-1$
+						CONST_TARMED_LEISTUNG);
+					CoreHub.globalCfg.set(
+						Preferences.LEISTUNGSCODES_CFG_KEY + "/IV/standardausgabe", //$NON-NLS-1$
+						CONST_TARMED_DRUCKER);
 					CoreHub.globalCfg.set(Preferences.LEISTUNGSCODES_CFG_KEY + "/IV/bedingungen", //$NON-NLS-1$
 						"Kostenträger:K;Fallnummer:T"); //$NON-NLS-1$
 					CoreHub.globalCfg.set(Preferences.LEISTUNGSCODES_CFG_KEY + "/IV/gesetz", //$NON-NLS-1$
 						"IVG"); //$NON-NLS-1$
 					
 					CoreHub.globalCfg.set(Preferences.LEISTUNGSCODES_CFG_KEY + "/MV/name", MV_NAME); //$NON-NLS-1$
-					CoreHub.globalCfg
-						.set(
-							Preferences.LEISTUNGSCODES_CFG_KEY + "/MV/leistungscodes", CONST_TARMED_LEISTUNG); //$NON-NLS-1$
-					CoreHub.globalCfg.set(Preferences.LEISTUNGSCODES_CFG_KEY
-						+ "/MV/standardausgabe", CONST_TARMED_DRUCKER); //$NON-NLS-1$
+					CoreHub.globalCfg.set(Preferences.LEISTUNGSCODES_CFG_KEY + "/MV/leistungscodes", //$NON-NLS-1$
+						CONST_TARMED_LEISTUNG);
 					CoreHub.globalCfg.set(
-						Preferences.LEISTUNGSCODES_CFG_KEY + "/MV/bedingungen", "Kostenträger:K"); //$NON-NLS-1$ //$NON-NLS-2$
+						Preferences.LEISTUNGSCODES_CFG_KEY + "/MV/standardausgabe", //$NON-NLS-1$
+						CONST_TARMED_DRUCKER);
+					CoreHub.globalCfg.set(Preferences.LEISTUNGSCODES_CFG_KEY + "/MV/bedingungen", //$NON-NLS-1$
+						"Kostenträger:K"); //$NON-NLS-1$
 					CoreHub.globalCfg.set(Preferences.LEISTUNGSCODES_CFG_KEY + "/MV/gesetz", //$NON-NLS-1$
 						"MVG"); //$NON-NLS-1$
 					
 					CoreHub.globalCfg.set(Preferences.LEISTUNGSCODES_CFG_KEY + "/privat/name", //$NON-NLS-1$
 						PRIVATE_NAME);
-					CoreHub.globalCfg.set(Preferences.LEISTUNGSCODES_CFG_KEY
-						+ "/privat/leistungscodes", CONST_TARMED_LEISTUNG); //$NON-NLS-1$
-					CoreHub.globalCfg.set(Preferences.LEISTUNGSCODES_CFG_KEY
-						+ "/privat/standardausgabe", CONST_TARMED_DRUCKER); //$NON-NLS-1$
 					CoreHub.globalCfg.set(
-						Preferences.LEISTUNGSCODES_CFG_KEY + "/privat/gesetz", "VVG"); //$NON-NLS-1$ //$NON-NLS-2$
+						Preferences.LEISTUNGSCODES_CFG_KEY + "/privat/leistungscodes", //$NON-NLS-1$
+						CONST_TARMED_LEISTUNG);
+					CoreHub.globalCfg.set(
+						Preferences.LEISTUNGSCODES_CFG_KEY + "/privat/standardausgabe", //$NON-NLS-1$
+						CONST_TARMED_DRUCKER);
+					CoreHub.globalCfg.set(Preferences.LEISTUNGSCODES_CFG_KEY + "/privat/gesetz", //$NON-NLS-1$
+						"VVG"); //$NON-NLS-1$
 					// CoreHub.globalCfg.set(PreferenceConstants.LEISTUNGSCODES_CFG_KEY+"/privat/bedingungen",
 					// "Rechnungsempfänger:K");
 					
 					CoreHub.globalCfg.set(Preferences.LEISTUNGSCODES_CFG_KEY + "/VVG/name", //$NON-NLS-1$
 						VVG_NAME);
-					CoreHub.globalCfg.set(Preferences.LEISTUNGSCODES_CFG_KEY
-						+ "/VVG/leistungscodes", CONST_TARMED_LEISTUNG); //$NON-NLS-1$
-					CoreHub.globalCfg.set(Preferences.LEISTUNGSCODES_CFG_KEY
-						+ "/VVG/standardausgabe", CONST_TARMED_DRUCKER); //$NON-NLS-1$
+					CoreHub.globalCfg.set(
+						Preferences.LEISTUNGSCODES_CFG_KEY + "/VVG/leistungscodes", //$NON-NLS-1$
+						CONST_TARMED_LEISTUNG);
+					CoreHub.globalCfg.set(
+						Preferences.LEISTUNGSCODES_CFG_KEY + "/VVG/standardausgabe", //$NON-NLS-1$
+						CONST_TARMED_DRUCKER);
 					CoreHub.globalCfg.set(Preferences.LEISTUNGSCODES_CFG_KEY + "/VVG/bedingungen", //$NON-NLS-1$
 						KVG_REQUIREMENTS);
 					CoreHub.globalCfg.set(Preferences.LEISTUNGSCODES_CFG_KEY + "/VVG/gesetz", //$NON-NLS-1$
 						"VVG"); //$NON-NLS-1$
 					
-					PersistentObject
-						.getConnection()
-						.exec(
-							"UPDATE VK_PREISE set typ='UVG' WHERE typ='ch.elexis.data.TarmedLeistungUVG'"); //$NON-NLS-1$
-					PersistentObject
-						.getConnection()
-						.exec(
-							"UPDATE VK_PREISE set typ='KVG' WHERE typ='ch.elexis.data.TarmedLeistungKVG'"); //$NON-NLS-1$
-					PersistentObject
-						.getConnection()
-						.exec(
-							"UPDATE VK_PREISE set typ='IV' WHERE typ='ch.elexis.data.TarmedLeistungIV'"); //$NON-NLS-1$
-					PersistentObject
-						.getConnection()
-						.exec(
-							"UPDATE VK_PREISE set typ='MV' WHERE typ='ch.elexis.data.TarmedLeistungMV'"); //$NON-NLS-1$
+					PersistentObject.getConnection().exec(
+						"UPDATE VK_PREISE set typ='UVG' WHERE typ='ch.elexis.data.TarmedLeistungUVG'"); //$NON-NLS-1$
+					PersistentObject.getConnection().exec(
+						"UPDATE VK_PREISE set typ='KVG' WHERE typ='ch.elexis.data.TarmedLeistungKVG'"); //$NON-NLS-1$
+					PersistentObject.getConnection().exec(
+						"UPDATE VK_PREISE set typ='IV' WHERE typ='ch.elexis.data.TarmedLeistungIV'"); //$NON-NLS-1$
+					PersistentObject.getConnection().exec(
+						"UPDATE VK_PREISE set typ='MV' WHERE typ='ch.elexis.data.TarmedLeistungMV'"); //$NON-NLS-1$
 					update();
 					break;
 				}
@@ -847,7 +851,8 @@ public class Fall extends PersistentObject {
 		}
 	}
 	
-	public static String getBillingSystemConstant(final String billingSystem, final String constant){
+	public static String getBillingSystemConstant(final String billingSystem,
+		final String constant){
 		String[] c = getBillingSystemConstants(billingSystem);
 		for (String bc : c) {
 			String[] val = bc.split("="); //$NON-NLS-1$
@@ -881,7 +886,8 @@ public class Fall extends PersistentObject {
 		}
 	}
 	
-	public static void removeBillingSystemConstant(final String billingSystem, final String constant){
+	public static void removeBillingSystemConstant(final String billingSystem,
+		final String constant){
 		String bc = CoreHub.globalCfg.get(Preferences.LEISTUNGSCODES_CFG_KEY + "/" //$NON-NLS-1$
 			+ billingSystem + "/constants", null); //$NON-NLS-1$
 		bc = bc.replaceAll(constant, ""); //$NON-NLS-1$
