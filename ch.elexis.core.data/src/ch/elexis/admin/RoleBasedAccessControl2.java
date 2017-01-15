@@ -7,19 +7,44 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import ch.elexis.core.data.events.ElexisEvent;
 import ch.elexis.core.data.events.ElexisEventDispatcher;
+import ch.elexis.core.data.events.ElexisEventListener;
+import ch.elexis.data.Anwender;
 import ch.elexis.data.Query;
 import ch.elexis.data.Role;
 import ch.elexis.data.User;
 import ch.rgw.tools.StringTool;
 
+/**
+ * Caching AccessControl.
+ * Difference to RoleBasedAccessControl: Loads user rights whenever the user changes. Does not need database accesses on right
+ * requests. No dependency of special database features.
+ * @author gerry
+ *
+ */
 public class RoleBasedAccessControl2 extends AbstractAccessControl {
 	Map<String,ACE> allACE = new HashMap<String, ACE>();
 	Map<User,Set<String>> userRights = new HashMap<User, Set<String>>();
 	Map<Role,Set<String>> roleRights = new HashMap<Role, Set<String>>();
 	
+	/**
+	 * Fetch user rights on user login
+	 */
 	public RoleBasedAccessControl2(){
-		
+		ElexisEventListener eeli_user=new ElexisEventListener() {
+			ElexisEvent match=new ElexisEvent(null, Anwender.class, ElexisEvent.EVENT_SELECTED);
+			@Override
+			public ElexisEvent getElexisEventFilter() {
+				return match;
+			}
+			
+			@Override
+			public void catchElexisEvent(ElexisEvent ev) {
+				fetch();
+			}
+		};
+		ElexisEventDispatcher.getInstance().addListeners(eeli_user);
 	}
 	
 	public void fetch(){
@@ -89,9 +114,25 @@ public class RoleBasedAccessControl2 extends AbstractAccessControl {
 			fetch();
 		}
 		Set<String> currentRights = roleRights.get(role);
-		return currentRights == null ? false : currentRights.contains(ace);
+		if(currentRights!=null){
+			if(StringTool.getIndex(currentRights.toArray(new String[0]), ace.getCanonicalName())!=-1){
+				return true;
+			}else{
+				if(ace!=ACE.ACE_ROOT){
+					return request(role,ace.getParent());
+				}
+			}
+		}
+		return false;
+		
 	}
 	
+	/**
+	 * This is the only method frequently called: Query if a user has the right for a given ACE.
+	 * Returns always true for Administrator and always false for unknown or missing users or ACEs.
+	 * In all other cases: Return true, if the user has the called ACE, or one of its antecessors.
+	 * 
+	 */
 	@Override
 	public boolean request(User user, ACE ace){
 		if (ace == null)
