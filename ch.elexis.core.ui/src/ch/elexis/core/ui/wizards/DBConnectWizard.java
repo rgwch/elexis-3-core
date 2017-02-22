@@ -27,6 +27,7 @@ import ch.elexis.core.data.util.DBConnection;
 import ch.elexis.core.data.util.DBConnection.DBType;
 import ch.elexis.core.jdt.Nullable;
 import ch.elexis.core.ui.UiDesk;
+import ch.elexis.data.Blob;
 import ch.elexis.data.PersistentObject;
 import ch.rgw.tools.JdbcLink;
 import ch.rgw.tools.StringTool;
@@ -122,7 +123,7 @@ public class DBConnectWizard extends Wizard {
 		String storage = CoreHub.localCfg.get(Preferences.CFG_STORED_JDBC_CONN, null);
 		if (storage != null) {
 			storedConnectionList =
-				(List<DBConnection>) PersistentObject.foldObject(StringTool.dePrintable(storage));
+				(List<DBConnection>) Blob.foldObject(StringTool.dePrintable(storage));
 		} else {
 			// initialize the current connection (if available)
 			storedConnectionList = new ArrayList<DBConnection>();
@@ -186,7 +187,7 @@ public class DBConnectWizard extends Wizard {
 	 */
 	void storeJDBCConnections(){
 		Assert.isNotNull(storedConnectionList);
-		byte[] flatten = PersistentObject.flattenObject(storedConnectionList);
+		byte[] flatten = Blob.flattenObject(storedConnectionList);
 		String enPrintable = StringTool.enPrintable(flatten);
 		CoreHub.localCfg.set(Preferences.CFG_STORED_JDBC_CONN, enPrintable);
 		CoreHub.localCfg.flush();
