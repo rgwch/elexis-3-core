@@ -57,9 +57,14 @@ public class Blob {
 					}
 				} else if (entry.getName().equals("json")) {
 					long size = entry.getSize();
+					if(size==-1){
+						size=flat.length*2;
+					}
 					byte[] ba = new byte[(int) size];
-					zis.read(ba);
-					JsonObject jo = new JsonObject(new String(ba, "utf-8"));
+					int numbytes=zis.read(ba);		
+					String stringified=new String(ba, 0,numbytes, "utf-8");
+					System.out.println(stringified);
+					JsonObject jo = new JsonObject(stringified);
 					Hashtable<Object, Object> ret = new Hashtable<Object, Object>();
 					for (Entry<String, Object> e : jo) {
 						ret.put(e.getKey(), e.getValue());
@@ -71,6 +76,7 @@ public class Blob {
 				}
 	
 			}
+			zis.close();
 			return null;
 		} catch (Exception ex) {
 			log.error("Error folding object", ex);

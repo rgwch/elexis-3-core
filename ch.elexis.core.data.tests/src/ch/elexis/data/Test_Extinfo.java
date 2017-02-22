@@ -18,6 +18,10 @@ public class Test_Extinfo {
 		}
 		Hashtable<Object, Object> result=(Hashtable<Object, Object>) Blob.foldObject(b);
 		Assert.assertEquals("38", result.get("Schuhgrösse"));
+		byte[] jsonized=Blob.toCompressedJson(result);
+		Hashtable<Object,Object> endresult=(Hashtable<Object, Object>) Blob.foldObject(jsonized);
+		Assert.assertEquals("38", endresult.get("Schuhgrösse"));
+		
 	}
 	
 	

@@ -554,6 +554,22 @@ public class Kontakt extends PersistentObject {
 	}
 	
 	public static class statL implements Comparable<statL>, Serializable {
+		public String getV(){
+			return v;
+		}
+
+		public void setV(String v){
+			this.v = v;
+		}
+
+		public int getC(){
+			return c;
+		}
+
+		public void setC(int c){
+			this.c = c;
+		}
+
 		private static final long serialVersionUID = 10455663346456L;
 		String v;
 		int c;
@@ -568,6 +584,7 @@ public class Kontakt extends PersistentObject {
 		public int compareTo(statL ot){
 			return ot.c - c;
 		}
+	
 	}
 	
 	@SuppressWarnings("unchecked")
