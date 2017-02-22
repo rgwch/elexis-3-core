@@ -30,15 +30,18 @@ import ch.rgw.tools.ExHandler;
 import io.vertx.core.json.JsonObject;
 
 /**
- * Extracted some utility methods for BLOB-fields from PersistentObject for easier unit testing.
+ * Extracted some utility methods for BLOB-fields from PersistentObject for
+ * easier unit testing.
+ * 
  * @author gerry
  *
  */
 public class Blob {
-	static Logger log=LoggerFactory.getLogger("Extinfo");
+	static Logger log = LoggerFactory.getLogger("Extinfo");
 
 	/**
-	 * fold a byte array as stored by {@link PersistentObject#flatten(Hashtable)} or
+	 * fold a byte array as stored by
+	 * {@link PersistentObject#flatten(Hashtable)} or
 	 * {@link Blob#toCompressedJson(Hashtable)}
 	 * 
 	 * @param flat
@@ -57,10 +60,10 @@ public class Blob {
 						return ois.readObject();
 					}
 				} else if (entry.getName().equals("json")) {
-					
-					ByteArrayOutputStream baos=new ByteArrayOutputStream();
+
+					ByteArrayOutputStream baos = new ByteArrayOutputStream();
 					FileTool.copyStreams(zis, baos);
-					String stringified=new String(baos.toByteArray(), "utf-8");
+					String stringified = new String(baos.toByteArray(), "utf-8");
 					zis.closeEntry();
 					zis.close();
 					JsonObject jo = new JsonObject(stringified);
@@ -73,7 +76,7 @@ public class Blob {
 					log.error("foldObject: unknown format in zipped field");
 					return null;
 				}
-	
+
 			}
 			zis.close();
 			return null;
@@ -88,6 +91,7 @@ public class Blob {
 	 * @param object
 	 * @return
 	 * @since 3.1
+	 * ungrad: Store as hashtable and as json
 	 */
 	public static byte[] flattenObject(final Object object) {
 		try {
@@ -96,6 +100,14 @@ public class Blob {
 			zos.putNextEntry(new ZipEntry("hash"));
 			ObjectOutputStream oos = new ObjectOutputStream(zos);
 			oos.writeObject(object);
+			if (object instanceof Hashtable) {
+				zos.putNextEntry(new ZipEntry("json"));
+				JsonObject jo = new JsonObject((Hashtable) object);
+				String encoded = jo.encodePrettily();
+				byte[] bytes = encoded.getBytes("utf-8");
+				zos.write(bytes);
+			}
+
 			zos.close();
 			baos.close();
 			return baos.toByteArray();
@@ -120,8 +132,8 @@ public class Blob {
 			ZipOutputStream zos = new ZipOutputStream(baos);
 			zos.putNextEntry(new ZipEntry("json"));
 			JsonObject jo = new JsonObject(hash);
-			String encoded=jo.encodePrettily();
-			byte[] bytes=encoded.getBytes("utf-8");
+			String encoded = jo.encodePrettily();
+			byte[] bytes = encoded.getBytes("utf-8");
 			zos.write(bytes);
 			zos.close();
 			baos.close();
@@ -130,7 +142,7 @@ public class Blob {
 			ExHandler.handle(ex);
 			return null;
 		}
-	
+
 	}
 
 }
