@@ -41,6 +41,8 @@ public class RoleBasedAccessControl2 extends AbstractAccessControl {
 			
 			@Override
 			public void catchElexisEvent(ElexisEvent ev) {
+				userRights=new HashMap<User,Set<String>>();
+				roleRights = new HashMap<Role, Set<String>>();
 				fetch();
 			}
 		};
