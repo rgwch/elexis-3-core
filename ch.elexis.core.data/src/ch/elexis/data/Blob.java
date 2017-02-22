@@ -25,6 +25,7 @@ import java.util.zip.ZipOutputStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import ch.rgw.io.FileTool;
 import ch.rgw.tools.ExHandler;
 import io.vertx.core.json.JsonObject;
 
@@ -56,14 +57,12 @@ public class Blob {
 						return ois.readObject();
 					}
 				} else if (entry.getName().equals("json")) {
-					long size = entry.getSize();
-					if(size==-1){
-						size=flat.length*2;
-					}
-					byte[] ba = new byte[(int) size];
-					int numbytes=zis.read(ba);		
-					String stringified=new String(ba, 0,numbytes, "utf-8");
-					System.out.println(stringified);
+					
+					ByteArrayOutputStream baos=new ByteArrayOutputStream();
+					FileTool.copyStreams(zis, baos);
+					String stringified=new String(baos.toByteArray(), "utf-8");
+					zis.closeEntry();
+					zis.close();
 					JsonObject jo = new JsonObject(stringified);
 					Hashtable<Object, Object> ret = new Hashtable<Object, Object>();
 					for (Entry<String, Object> e : jo) {
@@ -121,7 +120,9 @@ public class Blob {
 			ZipOutputStream zos = new ZipOutputStream(baos);
 			zos.putNextEntry(new ZipEntry("json"));
 			JsonObject jo = new JsonObject(hash);
-			zos.write(jo.encode().getBytes("utf-8"));
+			String encoded=jo.encodePrettily();
+			byte[] bytes=encoded.getBytes("utf-8");
+			zos.write(bytes);
 			zos.close();
 			baos.close();
 			return baos.toByteArray();
