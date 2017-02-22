@@ -1,3 +1,15 @@
+/*******************************************************************************
+ * Copyright (c) 2017, G. Weirich and Elexis
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    G. Weirich - initial implementation
+ *    
+ *******************************************************************************/
+
 package ch.elexis.data;
 
 import java.io.ByteArrayInputStream;
@@ -16,6 +28,11 @@ import org.slf4j.LoggerFactory;
 import ch.rgw.tools.ExHandler;
 import io.vertx.core.json.JsonObject;
 
+/**
+ * Extracted some utility methods for BLOB-fields from PersistentObject for easier unit testing.
+ * @author gerry
+ *
+ */
 public class Blob {
 	static Logger log=LoggerFactory.getLogger("Extinfo");
 
