@@ -50,7 +50,7 @@ public class ArticleDefaultSignatureComposite extends Composite {
 	private Text txtSignatureComment;
 	
 	private Composite medicationType;
-	private Button btnSymtomatic;
+	private Button btnSymptomatic;
 	private Button btnReserve;
 	private Button btnFix;
 	
@@ -174,9 +174,9 @@ public class ArticleDefaultSignatureComposite extends Composite {
 		medicationType.setLayout(new RowLayout());
 		medicationType.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 7, 1));
 		
-		btnSymtomatic = new Button(medicationType, SWT.RADIO);
-		btnSymtomatic.setText("Symptom");
-		btnSymtomatic.addSelectionListener(new SavingSelectionAdapter());
+		btnSymptomatic = new Button(medicationType, SWT.RADIO);
+		btnSymptomatic.setText("Symptom");
+		btnSymptomatic.addSelectionListener(new SavingSelectionAdapter());
 		
 		btnReserve = new Button(medicationType, SWT.RADIO);
 		btnReserve.setText("Reserve");
@@ -346,7 +346,7 @@ public class ArticleDefaultSignatureComposite extends Composite {
 				signature.setAtcCode(null);
 				signature.setArticle(article);
 			}
-			if (btnSymtomatic.getSelection()) {
+			if (btnSymptomatic.getSelection()) {
 				signature.setMedicationType(EntryType.SYMPTOMATIC_MEDICATION);
 			} else if (btnReserve.getSelection()) {
 				signature.setMedicationType(EntryType.RESERVE_MEDICATION);
@@ -374,7 +374,7 @@ public class ArticleDefaultSignatureComposite extends Composite {
 		
 		btnFix.setSelection(false);
 		btnReserve.setSelection(false);
-		btnSymtomatic.setSelection(false);
+		btnSymptomatic.setSelection(false);
 		
 		btnNoDisposal.setSelection(false);
 		btnDispensation.setSelection(false);
@@ -389,10 +389,10 @@ public class ArticleDefaultSignatureComposite extends Composite {
 			} else if (modelMedicationType == EntryType.RESERVE_MEDICATION) {
 				btnReserve.setSelection(true);
 			} else if (modelMedicationType == EntryType.SYMPTOMATIC_MEDICATION) {
-				btnSymtomatic.setSelection(true);
+				btnSymptomatic.setSelection(true);
 			} else {
 				// default
-				btnSymtomatic.setSelection(true);
+				btnFix.setSelection(true);
 			}
 			EntryType modelDisposalType = signature.getDisposalType();
 			if (modelDisposalType == EntryType.RECIPE) {
@@ -419,7 +419,7 @@ public class ArticleDefaultSignatureComposite extends Composite {
 		ArticleSignature signature = getSignature();
 		
 		// dont save if no medication type is selected
-		if (!btnFix.getSelection() && !btnReserve.getSelection() && !btnSymtomatic.getSelection()) {
+		if (!btnFix.getSelection() && !btnReserve.getSelection() && !btnSymptomatic.getSelection()) {
 			return;
 		}
 		

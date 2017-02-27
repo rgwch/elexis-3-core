@@ -33,6 +33,7 @@ public class PrintTakingsListHandler extends AbstractHandler {
 		if (patient == null)
 			return null;
 		
+		/*
 		List<Prescription> prescRecipes = new ArrayList<Prescription>();
 		
 		ISelection selection =
@@ -53,6 +54,8 @@ public class PrintTakingsListHandler extends AbstractHandler {
 		} else {
 			prescRecipes = Arrays.asList(patient.getFixmedikation());
 		}
+		*/
+		List<Prescription> prescRecipes = Arrays.asList(patient.getFixmedikation());
 		
 		RezeptBlatt rpb;
 		try {
