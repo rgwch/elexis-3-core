@@ -175,6 +175,104 @@
                style="push">
          </command>
       </menuContribution>
+      <menuContribution
+            allPopups="false"
+            locationURI="toolbar:ch.elexis.BriefAuswahlView">
+         <command
+               commandId="ch.elexis.core.ui.brief.send"
+               icon="icon://IMG_MAIL_SEND"
+               label="Versenden"
+               style="pulldown">
+         </command>
+         <command
+               commandId="ch.elexis.core.ui.command.openLocalDocuments"
+               icon="icon://IMG_EDIT"
+               label="Offene lokale Dokumente"
+               style="push"
+               tooltip="Offene lokale Dokumente">
+            <visibleWhen
+                  checkEnabled="false">
+               <test
+                     property="ch.elexis.core.ui.property.documenteditlocal">
+               </test>
+            </visibleWhen>
+         </command>
+      </menuContribution>
+      <menuContribution
+            allPopups="false"
+            locationURI="toolbar:ch.elexis.core.ui.views.rechnung.BillingProposalView">
+         <command
+               commandId="ch.elexis.core.ui.StartBillingProposal"
+               icon="icon://IMG_WIZARD"
+               label="Rechnungs-Vorschlag"
+               style="push">
+         </command>
+      </menuContribution>
+      <menuContribution
+            allPopups="false"
+            locationURI="toolbar:ch.elexis.core.ui.views.rechnung.BillingProposalView">
+         <command
+               commandId="ch.elexis.core.ui.RefreshBillingProposalView"
+               icon="icon://IMG_REFRESH"
+               label="Rechnungs-Vorschlag aktualisieren"
+               style="push">
+         </command>
+      </menuContribution>
+      <menuContribution
+            allPopups="false"
+            locationURI="toolbar:ch.elexis.core.ui.views.rechnung.BillingProposalView">
+         <command
+               commandId="ch.elexis.core.ui.BillingProposalViewCreateBills"
+               icon="icon://IMG_BILL"
+               label="Rechnungen erzeugen"
+               style="push">
+            <parameter
+                  name="ch.elexis.core.ui.BillingProposalViewCreateBills.selection"
+                  value="all">
+            </parameter>
+         </command>
+      </menuContribution>
+      <menuContribution
+            allPopups="false"
+            locationURI="popup:ch.elexis.core.ui.views.rechnung.BillingProposalView">
+         <command
+               commandId="ch.elexis.core.ui.BillingProposalViewCreateBills"
+               icon="icon://IMG_BILL"
+               label="Rechnungen erzeugen"
+               style="push">
+            <parameter
+                  name="ch.elexis.core.ui.BillingProposalViewCreateBills.selection"
+                  value="selection">
+            </parameter>
+         </command>
+      </menuContribution>
+      <menuContribution
+            allPopups="false"
+            locationURI="popup:ch.elexis.core.ui.views.rechnung.BillingProposalView">
+         <command
+               commandId="ch.elexis.core.ui.BillingProposalViewRemove"
+               icon="icon://IMG_DELETE"
+               label="aus Vorschlag entfernen"
+               style="push">
+         </command>
+      </menuContribution>
+      <menuContribution
+            allPopups="false"
+            locationURI="toolbar:ch.elexis.Konsdetail">
+         <command
+               commandId="ch.elexis.core.ui.command.openLocalDocuments"
+               icon="icon://IMG_EDIT"
+               label="Offene lokale Dokumente"
+               style="push"
+               tooltip="Offene lokale Dokumente">
+            <visibleWhen
+                  checkEnabled="false">
+               <test
+                     property="ch.elexis.core.ui.property.documenteditlocal">
+               </test>
+            </visibleWhen>
+         </command>
+      </menuContribution>
    </extension>
       <extension
          point="org.eclipse.ui.preferencePages">
@@ -302,6 +400,12 @@
             id="ch.elexis.servicediagnose.prefs"
             name="%page.name.7">
       </page>
+      <page
+            category="ch.elexis.Leistungscodes"
+            class="ch.elexis.core.ui.preferences.BillingChecksPreferencePage"
+            id="ch.elexis.core.ui.billing.accounts"
+            name="%elexis.billingcheck">
+      </page>
    </extension>
       <extension
             point="org.eclipse.ui.bindings">
@@ -313,7 +417,8 @@
          <scheme
                description="KeyBindings that use this scheme will be displayed by the KeyAssistant in Elexis"
                id="ch.elexis.ui.keybindingScheme"
-               name="Elexis Keybinding Scheme">
+               name="Elexis Keybinding Scheme"
+               parentId="org.eclipse.ui.defaultAcceleratorConfiguration">
          </scheme>
          <key
                commandId="org.eclipse.ui.views.showView"
@@ -488,6 +593,44 @@
             id="ch.elexis.core.ui.command.templatePrintSettings"
             name="Druckeinstellungen">
       </command>
+      <command
+            id="ch.elexis.core.ui.StartBillingProposal"
+            name="Start billing proposal">
+      </command>
+      <command
+            id="ch.elexis.core.ui.RefreshBillingProposalView"
+            name="Refresh billing proposals">
+      </command>
+      <command
+            id="ch.elexis.core.ui.BillingProposalViewCreateBills"
+            name="Create bills from proposal">
+         <commandParameter
+               id="ch.elexis.core.ui.BillingProposalViewCreateBills.selection"
+               name="selection"
+               optional="true"
+               values="all,selection">
+         </commandParameter>
+      </command>
+      <command
+            id="ch.elexis.core.ui.BillingProposalViewRemove"
+            name="Remove from proposal">
+      </command>
+      <command
+            id="ch.elexis.core.ui.command.openLocalDocuments"
+            name="Open local documents">
+      </command>
+      <command
+            id="ch.elexis.core.ui.command.endLocalDocument"
+            name="End local document">
+      </command>
+      <command
+            id="ch.elexis.core.ui.command.abortLocalDocument"
+            name="Abort local document">
+      </command>
+      <command
+            id="ch.elexis.core.ui.command.startEditLocalDocument"
+            name="Start edit local document">
+      </command>
    </extension>
       <extension
             point="ch.elexis.core.ui.KonsExtension">
@@ -580,5 +723,56 @@
                </test>
             </enabledWhen>
          </handler>
+         <handler
+               class="ch.elexis.core.ui.commands.StartBillingProposalHandler"
+               commandId="ch.elexis.core.ui.StartBillingProposal">
+         </handler>
+         <handler
+               class="ch.elexis.core.ui.commands.RefreshBillingProposalViewHandler"
+               commandId="ch.elexis.core.ui.RefreshBillingProposalView">
+         </handler>
+         <handler
+               class="ch.elexis.core.ui.commands.BillingProposalViewCreateBillsHandler"
+               commandId="ch.elexis.core.ui.BillingProposalViewCreateBills">
+         </handler>
+         <handler
+               class="ch.elexis.core.ui.commands.BillingProposalRemoveHandler"
+               commandId="ch.elexis.core.ui.BillingProposalViewRemove">
+         </handler>
+         <handler
+               commandId="ch.elexis.core.ui.BillingProposalViewRemove">
+         </handler>
+         <handler
+               class="ch.elexis.core.ui.commands.EndLocalDocumentHandler"
+               commandId="ch.elexis.core.ui.command.endLocalDocument">
+         </handler>
+         <handler
+               class="ch.elexis.core.ui.commands.AbortLocalDocumentHandler"
+               commandId="ch.elexis.core.ui.command.abortLocalDocument">
+         </handler>
+         <handler
+               class="ch.elexis.core.ui.commands.OpenLocalDocumentsHandler"
+               commandId="ch.elexis.core.ui.command.openLocalDocuments">
+         </handler>
+         <handler
+               class="ch.elexis.core.ui.commands.StartEditLocalDocumentHandler"
+               commandId="ch.elexis.core.ui.command.startEditLocalDocument">
+         </handler>
+      </extension>
+      <extension
+            point="org.eclipse.ui.startup">
+         <startup
+               class="ch.elexis.core.ui.startup.UiStartup">
+         </startup>
+      </extension>
+      <extension
+            point="org.eclipse.core.expressions.propertyTesters">
+         <propertyTester
+               class="ch.elexis.core.ui.property.PropertyTester"
+               id="ch.elexis.core.ui.propertyTester"
+               namespace="ch.elexis.core.ui.property"
+               properties="documenteditlocal"
+               type="java.lang.Object">
+         </propertyTester>
       </extension>
 </plugin>

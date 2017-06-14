@@ -89,6 +89,22 @@ public class Messages extends NLS {
 	public static String BestellView_NoSupplierArticle;
 	public static String BestellView_NoSupplierArticleMsg;
 	public static String BestellView_CantOrderNoSupplier;
+	public static String BriefAuswahl_actionlocaleditabortmessage;
+
+	public static String BriefAuswahl_actionlocaleditstopmessage;
+
+	public static String BriefAuswahl_actionlocaledittext;
+
+	public static String BriefAuswahl_erroreditmessage;
+
+	public static String BriefAuswahl_errorlocaleditabortmessage;
+
+	public static String BriefAuswahl_errorlocaleditendmessage;
+
+	public static String BriefAuswahl_errortitle;
+
+	public static String BriefAuswahl_errorttile;
+	
 	public static String BriefAuswahlAllLetters;
 	public static String BriefAuswahlAllLetters2;
 	public static String BriefAuswahlCouldNotLoadText;
@@ -280,6 +296,8 @@ public class Messages extends NLS {
 	public static String LagerView_minBestand;
 	public static String LagerView_name;
 	public static String LagerView_pharmacode;
+	public static String LagerView_exportAction;
+	public static String LagerView_reload;
 	public static String Leistungscodes_necessaryData;
 	public static String MediVerlaufView_dateFrom;
 	public static String MediVerlaufView_dateUntil;
@@ -476,6 +494,10 @@ public class Messages extends NLS {
 	public static String TextView_couldNotCreateTextView;
 	public static String TextView_couldNotLoadTextPlugin;
 	public static String TextView_enterTitle;
+	public static String TextView_errorlocaleditmessage;
+
+	public static String TextView_errortitle;
+
 	public static String TextView_exportText;
 	public static String TextView_importText;
 	public static String TextView_importMultiText;

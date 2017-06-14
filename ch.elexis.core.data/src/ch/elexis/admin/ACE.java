@@ -19,6 +19,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import ch.elexis.core.data.activator.CoreHub;
 import ch.elexis.core.data.constants.ExtensionPointConstantsData;
 import ch.elexis.core.data.util.Extensions;
@@ -49,6 +52,8 @@ public class ACE implements Serializable {
 	public static final ACE ACE_IMPLICIT = new ACE(ACE.ACE_ROOT, "implicit", Messages.ACE_implicit); //$NON-NLS-1$
 	
 	private static Map<String, ACE> allDefinedACEs;
+	
+	private static Logger log = LoggerFactory.getLogger(ACE.class);
 	
 	private final String name;
 	private String localizedName;
@@ -85,7 +90,14 @@ public class ACE implements Serializable {
 			}
 			Right.resetTable();
 		}
-		getACLContributionExtensions().stream().forEach(ace -> ace.initializeDefaults(CoreHub.acl));
+		List<IACLContributor> aclContributionExtensions = getACLContributionExtensions();
+		for (IACLContributor iaclContributor : aclContributionExtensions) {
+			try {
+				iaclContributor.initializeDefaults(CoreHub.acl);
+			} catch (Exception e) {
+				log.warn("Problem initializing defaults for [{}]", iaclContributor.getClass().getName(), e);
+			}
+		}
 	}
 	
 	@SuppressWarnings("unchecked")

@@ -11,7 +11,9 @@
  *******************************************************************************/
 package ch.elexis.data;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashSet;
@@ -130,6 +132,8 @@ public class Konsultation extends PersistentObject implements Comparable<Konsult
 				CoreHub.actMandant.getId());
 			fall.getPatient().setInfoElement("LetzteBehandlung", getId());
 		}
+		if (getDefaultDiagnose() != null)
+			addDiagnose(getDefaultDiagnose());
 	}
 	
 	/** Eine Konsultation anhand ihrer ID von der Datenbank einlesen */
@@ -327,7 +331,11 @@ public class Konsultation extends PersistentObject implements Comparable<Konsult
 	}
 	
 	public Rechnung getRechnung(){
-		return Rechnung.load(get(FLD_BILL_ID));
+		String invoiceId = get(FLD_BILL_ID);
+		if (invoiceId == null) {
+			return null;
+		}
+		return Rechnung.load(invoiceId);
 	}
 	
 	/**
@@ -449,9 +457,12 @@ public class Konsultation extends PersistentObject implements Comparable<Konsult
 	}
 	
 	public int getStatus(){
-		Rechnung r = getRechnung();
-		if (r != null) {
-			return r.getStatus();
+		return getStatus(getRechnung());
+	}
+	
+	private int getStatus(Rechnung invoice){
+		if (invoice != null) {
+			return invoice.getStatus();
 		}
 		Mandant rm = getMandant();
 		if ((rm != null) && (rm.equals(CoreHub.actMandant))) {
@@ -463,11 +474,19 @@ public class Konsultation extends PersistentObject implements Comparable<Konsult
 		} else {
 			return RnStatus.NICHT_VON_IHNEN;
 		}
-		
 	}
 	
 	public String getStatusText(){
-		return RnStatus.getStatusText(getStatus());
+		String statusText = "";
+		
+		Rechnung rechnung = getRechnung();
+		if (rechnung != null) {
+			statusText += "RG " + rechnung.getNr() + ": ";
+		}
+		
+		statusText += RnStatus.getStatusText(getStatus(rechnung));
+		
+		return statusText;
 	}
 	
 	/** Eine einzeilige Beschreibung dieser Konsultation holen */
@@ -535,28 +554,38 @@ public class Konsultation extends PersistentObject implements Comparable<Konsult
 		if (!isEditable(true)) {
 			return;
 		}
-		String exists = getDBConnection().queryString(
+		
+		String dgid = prepareDiagnoseSelectWithCodeAndClass(dg.getCode(), dg.getClass().getName());
+		if (dgid != null) {
+			return;
+		}
+		
+		String diagnosisEntryExists = getDBConnection().queryString(
 			"SELECT ID FROM DIAGNOSEN WHERE KLASSE=" + JdbcLink.wrap(dg.getClass().getName())
 				+ " AND DG_CODE=" + JdbcLink.wrap(dg.getCode()));
 		StringBuilder sql = new StringBuilder(200);
-		if (StringTool.isNothing(exists)) {
-			exists = StringTool.unique("bhdl");
-			sql.append("INSERT INTO DIAGNOSEN (ID, DG_CODE, DG_TXT, KLASSE) VALUES (")
-				.append(JdbcLink.wrap(exists)).append(",").append(JdbcLink.wrap(dg.getCode()))
-				.append(",").append(JdbcLink.wrap(dg.getText())).append(",")
-				.append(JdbcLink.wrap(dg.getClass().getName())).append(")");
+		if (StringTool.isNothing(diagnosisEntryExists)) {
+			diagnosisEntryExists = StringTool.unique("bhdl");
+			sql.append("INSERT INTO DIAGNOSEN (ID, LASTUPDATE, DG_CODE, DG_TXT, KLASSE) VALUES (")
+				.append(JdbcLink.wrap(diagnosisEntryExists)).append(",")
+				.append(Long.toString(System.currentTimeMillis())).append(",")
+				.append(JdbcLink.wrap(dg.getCode())).append(",").append(JdbcLink.wrap(dg.getText()))
+				.append(",").append(JdbcLink.wrap(dg.getClass().getName())).append(")");
 			getDBConnection().exec(sql.toString());
 			sql.setLength(0);
 		}
+		/**
+		 * @deprecated remove ID,lastupdate,deleted in 3.3
+		 * @see https://redmine.medelexis.ch/issues/5629
+		 */
 		sql.append("INSERT INTO BEHDL_DG_JOINT (ID,BEHANDLUNGSID,DIAGNOSEID) VALUES (")
 			.append(JdbcLink.wrap(StringTool.unique("bhdx"))).append(",").append(getWrappedId())
-			.append(",").append(JdbcLink.wrap(exists)).append(")");
+			.append(",").append(JdbcLink.wrap(diagnosisEntryExists)).append(")");
 		getDBConnection().exec(sql.toString());
 		
 		// Statistik nachführen
 		getFall().getPatient().countItem(dg);
 		CoreHub.actUser.countItem(dg);
-		
 	}
 	
 	/** Eine Diagnose aus der Diagnoseliste entfernen */
@@ -564,7 +593,7 @@ public class Konsultation extends PersistentObject implements Comparable<Konsult
 		if (isEditable(true)) {
 			String dgid =
 				prepareDiagnoseSelectWithCodeAndClass(dg.getCode(), dg.getClass().getName());
-				
+			
 			if (dgid == null) {
 				String code = dg.getCode();
 				// chapter of a TI-Code
@@ -574,19 +603,41 @@ public class Konsultation extends PersistentObject implements Comparable<Konsult
 				}
 			}
 			
-			StringBuilder sql = new StringBuilder();
-			sql.append("DELETE FROM BEHDL_DG_JOINT WHERE BEHANDLUNGSID=").append(getWrappedId())
-				.append(" AND ").append("DIAGNOSEID=").append(JdbcLink.wrap(dgid));
-			getDBConnection().exec(sql.toString());
+			if (dgid == null) {
+				log.warn(
+					"Requested delete of diagnosis which could not be resolved [{}] in consultation [{}]",
+					dg.getCode() + "/" + dg.getClass().getName(), getId());
+			} else {
+				StringBuilder sql = new StringBuilder();
+				sql.append("DELETE FROM BEHDL_DG_JOINT WHERE BehandlungsID=").append(getWrappedId())
+					.append(" AND DiagnoseId=" + JdbcLink.wrap(dgid));
+				log.debug(sql.toString());
+				getDBConnection().exec(sql.toString());
+			}
 		}
 	}
 	
-	private String prepareDiagnoseSelectWithCodeAndClass(String code, String classname){
-		StringBuilder sql = new StringBuilder();
-		sql.append("SELECT ID FROM DIAGNOSEN WHERE DG_CODE=").append(JdbcLink.wrap(code))
-			.append(" AND ").append("KLASSE=").append(JdbcLink.wrap(classname));
-		return getDBConnection().queryString(sql.toString());
-	}
+	private final String STM_S_BDJ = "SELECT BDJ.DiagnoseId FROM BEHDL_DG_JOINT BDJ, DIAGNOSEN D"
+			+ " WHERE BDJ.BehandlungsID=? AND D.ID = BDJ.DiagnoseID AND D.DG_CODE=? AND D.KLASSE=?;";
+		
+		private String prepareDiagnoseSelectWithCodeAndClass(String code, String classname){
+			PreparedStatement pst = getDBConnection().getPreparedStatement(STM_S_BDJ);
+			try {
+				pst.setString(1, getId());
+				pst.setString(2, code);
+				pst.setString(3, classname);
+				ResultSet rs = pst.executeQuery();
+				if (rs.next()) {
+					return rs.getString(1);
+				}
+			} catch (SQLException e) {
+				MessageEvent.fireError("Fehler beim Löschen", e.getMessage(), e);
+				log.error("Error deleting diagnosis", e);
+			} finally {
+				getDBConnection().releasePreparedStatement(pst);
+			}
+			return null;
+		}
 	
 	/** Die zu dieser Konsultation gehörenden Leistungen holen */
 	@SuppressWarnings("unchecked")
@@ -943,8 +994,6 @@ public class Konsultation extends PersistentObject implements Comparable<Konsult
 		if (initialText != null) {
 			n.updateEintrag(initialText, false);
 		}
-		if (getDefaultDiagnose() != null)
-			n.addDiagnose(getDefaultDiagnose());
 			
 		ElexisEventDispatcher.fireSelectionEvent(actFall);
 		ElexisEventDispatcher.fireSelectionEvent(n);

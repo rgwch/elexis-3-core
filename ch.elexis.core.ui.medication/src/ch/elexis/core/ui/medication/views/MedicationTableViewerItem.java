@@ -28,7 +28,7 @@ import ch.rgw.tools.TimeTool;
  */
 public class MedicationTableViewerItem {
 	
-	private static ExecutorService executorService = Executors.newCachedThreadPool();
+	private static ExecutorService executorService = Executors.newFixedThreadPool(8);
 	
 	private StructuredViewer viewer;
 	
@@ -39,7 +39,8 @@ public class MedicationTableViewerItem {
 	private String dateFrom;
 	private String dateUntil;
 	private String dosis;
-	private String bemerkung;
+	private String remark;
+	private String disposalComment;
 	private String rezeptId;
 	private String sortOrder;
 	private String prescriptorId;
@@ -66,7 +67,7 @@ public class MedicationTableViewerItem {
 		artikelId = values[0];
 		artikelStoreToString = values[1];
 		dosis = values[2];
-		bemerkung = values[3];
+		remark = values[3];
 		rezeptId = values[4];
 		sortOrder = values[5];
 		prescriptorId = values[6];
@@ -87,14 +88,6 @@ public class MedicationTableViewerItem {
 	// loaded with first run
 	public String getId(){
 		return prescription.getId();
-	}
-	
-	public String getBemerkung(){
-		return bemerkung;
-	}
-	
-	public String getDisposalComment(){
-		return prescription.getDisposalComment();
 	}
 	
 	public String getBeginDate(){
@@ -131,10 +124,18 @@ public class MedicationTableViewerItem {
 		return stopReason != null ? stopReason : "...";
 	}
 	
-	public void setStopReason(String reason){
-		if (prescription != null) {
-			prescription.setStopReason(reason);
+	public String getRemark(){
+		return remark;
+	}
+	
+	public String getDisposalComment(){
+		if (disposalComment == null) {
+			if (!resolved && !resolving) {
+				resolving = true;
+				executorService.execute(new ResolveLazyFieldsRunnable(viewer, this));
+			}
 		}
+		return disposalComment != null ? disposalComment : "...";
 	}
 	
 	public boolean isFixedMediation(){
@@ -203,6 +204,13 @@ public class MedicationTableViewerItem {
 		return image != null ? image : Images.IMG_EMPTY_TRANSPARENT.getImage();
 	}
 	
+	/**
+	 * Resolve the properties, blocks until resolved.
+	 */
+	public void resolve(){
+		new ResolveLazyFieldsRunnable(null, this).run();
+	}
+	
 	private static class ResolveLazyFieldsRunnable implements Runnable {
 		private MedicationTableViewerItem item;
 		private StructuredViewer viewer;
@@ -219,22 +227,25 @@ public class MedicationTableViewerItem {
 			resolveLastDisposed();
 			resolveStopReason();
 			resolvePrescriptorLabel();
+			resolveDisposalComment();
 			item.resolved = true;
 			item.resolving = false;
 			updateViewer();
 		}
 		
 		private void updateViewer(){
-			Control control = viewer.getControl();
-			if (control != null && !control.isDisposed()) {
-				viewer.getControl().getDisplay().asyncExec(new Runnable() {
-					@Override
-					public void run(){
-						if (control.isVisible()) {
-							viewer.refresh(item, true);
+			if (viewer != null) {
+				Control control = viewer.getControl();
+				if (control != null && !control.isDisposed()) {
+					viewer.getControl().getDisplay().asyncExec(new Runnable() {
+						@Override
+						public void run(){
+							if (!control.isDisposed() && control.isVisible()) {
+								viewer.update(item, null);
+							}
 						}
-					}
-				});
+					});
+				}
 			}
 		}
 		
@@ -322,6 +333,15 @@ public class MedicationTableViewerItem {
 				}
 			}
 			item.prescriptorLabel = "";
+		}
+		
+		private void resolveDisposalComment(){
+			String comment = item.prescription.getDisposalComment();
+			if (comment != null) {
+				item.disposalComment = comment;
+			} else {
+				item.disposalComment = "";
+			}
 		}
 	}
 }

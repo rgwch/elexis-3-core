@@ -13,9 +13,12 @@ package ch.elexis.data;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.SortedMap;
 import java.util.TreeMap;
+
+import org.apache.commons.lang.StringUtils;
 
 import ch.elexis.admin.AccessControlDefaults;
 import ch.elexis.core.constants.StringConstants;
@@ -65,6 +68,7 @@ public class Prescription extends PersistentObject {
 	public static final String FLD_EXT_DATE_LAST_DISPOSAL = "lastDisposal";
 	public static final String FLD_EXT_DISPOSED_BY = "disposedBy";
 	public static final Object FLD_EXT_IS_APPLIED = "isApplied";
+	public static final String FLD_EXT_RECIPE_ORDER = "recipeOrder";
 	
 	/**
 	 * Prescription is a direct distribution within a consultation
@@ -222,12 +226,13 @@ public class Prescription extends PersistentObject {
 	 */
 	public static ArrayList<Float> getDoseAsFloats(String dosis){
 		ArrayList<Float> list = new ArrayList<Float>();
+		ArrayList<Float> sub_list = new ArrayList<Float>();
 		float num = 0;
 		if (dosis != null) {
-			// Match stuff like '1/2', '7/8'
-			if (dosis.matches("^[0-9]/[0-9]$")) {
-				list.add(getNum(dosis));
-				
+			// Match stuff like '1/2', '7/8', '~1,2'
+			// System.out.println(dosis.matches(special_num_at_start));
+			if (dosis.matches(special_num_at_start))  {
+				list.add(getNum(dosis.replace("~", "")));
 			} else if (dosis.matches("[0-9½¼]+([xX][0-9]+(/[0-9]+)?|)")) { //$NON-NLS-1$
 				String[] dose = dosis.split("[xX]"); //$NON-NLS-1$
 				float count = getNum(dose[0]);
@@ -236,8 +241,19 @@ public class Prescription extends PersistentObject {
 				else
 					num = getNum(dose[0]);
 				list.add(num);
-			} else if (dosis.indexOf('-') != -1) {
-				String[] dos = dosis.split("[- ]"); //$NON-NLS-1$
+			} else {
+				sub_list = getDoseAsFloats(dosis, "-");
+				if (StringUtils.countMatches(dosis, "-") > 1 && sub_list.size() > 0)
+			    {
+					return sub_list;
+			    }
+				sub_list = getDoseAsFloats(dosis, "/");
+			    if (StringUtils.countMatches(dosis, "/") > 1 && sub_list.size() > 0)
+			    {
+					return sub_list;
+			    }
+				if (dosis.indexOf('-') != -1 || dosis.indexOf('/') != -1) {
+				String[] dos = dosis.split("[- /]"); //$NON-NLS-1$
 				if (dos.length > 2) {
 					for (String d : dos) {
 						boolean hasDigit = d.matches("^[~/.]*[½¼0-9].*");
@@ -253,6 +269,31 @@ public class Prescription extends PersistentObject {
 				} else {
 					// nothing to add
 				}
+				}
+			}
+		}
+		return list;
+	}
+	private static ArrayList<Float> getDoseAsFloats(String dosis, String trennzeichen){
+		ArrayList<Float> list = new ArrayList<Float>();
+		if (dosis.indexOf('-') != -1 || dosis.indexOf('/') != -1) {
+			String[] dos = dosis.split(trennzeichen);
+			if (dos.length > 2) {
+				for (String d : dos) {
+					boolean hasDigit = d.matches("^[~/.]*[½¼0-9].*");
+					if (d.indexOf(' ') != -1)
+						list.add(getNum(d.substring(0, d.indexOf(' '))));
+					else if (d.length() > 0 && hasDigit)
+						list.add(getNum(d));
+					else if (d.length() == 0)
+						list.add(0.0f);
+					if (list.size() >= 4)
+						return list;
+				}
+			} else if (dos.length > 1) {
+				list.add(getNum(dos[1]));
+			} else {
+				// nothing to add
 			}
 		}
 		return list;
@@ -272,16 +313,24 @@ public class Prescription extends PersistentObject {
 			//			if (signature.matches("^[0-9]/[0-9]$")) {
 			if (signature.matches("[0-9½¼]+([xX][0-9]+(/[0-9]+)?|)")) { //$NON-NLS-1$
 				String[] split = signature.split("[xX]");//$NON-NLS-1$
-				System.arraycopy(split, 0, daytimeSignature, 0, split.length);
+				if (split.length > 0 && split.length < 5) {
+					System.arraycopy(split, 0, daytimeSignature, 0, split.length);
+					return getDayTimeOrFreetextSignatureArray(daytimeSignature);
+				}
 			} else if (signature.indexOf('-') != -1) {
 				String[] split = signature.split("[-]"); //$NON-NLS-1$
-				System.arraycopy(split, 0, daytimeSignature, 0, split.length);
+				if (split.length > 0 && split.length < 5) {
+					System.arraycopy(split, 0, daytimeSignature, 0, split.length);
+					return getDayTimeOrFreetextSignatureArray(daytimeSignature);
+				}
 			} else if (signature.indexOf("/") != -1) {
 				String[] split = signature.split("[/]"); //$NON-NLS-1$
-				System.arraycopy(split, 0, daytimeSignature, 0, split.length);
-			} else {
-				daytimeSignature[0] = signature;
+				if (split.length > 0 && split.length < 5) {
+					System.arraycopy(split, 0, daytimeSignature, 0, split.length);
+					return getDayTimeOrFreetextSignatureArray(daytimeSignature);
+				}
 			}
+			daytimeSignature[0] = signature;
 		}
 		return getDayTimeOrFreetextSignatureArray(daytimeSignature);
 	}
@@ -350,7 +399,7 @@ public class Prescription extends PersistentObject {
 	}
 	
 	/**
-	 * the prescription order for the intake (Einnahmevorschrift)
+	 * Get the prescription order for the intake (Anwendungsinstruktion)
 	 * 
 	 * @return
 	 */
@@ -359,12 +408,17 @@ public class Prescription extends PersistentObject {
 		
 	}
 	
+	/**
+	 * Set the prescription order for the intake (Anwendungsinstruktion)
+	 * 
+	 * @param value
+	 */
 	public void setBemerkung(String value){
 		set(FLD_REMARK, checkNull(value));
 	}
 	
 	/**
-	 * @return a disposal comment (Abgabekommentar)
+	 * @return a disposal comment (Anwendungsgrund)
 	 * @since 3.1.0
 	 */
 	public String getDisposalComment(){
@@ -372,7 +426,7 @@ public class Prescription extends PersistentObject {
 	}
 	
 	/**
-	 * set a disposal comment (Abgabekommentar)
+	 * set a disposal comment (Anwendungsgrund)
 	 * 
 	 * @param disposalComment
 	 * @since 3.1.0
@@ -394,11 +448,39 @@ public class Prescription extends PersistentObject {
 	 * Mark this prescription as an applied article. Typically only prescriptions with
 	 * {@link EntryType.SELF_DISPENSED} are marked as applied.
 	 * 
-	 * @param disposalComment
+	 * @param value
 	 * @since 3.1.0
 	 */
 	public void setApplied(Boolean value){
 		setExtInfoStoredObjectByKey(FLD_EXT_IS_APPLIED, Boolean.toString(value));
+	}
+	
+	/**
+	 * @return Index of the prescription on the recipe. Should only be used for {@link Prescription}
+	 *         with type {@link EntryType#RECIPE}.
+	 * @since 3.1.0
+	 */
+	public int getRecipeOrder(){
+		String value = checkNull((String) getExtInfoStoredObjectByKey(FLD_EXT_RECIPE_ORDER));
+		if (value != null && !value.isEmpty()) {
+			try {
+				return Integer.valueOf(value);
+			} catch (NumberFormatException e) {
+				// ignore and return 0
+			}
+		}
+		return 0;
+	}
+	
+	/**
+	 * Set the index of the prescription on the recipe. Should only be used for {@link Prescription}
+	 * with type {@link EntryType#RECIPE}.
+	 * 
+	 * @param value
+	 * @since 3.1.0
+	 */
+	public void setRecipeOrder(int value){
+		setExtInfoStoredObjectByKey(FLD_EXT_RECIPE_ORDER, Integer.toString(value));
 	}
 	
 	/**
@@ -529,10 +611,11 @@ public class Prescription extends PersistentObject {
 		return total;
 	}
 	
+	private static final String special_num_at_start = "^(~|)[0-9]/[0-9][ a-zA-Z]*$";
 	private static float getNum(String num){
 		try {
 			String n = num.trim();
-			if (n.matches("^[0-9]/[0-9]$")) {
+			if (n.matches(special_num_at_start)) {
 				float value = getNum(n.substring(0, 1)) / getNum(n.substring(2));
 				return value;
 			} else if (n.equalsIgnoreCase("½"))
@@ -585,6 +668,21 @@ public class Prescription extends PersistentObject {
 			ElexisEventDispatcher.fireElexisStatusEvent(status);
 			return 0.0F;
 		}
+	}
+	
+	/**
+	 * Check if the prescription is stopped at the time provided.
+	 * 
+	 * @param time
+	 * @return
+	 */
+	public boolean isStopped(TimeTool time){
+		String timestamp = checkNull(get(FLD_DATE_UNTIL));
+		if (!timestamp.isEmpty()) {
+			TimeTool timetool = new TimeTool(timestamp);
+			return timetool.isBefore(time);
+		}
+		return false;
 	}
 	
 	/**
@@ -676,6 +774,7 @@ public class Prescription extends PersistentObject {
 				set(FLD_REZEPT_ID, "");
 				return EntryType.SELF_DISPENSED;
 			}
+			setEntryType(EntryType.RECIPE);
 			return EntryType.RECIPE;
 		}
 		
@@ -686,7 +785,7 @@ public class Prescription extends PersistentObject {
 		String prescTypeString = get(FLD_PRESC_TYPE);
 		if (prescTypeString != null && !prescTypeString.isEmpty()) {
 			try {
-				return Integer.parseInt(prescTypeString);
+				return Integer.parseInt(prescTypeString.trim());
 			} catch (NumberFormatException e) {
 				// ignore and return -1
 			}
@@ -698,7 +797,7 @@ public class Prescription extends PersistentObject {
 		if (type == null) {
 			type = EntryType.FIXED_MEDICATION;
 		}
-		setInt(FLD_PRESC_TYPE, type.numericValue());
+		set(FLD_PRESC_TYPE, Integer.toString(type.numericValue()));
 	}
 	
 	/**
@@ -721,6 +820,8 @@ public class Prescription extends PersistentObject {
 		
 		private int numeric;
 		
+		private static HashMap<Integer, EntryType> numericMap = new HashMap<>();
+		
 		private EntryType(int numeric){
 			this.numeric = numeric;
 		}
@@ -730,13 +831,13 @@ public class Prescription extends PersistentObject {
 		}
 		
 		public static EntryType byNumeric(int numeric){
-			EntryType[] entries = values();
-			for (EntryType entryType : entries) {
-				if (entryType.numericValue() == numeric) {
-					return entryType;
+			if (numericMap.isEmpty()) {
+				EntryType[] entries = values();
+				for (int i = 0; i < entries.length; i++) {
+					numericMap.put(entries[i].numericValue(), entries[i]);
 				}
 			}
-			return UNKNOWN;
+			return numericMap.getOrDefault(numeric, UNKNOWN);
 		}
 	}
 	

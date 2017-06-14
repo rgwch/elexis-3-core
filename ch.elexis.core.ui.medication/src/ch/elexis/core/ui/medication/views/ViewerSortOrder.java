@@ -5,6 +5,7 @@ import org.eclipse.jface.viewers.ViewerComparator;
 import org.eclipse.swt.SWT;
 
 import ch.elexis.data.Prescription;
+import ch.elexis.data.Prescription.EntryType;
 import ch.rgw.tools.TimeTool;
 
 public enum ViewerSortOrder {
@@ -88,7 +89,9 @@ public enum ViewerSortOrder {
 			int rc = 0;
 			switch (propertyIdx) {
 			case 0:
-				rc = 0;
+				EntryType et1 = p1.getEntryType();
+				EntryType et2 = p2.getEntryType();
+				rc = Integer.compare(et1.numericValue(), et2.numericValue());
 				break;
 			case 1:
 				String l1 = p1.getArtikelLabel();
@@ -112,8 +115,8 @@ public enum ViewerSortOrder {
 				rc = time1.compareTo(time2);
 				break;
 			case 4:
-				String com1 = p1.getBemerkung();
-				String com2 = p2.getBemerkung();
+				String com1 = p1.getRemark();
+				String com2 = p2.getRemark();
 				rc = com1.compareTo(com2);
 				break;
 			case 5:
@@ -137,11 +140,11 @@ public enum ViewerSortOrder {
 				String stopReason1 = p1.getStopReason();
 				if (stopReason1 == null)
 					stopReason1 = "";
-					
+				
 				String stopReason2 = p2.getStopReason();
 				if (stopReason2 == null)
 					stopReason2 = "";
-					
+				
 				rc = stopReason1.compareTo(stopReason2);
 				break;
 			default:

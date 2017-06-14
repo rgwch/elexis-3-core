@@ -179,22 +179,24 @@ public class Patient extends Person {
 	 * @return
 	 */
 	public List<Prescription> getMedication(@Nullable EntryType filterType){
-		Query<Prescription> qbe = new Query<Prescription>(Prescription.class);
+		// prefetch the values needed for filter operations
+		Query<Prescription> qbe = new Query<Prescription>(Prescription.class, null, null,
+			Prescription.TABLENAME, new String[] {
+				Prescription.FLD_DATE_UNTIL, Prescription.FLD_REZEPT_ID,
+				Prescription.FLD_PRESC_TYPE, Prescription.FLD_ARTICLE
+			});
 		qbe.add(Prescription.FLD_PATIENT_ID, Query.EQUALS, getId());
-		qbe.add(Prescription.FLD_REZEPT_ID, StringTool.leer, null);
-		String today = new TimeTool().toString(TimeTool.DATE_COMPACT);
-		qbe.startGroup();
-		qbe.add(Prescription.FLD_DATE_UNTIL, Query.GREATER, today);
-		qbe.or();
-		qbe.add(Prescription.FLD_DATE_UNTIL, StringTool.leer, null);
-		qbe.endGroup();
 		List<Prescription> prescriptions = qbe.execute();
+		// make sure just now closed are not included
+		TimeTool now = new TimeTool();
+		now.add(TimeTool.SECOND, 5);
 		
 		if (filterType != null) {
-			return prescriptions.parallelStream().filter(p -> p.getEntryType() == filterType)
+			return prescriptions.parallelStream().filter(p -> !p.isStopped(now) && p.getEntryType() == filterType)
 				.collect(Collectors.toList());
 		} else {
-			return prescriptions;
+			return prescriptions.parallelStream().filter(p -> !p.isStopped(now))
+					.collect(Collectors.toList());
 		}
 	}
 	
@@ -208,7 +210,12 @@ public class Patient extends Person {
 		List<Prescription> prescriptions = getMedication(filterType);
 		StringBuilder sb = new StringBuilder();
 		
-		prescriptions.stream().forEach(p -> sb.append(p.getLabel()).append(StringTool.lf));
+		prescriptions.stream().forEach(p -> {
+			if (sb.length() > 0) {
+				sb.append(StringTool.lf);
+			}
+			sb.append(p.getLabel());
+		});
 		return sb.toString();
 	}
 	
@@ -237,16 +244,9 @@ public class Patient extends Person {
 	 * Fixmedikation als Text
 	 * 
 	 * @return
-	 * @deprecated does not filter by EntryType, use {@link Patient#getMedication(EntryType)}
-	 *             instead.
 	 */
 	public String getMedikation(){
-		Prescription[] pre = getFixmedikation();
-		StringBuilder sb = new StringBuilder();
-		for (Prescription p : pre) {
-			sb.append(p.getLabel()).append(StringTool.lf);
-		}
-		return sb.toString();
+		return getMedicationText(EntryType.FIXED_MEDICATION);
 	}
 	
 	/**

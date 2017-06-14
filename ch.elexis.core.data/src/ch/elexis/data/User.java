@@ -42,6 +42,10 @@ public class User extends PersistentObject {
 			FLD_HASHED_PASSWORD, FLD_SALT, FLD_KEYSTORE,
 			FLD_JOINT_ROLES + "=LIST:USER_ID:USER_ROLE_JOINT");
 			
+		initTables();
+	}
+	
+	protected static void initTables() {
 		if (!tableExists(TABLENAME)) {
 			executeDBInitScriptForClass(User.class, null);
 			User.migrateToNewStructure();
@@ -82,7 +86,9 @@ public class User extends PersistentObject {
 	 * @see https://redmine.medelexis.ch/issues/771
 	 */
 	private static void migrateToNewStructure(){
-		new Role(); // to call the static init header and init the roles
+		Role.initTables();
+		
+		log.info("Starting migration to new user structure");
 		
 		Query<Anwender> qbe = new Query<Anwender>(Anwender.class);
 		List<Anwender> users = qbe.execute();
@@ -106,6 +112,8 @@ public class User extends PersistentObject {
 				u = User.load(USERNAME_ADMINISTRATOR);
 				u.setAssignedContact(anwender);
 				u.setPassword(password);
+				log.info("Overriding Administrator password with password from anwender [{}]",
+					anwender.getLabel());
 			} else {
 				u = new User(anwender, username, password);
 			}
@@ -116,6 +124,9 @@ public class User extends PersistentObject {
 				u.setAssignedRole(Role.load(Role.SYSTEMROLE_LITERAL_EXECUTIVE_DOCTOR), true);
 				u.setAssignedRole(Role.load(Role.SYSTEMROLE_LITERAL_DOCTOR), true);
 			}
+			
+			log.info("Migrated anwender [{}] to new user structure with id [{}]",
+				anwender.getLabel(), u.getId());
 			
 			// TODO delete the information from contact table?
 		}

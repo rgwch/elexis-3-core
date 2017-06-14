@@ -6,7 +6,10 @@ import java.util.List;
 
 import org.eclipse.core.commands.Command;
 import org.eclipse.core.databinding.DataBindingContext;
+import org.eclipse.core.databinding.UpdateValueStrategy;
 import org.eclipse.core.databinding.beans.PojoProperties;
+import org.eclipse.core.databinding.observable.ChangeEvent;
+import org.eclipse.core.databinding.observable.IChangeListener;
 import org.eclipse.core.databinding.observable.value.DateAndTimeObservableValue;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.core.databinding.observable.value.WritableValue;
@@ -19,7 +22,7 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.ISelectionProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
-import org.eclipse.jface.viewers.ViewerComparator;
+import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StackLayout;
 import org.eclipse.swt.dnd.DropTargetEvent;
@@ -37,6 +40,7 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.DateTime;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
@@ -48,11 +52,14 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.commands.ICommandService;
 
 import ch.elexis.core.data.activator.CoreHub;
+import ch.elexis.core.data.events.ElexisEvent;
+import ch.elexis.core.data.events.ElexisEventDispatcher;
 import ch.elexis.core.model.IPersistentObject;
 import ch.elexis.core.ui.UiDesk;
 import ch.elexis.core.ui.actions.ICodeSelectorTarget;
 import ch.elexis.core.ui.icons.Images;
 import ch.elexis.core.ui.medication.handlers.ApplyCustomSortingHandler;
+import ch.elexis.core.ui.medication.views.MedicationTableViewerContentProvider.MedicationContentProviderComposite;
 import ch.elexis.core.ui.medication.views.provider.MedicationFilter;
 import ch.elexis.core.ui.util.CreatePrescriptionHelper;
 import ch.elexis.core.ui.util.PersistentObjectDropTarget;
@@ -110,6 +117,10 @@ public class MedicationComposite extends Composite
 	private ControlDecoration ctrlDecor;
 	private Patient pat;
 	private PersistentObjectDropTarget dropTarget;
+	private Text txtIntakeOrder;
+	private Text txtDisposalComment;
+	private Text txtStopComment;
+	private MedicationContentProviderComposite contentProviderComp;
 	
 	/**
 	 * Create the composite.
@@ -171,19 +182,17 @@ public class MedicationComposite extends Composite
 		tablesLayout = new StackLayout();
 		tablesComposite.setLayout(tablesLayout);
 		
-		medicationTableComposite = new MedicationTableComposite(tablesComposite, SWT.NONE);
+		medicationTableComposite =
+			new MedicationTableComposite(tablesComposite, SWT.NONE | SWT.VIRTUAL);
 		medicationTableComposite.setMedicationComposite(this);
-		MedicationViewerHelper.addKeyMoveUpDown(medicationTableComposite.getTableViewer(), this);
 		MedicationViewerHelper.addContextMenu(medicationTableComposite.getTableViewer(), this,
 			partSite);
 		// this composite manages selection of both tables
 		medicationTableComposite.getTableViewer().addSelectionChangedListener(this);
 		
 		medicationHistoryTableComposite =
-			new MedicationHistoryTableComposite(tablesComposite, SWT.NONE);
+			new MedicationHistoryTableComposite(tablesComposite, SWT.NONE | SWT.VIRTUAL);
 		medicationHistoryTableComposite.setMedicationComposite(this);
-		MedicationViewerHelper.addKeyMoveUpDown(medicationHistoryTableComposite.getTableViewer(),
-			this);
 		MedicationViewerHelper.addContextMenu(medicationHistoryTableComposite.getTableViewer(),
 			this, partSite);
 		// this composite manages selection of both tables
@@ -195,13 +204,7 @@ public class MedicationComposite extends Composite
 		tablesLayout.topControl = medicationTableComposite;
 	}
 	
-	public void switchToViewerSoftOrderIfNotActive(ViewerSortOrder vso){
-		ViewerSortOrder order = MedicationViewHelper.getSelectedComparator();
-		
-		if (order.equals(vso)) {
-			return;
-		}
-		
+	public void setViewerSortOrder(ViewerSortOrder vso){
 		medicationTableComposite.getTableViewer().setComparator(vso.vc);
 		medicationHistoryTableComposite.getTableViewer().setComparator(vso.vc);
 		
@@ -220,6 +223,12 @@ public class MedicationComposite extends Composite
 		gl_compositeState.horizontalSpacing = 0;
 		compositeState.setLayout(gl_compositeState);
 		compositeState.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false, 1, 1));
+		
+		contentProviderComp = new MedicationContentProviderComposite(compositeState, SWT.NONE);
+		contentProviderComp
+			.setContentProvider((MedicationTableViewerContentProvider) medicationTableComposite
+				.getTableViewer().getContentProvider());
+		contentProviderComp.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
 		Label lblLastDisposal = new Label(compositeState, SWT.NONE);
 		lblLastDisposal.setText(Messages.MedicationComposite_lastReceived);
@@ -249,22 +258,33 @@ public class MedicationComposite extends Composite
 				if (btnShowHistory.getSelection()) {
 					showSearchFilterComposite(true);
 					tablesLayout.topControl = medicationHistoryTableComposite;
-					tablesLayout.topControl = medicationHistoryTableComposite;
 					medicationHistoryTableComposite.setPendingInput();
 					medicationHistoryTableComposite.getTableViewer().refresh();
-					switchToViewerSoftOrderIfNotActive(ViewerSortOrder.DEFAULT);
+					setViewerSortOrder(ViewerSortOrder.DEFAULT);
+					contentProviderComp.setContentProvider(
+						(MedicationTableViewerContentProvider) medicationHistoryTableComposite
+							.getTableViewer().getContentProvider());
 				} else {
 					showSearchFilterComposite(false);
 					tablesLayout.topControl = medicationTableComposite;
-					tablesLayout.topControl = medicationTableComposite;
 					medicationTableComposite.setPendingInput();
 					medicationTableComposite.getTableViewer().refresh();
+					contentProviderComp.setContentProvider(
+						(MedicationTableViewerContentProvider) medicationTableComposite
+							.getTableViewer().getContentProvider());
 				}
 				tablesComposite.layout();
 				
 				updateUi(pat, false);
 			}
 		});
+	}
+	
+	public boolean isShowingHistory(){
+		if (btnShowHistory != null && !btnShowHistory.isDisposed()) {
+			return btnShowHistory.getSelection();
+		}
+		return false;
 	}
 	
 	private void medicationDetailComposite(){
@@ -500,23 +520,39 @@ public class MedicationComposite extends Composite
 		compositeMedicationTextDetails
 			.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 5, 1));
 		
-		Text txtIntakeOrder = new Text(compositeMedicationTextDetails, SWT.BORDER);
+		txtIntakeOrder = new Text(compositeMedicationTextDetails, SWT.BORDER);
 		txtIntakeOrder.setMessage(Messages.MedicationComposite_txtIntakeOrder_message);
 		txtIntakeOrder.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		IObservableValue txtIntakeOrderObservable =
 			WidgetProperties.text(SWT.Modify).observeDelayed(100, txtIntakeOrder);
 		IObservableValue intakeOrderObservable =
-			PojoProperties.value("bemerkung", String.class).observeDetail(selectedMedication);
-		dbc.bindValue(txtIntakeOrderObservable, intakeOrderObservable);
+			PojoProperties.value("remark", String.class).observeDetail(selectedMedication);
+		dbc.bindValue(txtIntakeOrderObservable, intakeOrderObservable,
+			new UpdateValueStrategy(UpdateValueStrategy.POLICY_NEVER),
+			new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE));
+		txtIntakeOrderObservable.addChangeListener(new IChangeListener() {
+			@Override
+			public void handleChange(ChangeEvent event){
+				activateConfirmButton(true);
+			}
+		});
 		
-		Text txtDisposalComment = new Text(compositeMedicationTextDetails, SWT.BORDER);
+		txtDisposalComment = new Text(compositeMedicationTextDetails, SWT.BORDER);
 		txtDisposalComment.setMessage(Messages.MedicationComposite_txtComment_message);
 		txtDisposalComment.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		IObservableValue txtCommentObservable =
 			WidgetProperties.text(SWT.Modify).observeDelayed(100, txtDisposalComment);
 		IObservableValue commentObservable =
 			PojoProperties.value("disposalComment", String.class).observeDetail(selectedMedication);
-		dbc.bindValue(txtCommentObservable, commentObservable);
+		dbc.bindValue(txtCommentObservable, commentObservable,
+			new UpdateValueStrategy(UpdateValueStrategy.POLICY_NEVER),
+			new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE));
+		txtCommentObservable.addChangeListener(new IChangeListener() {
+			@Override
+			public void handleChange(ChangeEvent event){
+				activateConfirmButton(true);
+			}
+		});
 		
 		stackLayout.topControl = compositeMedicationTextDetails;
 		
@@ -531,23 +567,24 @@ public class MedicationComposite extends Composite
 		compositeStopMedicationTextDetails
 			.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 5, 1));
 		
-		Text txtStopComment = new Text(compositeStopMedicationTextDetails, SWT.BORDER);
+		txtStopComment = new Text(compositeStopMedicationTextDetails, SWT.BORDER);
 		txtStopComment.setMessage(Messages.MedicationComposite_stopReason);
 		txtStopComment.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		IObservableValue txtStopCommentObservableUi =
 			WidgetProperties.text(SWT.Modify).observeDelayed(100, txtStopComment);
 		IObservableValue txtStopCommentObservable =
 			PojoProperties.value("stopReason", String.class).observeDetail(selectedMedication);
-		dbc.bindValue(txtStopCommentObservableUi, txtStopCommentObservable);
+		dbc.bindValue(txtStopCommentObservableUi, txtStopCommentObservable,
+			new UpdateValueStrategy(UpdateValueStrategy.POLICY_NEVER),
+			new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE));
 		
-		//		Text txtIntolerance = new Text(compositeStopMedicationTextDetails, SWT.BORDER);
-		//		txtIntolerance.setMessage(Messages.MedicationComposite_intolerance);
-		//		txtIntolerance.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-		//		IObservableValue txtCommentObservable =
-		//			WidgetProperties.text(SWT.Modify).observeDelayed(100, txtDisposalComment);
-		//		IObservableValue commentObservable =
-		//			PojoProperties.value("disposalComment", String.class).observeDetail(selectedMedication);
-		//		dbc.bindValue(txtCommentObservable, commentObservable);
+		txtStopCommentObservableUi.addChangeListener(new IChangeListener() {
+			@Override
+			public void handleChange(ChangeEvent event){
+				activateConfirmButton(true);
+			}
+		});
+		
 	}
 	
 	private void applyDetailChanges(){
@@ -555,28 +592,33 @@ public class MedicationComposite extends Composite
 		if (pres == null)
 			return; // prevent npe
 			
-		Prescription oldPrescription = pres.getPrescription();
-		
-		if (!btnStopMedication.getSelection()) {
-			Prescription newPrescription = new Prescription(oldPrescription);
-			newPrescription.setDosis(getDosisStringFromSignatureTextArray());
-		}
-		// change always stops
-		if (btnStopMedication.getSelection()) {
-			TimeTool endTime = new TimeTool(pres.getEndTime());
-			oldPrescription.stop(endTime);
-		} else {
-			oldPrescription.stop(null);
-		}
-		if (oldPrescription.getStopReason() == null
-				|| oldPrescription.getStopReason().isEmpty()) {
-				oldPrescription.setStopReason("Geändert durch " + CoreHub.actUser.getLabel());
-			}
+				Prescription oldPrescription = pres.getPrescription();
+				
+				if (!btnStopMedication.getSelection()) {
+					Prescription newPrescription = new Prescription(oldPrescription);
+					newPrescription.setDosis(getDosisStringFromSignatureTextArray());
+					newPrescription.setBemerkung(txtIntakeOrder.getText());
+					newPrescription.setDisposalComment(txtDisposalComment.getText());
+				}
+				// change always stops
+				if (btnStopMedication.getSelection()) {
+					TimeTool endTime = new TimeTool(pres.getEndTime());
+					oldPrescription.stop(endTime);
+				} else {
+					oldPrescription.stop(null);
+				}
+				// apply stop reason if set
+				if (txtStopComment.getText() == null || txtStopComment.getText().isEmpty()) {
+					oldPrescription.setStopReason("Geändert durch " + CoreHub.actUser.getLabel());
+				} else {
+					oldPrescription.setStopReason(txtStopComment.getText());
+				}
 		activateConfirmButton(false);
 		if (btnStopMedication.isEnabled())
 			showMedicationDetailComposite(null);
-		
-		updateUi(pat, true);
+
+		ElexisEventDispatcher.getInstance()
+			.fire(new ElexisEvent(null, Prescription.class, ElexisEvent.EVENT_UPDATE));
 	}
 	
 	/**
@@ -641,18 +683,13 @@ public class MedicationComposite extends Composite
 		}
 		
 		List<Prescription> medicationInput = MedicationViewHelper.loadInputData(false, pat.getId());
-		List<MedicationTableViewerItem> tvMedicationInput =
-			MedicationTableViewerItem.createFromPrescriptionList(medicationInput,
-				medicationTableComposite.getTableViewer());
-		medicationTableComposite.setInput(tvMedicationInput);
+		medicationTableComposite.setInput(medicationInput);
 		
 		List<Prescription> medicationHistoryInput =
 			MedicationViewHelper.loadInputData(true, pat.getId());
-		List<MedicationTableViewerItem> tvMedicationHistoryInput =
-			MedicationTableViewerItem.createFromPrescriptionList(medicationHistoryInput,
-				medicationHistoryTableComposite.getTableViewer());
-		medicationHistoryTableComposite.setInput(tvMedicationHistoryInput);
+		medicationHistoryTableComposite.setInput(medicationHistoryInput);
 		
+		contentProviderComp.refresh();
 		selectedMedication.setValue(null);
 		lblLastDisposalLink.setText("");
 		showMedicationDetailComposite(null);
@@ -807,9 +844,14 @@ public class MedicationComposite extends Composite
 		medicationHistoryTableComposite.getTableViewer().refresh();
 	}
 	
-	public void setComparator(ViewerComparator vc){
-		medicationTableComposite.getTableViewer().setComparator(vc);
-		medicationHistoryTableComposite.getTableViewer().setComparator(vc);
+	public TableViewer getActiveTableViewer(){
+		Control topControl = tablesLayout.topControl;
+		if (topControl instanceof MedicationTableComposite) {
+			return ((MedicationTableComposite) topControl).getTableViewer();
+		} else if (topControl instanceof MedicationHistoryTableComposite) {
+			return ((MedicationHistoryTableComposite) topControl).getTableViewer();
+		}
+		return null;
 	}
 	
 	/**

@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Elexis Core Data
 Bundle-SymbolicName: ch.elexis.core.data;singleton:=true
-Bundle-Version: 3.1.0.qualifier
+Bundle-Version: 3.1.2.qualifier
 Bundle-Vendor: elexis.info
 Require-Bundle: org.slf4j.api;bundle-version="1.7.2";visibility:=reexport,
  org.eclipse.core.runtime;bundle-version="3.8.0",
@@ -36,4 +36,6 @@ Export-Package: .,
  ch.elexis.data,
  ch.elexis.util
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Service-Component: OSGI-INF/*.xml
 Bundle-Activator: ch.elexis.core.data.activator.CoreHub
+Import-Package: org.osgi.service.component.annotations
