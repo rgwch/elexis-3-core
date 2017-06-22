@@ -1515,16 +1515,7 @@ public abstract class PersistentObject implements IPersistentObject {
 		sql.append("=?, " + FLD_LASTUPDATE + "=? WHERE ID=").append(getWrappedId());
 		String cmd = sql.toString();
 		DBConnection dbConnection = getDBConnection();
-		PreparedStatement pst = dbConnection.getPreparedStatement(cmd);
 
-		encode(1, pst, field, value);
-		if (dbConnection.isTrace()) {
-			StringBuffer params = new StringBuffer();
-			params.append("[");
-			params.append(value);
-			params.append("]");
-			dbConnection.doTrace(cmd + " " + params);
-		}
 		PreparedStatement pst = null;
 		try {
 			pst = dbConnection.getPreparedStatement(cmd);
@@ -2421,23 +2412,6 @@ public abstract class PersistentObject implements IPersistentObject {
 				.fire(new ElexisEvent(this, getClass(), ElexisEvent.EVENT_UPDATE, updatedAttribute));
 	}
 
-	/**
-	 * Determine the highest last update value over all database entries of the
-	 * given table
-	 * 
-	 * @return the retrieved value or 0 in any error case
-	 * @param tableName
-	 *            the database table name
-	 * @since 3.1
-	 */
-	public long getLastUpdate() {
-		try {
-			return Long.parseLong(get("lastupdate"));
-		} catch (Exception ex) {
-			// ExHandler.handle(ex);
-			return 0L;
-		}
-	}
 
 	@Override
 	public int hashCode() {
