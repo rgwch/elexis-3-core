@@ -58,6 +58,7 @@ public class PersistentObjectImpl extends PersistentObject {
 	 * @see PersistentObject#getHighestLastUpdate(String)
 	 */
 	public static long getHighestLastUpdate(){
+		
 		return PersistentObject.getHighestLastUpdate(TABLENAME);
 	}
 }

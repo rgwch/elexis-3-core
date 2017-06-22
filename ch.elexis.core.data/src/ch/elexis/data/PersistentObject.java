@@ -2397,6 +2397,36 @@ public abstract class PersistentObject implements IPersistentObject {
 	}
 
 	/**
+	 * Determine the highest last update value over all database entries of the given table
+	 * 
+	 * @return the retrieved value or 0 in any error case
+	 * @param tableName
+	 *            the database table name
+	 * @since 3.1
+	 */
+	public static long getHighestLastUpdate(String tableName){
+		DBConnection dbConnection = getDefaultConnection();
+		PreparedStatement ps =
+			dbConnection.getPreparedStatement("SELECT MAX(LASTUPDATE) FROM " + tableName);
+		try {
+			ResultSet res = ps.executeQuery();
+			while (res.next()) {
+				return res.getLong(1);
+			}
+			return 0l;
+		} catch (Exception ex) {
+			ExHandler.handle(ex);
+			return 0l;
+		} finally {
+			try {
+				ps.close();
+			} catch (SQLException e) {
+				// ignore
+			}
+			dbConnection.releasePreparedStatement(ps);
+		}
+	}
+	/**
 	 * Notify the system about a change in this object and refresh the
 	 * {@link #FLD_LASTUPDATE} value of this entry to
 	 * {@link System#currentTimeMillis()}

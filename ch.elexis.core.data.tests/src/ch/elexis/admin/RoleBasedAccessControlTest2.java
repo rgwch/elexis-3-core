@@ -12,17 +12,17 @@ import ch.elexis.data.Anwender;
 import ch.elexis.data.Person;
 import ch.elexis.data.Role;
 import ch.elexis.data.User;
+import ch.rgw.tools.JdbcLink;
 
 public class RoleBasedAccessControlTest2 extends AbstractPersistentObjectTest {
 	
 	private static final String USERNAME = "user";
 	private static final String PASSWORD = "password";
 
-	@BeforeClass
-	public static void setUp() throws Exception {
-		RoleBasedAccessControlTest2.initDB();
-		new Anwender(USERNAME, PASSWORD);
+	public RoleBasedAccessControlTest2(JdbcLink link){
+		super(link);
 	}
+
 	
 	private User setContext(){
 		boolean succ = Anwender.login(USERNAME, PASSWORD);
