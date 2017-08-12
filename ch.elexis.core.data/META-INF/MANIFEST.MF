@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Elexis Core Data
 Bundle-SymbolicName: ch.elexis.core.data;singleton:=true
-Bundle-Version: 3.1.2.qualifier
+Bundle-Version: 3.1.5.qualifier
 Bundle-Vendor: elexis.info
 Require-Bundle: org.slf4j.api;bundle-version="1.7.2";visibility:=reexport,
  org.eclipse.core.runtime;bundle-version="3.8.0",
@@ -13,10 +13,8 @@ Require-Bundle: org.slf4j.api;bundle-version="1.7.2";visibility:=reexport,
  com.google.guava;bundle-version="15.0.0",
  ch.rgw.utility;bundle-version="3.0.0",
  ch.elexis.core;bundle-version="3.1.0",
- io.vertx.core;bundle-version="3.3.0",
- com.fasterxml.jackson.core.jackson-core;bundle-version="2.7.4",
- com.fasterxml.jackson.core.jackson-databind;bundle-version="2.7.4",
- com.fasterxml.jackson.core.jackson-annotations;bundle-version="2.7.0"
+ org.apache.commons.io;bundle-version="2.4.0",
+ io.vertx.core;bundle-version="3.3.0"
 Bundle-ActivationPolicy: lazy
 Export-Package: .,
  ch.elexis.admin,
