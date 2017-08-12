@@ -33,4 +33,5 @@ Export-Package: ch.elexis.core.constants;uses:="org.eclipse.osgi.util",
    org.eclipse.emf.common.notify,
    org.eclipse.emf.common.notify.impl,
    org.eclipse.emf.ecore.util,
-   ch.elexis.core.types"
+   ch.elexis.core.types",
+ ch.elexis.core.utils

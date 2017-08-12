@@ -201,6 +201,7 @@ public class Messages extends NLS {
 	public static String Leistungscodes_necessaryData;
 	public static String Leistungscodes_new;
 	public static String Leistungscodes_notUndoable;
+	public static String Leistungscodes_optifyXrayPositions;
 	public static String Leistungscodes_optionalData;
 	public static String Leistungscodes_pleaseEnterDataForBillingSystem;
 	public static String Leistungscodes_pleaseEnterName;
@@ -283,7 +284,7 @@ public class Messages extends NLS {
 	public static String Texterstellung_TextProcessor;
 	public static String Texterstellung_Support_Legacy;
 	public static String Texterstellung_Rename_with_F2;
-
+	public static String Texterstellung_backupdir;
 	public static String Texterstellung_texteditlocaldesc;
 	public static String UserCasePreferences_Cases;
 	public static String UserCasePreferences_DefaultBillingSystem;
