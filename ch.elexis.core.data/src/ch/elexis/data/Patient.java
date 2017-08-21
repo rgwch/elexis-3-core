@@ -186,11 +186,26 @@ public class Patient extends Person {
 				Prescription.FLD_PRESC_TYPE, Prescription.FLD_ARTICLE
 			});
 		qbe.add(Prescription.FLD_PATIENT_ID, Query.EQUALS, getId());
-		List<Prescription> prescriptions = qbe.execute();
-		// make sure just now closed are not included
 		TimeTool now = new TimeTool();
-		now.add(TimeTool.SECOND, 5);
+		qbe.startGroup();
+		qbe.add(Prescription.FLD_DATE_UNTIL, "is", null);
+		qbe.or();
+		qbe.add(Prescription.FLD_DATE_UNTIL, Query.LESS, now.toString(TimeTool.DATE_COMPACT));
+		qbe.endGroup();
+		List<Prescription> prescriptions = qbe.execute();
+		if(filterType==null){
+			return prescriptions;
+		}else{
+			ArrayList<Prescription> ret=new ArrayList<Prescription>(prescriptions.size());
+			for(Prescription p:prescriptions){
+				if(p.getEntryType()==filterType){
+					ret.add(p);
+				}
+			}
+			return ret;
+		}
 		
+		/*
 		if (filterType != null) {
 			return prescriptions.parallelStream().filter(p -> !p.isStopped(now) && p.getEntryType() == filterType)
 				.collect(Collectors.toList());
@@ -198,6 +213,7 @@ public class Patient extends Person {
 			return prescriptions.parallelStream().filter(p -> !p.isStopped(now))
 					.collect(Collectors.toList());
 		}
+		*/
 	}
 	
 	/**

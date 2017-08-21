@@ -29,6 +29,8 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.IViewSite;
 import org.eclipse.ui.services.IEvaluationService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import ch.elexis.admin.AccessControlDefaults;
 import ch.elexis.core.data.events.ElexisEvent;
@@ -73,6 +75,8 @@ public class FixMediDisplay extends ListDisplay<Prescription> {
 	FixMediDisplay self;
 	Label lCost;
 	PersistentObjectDropTarget target;
+	Logger log=LoggerFactory.getLogger(this.getClass());
+
 	private MenuManager menuManager;
 	private IViewSite viewSite;
 	static final String REZEPT = Messages.FixMediDisplay_Prescription; //$NON-NLS-1$
@@ -179,15 +183,19 @@ public class FixMediDisplay extends ListDisplay<Prescription> {
 	}
 	
 	public void reload(){
+		// long start=System.currentTimeMillis();
 		clear();
 		Patient act = ElexisEventDispatcher.getSelectedPatient();
 		if (act != null) {
 			List<Prescription> fix = act.getMedication(EntryType.FIXED_MEDICATION);
-			fix.stream().forEach(p -> add(p));
-			
+			for(Prescription p:fix){
+				add(p);
+			}
 			lCost.setText(MedicationViewHelper.calculateDailyCostAsString(fix));
 		}
 		sortList();
+		//long end=System.currentTimeMillis();
+		// log.info("time: "+ Long.toString(end-start));
 	}
 	
 	class DauerMediListener implements LDListener {

@@ -14,6 +14,7 @@ import ch.elexis.core.constants.Preferences;
 import ch.elexis.core.data.activator.CoreHub;
 import ch.elexis.core.data.cache.IPersistentObjectCache;
 import ch.elexis.core.data.cache.MultiGuavaCache;
+import ch.elexis.core.data.cache.SoftCache;
 import ch.rgw.tools.JdbcLink;
 import ch.rgw.tools.JdbcLink.Stm;
 import ch.rgw.tools.StringTool;
@@ -65,7 +66,8 @@ public class DBConnection {
 			CoreHub.localCfg.set(Preferences.ABL_CACHELIFETIME, CACHE_MIN_LIFETIME);
 		}
 		
-		cache = new MultiGuavaCache<String>(default_lifetime, TimeUnit.SECONDS);
+		//cache = new MultiGuavaCache<String>(default_lifetime, TimeUnit.SECONDS);
+		cache=new SoftCache<String>();
 		
 		logger.info("Cache setup: default_lifetime " + default_lifetime);
 	}

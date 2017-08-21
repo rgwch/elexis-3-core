@@ -177,7 +177,7 @@ public class Prescription extends PersistentObject {
 	public String getSimpleLabel(){
 		Artikel art = getArtikel();
 		if (art != null) {
-			return getArtikel().getLabel();
+			return art.getLabel();
 		} else {
 			return "Fehler";
 		}
