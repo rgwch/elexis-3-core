@@ -186,20 +186,17 @@ public class Patient extends Person {
 				Prescription.FLD_PRESC_TYPE, Prescription.FLD_ARTICLE
 			});
 		qbe.add(Prescription.FLD_PATIENT_ID, Query.EQUALS, getId());
-
 		TimeTool now = new TimeTool();
-		now.add(TimeTool.SECOND, 5);
 		qbe.startGroup();
 		qbe.add(Prescription.FLD_DATE_UNTIL, "is", null);
 		qbe.or();
 		qbe.add(Prescription.FLD_DATE_UNTIL, Query.LESS, now.toString(TimeTool.DATE_COMPACT));
 		qbe.endGroup();
 		List<Prescription> prescriptions = qbe.execute();
-		// make sure just now closed are not included
-		ArrayList<Prescription> ret=new ArrayList<Prescription>(prescriptions.size());
 		if(filterType==null){
 			return prescriptions;
 		}else{
+			ArrayList<Prescription> ret=new ArrayList<Prescription>(prescriptions.size());
 			for(Prescription p:prescriptions){
 				if(p.getEntryType()==filterType){
 					ret.add(p);

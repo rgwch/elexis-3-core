@@ -183,7 +183,7 @@ public class FixMediDisplay extends ListDisplay<Prescription> {
 	}
 	
 	public void reload(){
-		long start=System.currentTimeMillis();
+		// long start=System.currentTimeMillis();
 		clear();
 		Patient act = ElexisEventDispatcher.getSelectedPatient();
 		if (act != null) {
@@ -194,8 +194,8 @@ public class FixMediDisplay extends ListDisplay<Prescription> {
 			lCost.setText(MedicationViewHelper.calculateDailyCostAsString(fix));
 		}
 		sortList();
-		long end=System.currentTimeMillis();
-		log.info("time: "+ Long.toString(end-start));
+		//long end=System.currentTimeMillis();
+		// log.info("time: "+ Long.toString(end-start));
 	}
 	
 	class DauerMediListener implements LDListener {
