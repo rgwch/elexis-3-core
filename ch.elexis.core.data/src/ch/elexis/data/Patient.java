@@ -190,7 +190,7 @@ public class Patient extends Person {
 		qbe.startGroup();
 		qbe.add(Prescription.FLD_DATE_UNTIL, "is", null);
 		qbe.or();
-		qbe.add(Prescription.FLD_DATE_UNTIL, Query.LESS, now.toString(TimeTool.DATE_COMPACT));
+		qbe.add(Prescription.FLD_DATE_UNTIL, Query.GREATER_OR_EQUAL, now.toString(TimeTool.DATE_COMPACT));
 		qbe.endGroup();
 		List<Prescription> prescriptions = qbe.execute();
 		if(filterType==null){
