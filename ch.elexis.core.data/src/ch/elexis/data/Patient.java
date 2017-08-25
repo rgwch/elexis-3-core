@@ -14,6 +14,8 @@ package ch.elexis.data;
 
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -48,7 +50,7 @@ import ch.rgw.tools.TimeTool.TimeFormatException;
  * </ul>
  * 
  * @author gerry
- * 		
+ * 
  */
 public class Patient extends Person {
 	
@@ -172,12 +174,36 @@ public class Patient extends Person {
 		return ret;
 	}
 	
+	public List<Prescription> getMedication(@Nullable EntryType... filterType){
+		// prefetch the values needed for filter operations
+		Query<Prescription> qbe = new Query<Prescription>(Prescription.class, null, null,
+			Prescription.TABLENAME, new String[] {
+				Prescription.FLD_DATE_UNTIL, Prescription.FLD_REZEPT_ID,
+				Prescription.FLD_PRESC_TYPE, Prescription.FLD_ARTICLE
+			});
+		qbe.add(Prescription.FLD_PATIENT_ID, Query.EQUALS, getId());
+		List<Prescription> prescriptions = qbe.execute();
+		// make sure just now closed are not included
+		TimeTool now = new TimeTool();
+		now.add(TimeTool.SECOND, 5);
+		
+		if (filterType != null && filterType.length > 0) {
+			EnumSet<EntryType> entryTypes = EnumSet.copyOf(Arrays.asList(filterType));
+			return prescriptions.parallelStream()
+				.filter(p -> entryTypes.contains(p.getEntryType()) && !p.isStopped(now))
+				.collect(Collectors.toList());
+		} else {
+			return prescriptions.parallelStream().filter(p -> !p.isStopped(now))
+				.collect(Collectors.toList());
+		}
+	}
 	/**
 	 * Get the patients active medication filtered by {@link EntryType}.
 	 * 
 	 * @param filterType
 	 * @return
 	 */
+	 /*
 	public List<Prescription> getMedication(@Nullable EntryType filterType){
 		// prefetch the values needed for filter operations
 		Query<Prescription> qbe = new Query<Prescription>(Prescription.class, null, null,
@@ -204,7 +230,8 @@ public class Patient extends Person {
 			}
 			return ret;
 		}
-		
+}
+		*/
 		/*
 		if (filterType != null) {
 			return prescriptions.parallelStream().filter(p -> !p.isStopped(now) && p.getEntryType() == filterType)
@@ -214,7 +241,7 @@ public class Patient extends Person {
 					.collect(Collectors.toList());
 		}
 		*/
-	}
+	
 	
 	/**
 	 * Get the patients medication filtered by {@link EntryType} as text.
