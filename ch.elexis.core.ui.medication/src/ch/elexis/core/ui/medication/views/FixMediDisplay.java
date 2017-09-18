@@ -131,7 +131,8 @@ public class FixMediDisplay extends ListDisplay<Prescription> {
 					} else if (o instanceof Prescription) {
 						List<Prescription> existing =
 							((Patient) ElexisEventDispatcher.getSelected(Patient.class))
-								.getMedication(null);
+								.getMedication(EntryType.FIXED_MEDICATION,
+									EntryType.RESERVE_MEDICATION, EntryType.SYMPTOMATIC_MEDICATION);
 						Prescription pre = (Prescription) o;
 						for (Prescription pe : existing) {
 							if (pe.equals(pre)) {
@@ -183,7 +184,7 @@ public class FixMediDisplay extends ListDisplay<Prescription> {
 	}
 	
 	public void reload(){
-		// long start=System.currentTimeMillis();
+		long start=System.currentTimeMillis();
 		clear();
 		Patient act = ElexisEventDispatcher.getSelectedPatient();
 		if (act != null) {
@@ -194,8 +195,8 @@ public class FixMediDisplay extends ListDisplay<Prescription> {
 			lCost.setText(MedicationViewHelper.calculateDailyCostAsString(fix));
 		}
 		sortList();
-		//long end=System.currentTimeMillis();
-		// log.info("time: "+ Long.toString(end-start));
+		long end=System.currentTimeMillis();
+		log.info("time to load prescriptions: "+ Long.toString(end-start));
 	}
 	
 	class DauerMediListener implements LDListener {
