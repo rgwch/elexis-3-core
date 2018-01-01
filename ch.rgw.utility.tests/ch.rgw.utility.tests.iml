@@ -1,0 +1,472 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module org.jetbrains.idea.maven.project.MavenProjectsManager.isMavenModule="true" type="JAVA_MODULE" version="4">
+  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_8" inherit-compiler-output="false">
+    <output url="file://$MODULE_DIR$/target/classes" />
+    <output-test url="file://$MODULE_DIR$/target/test-classes" />
+    <content url="file://$MODULE_DIR$">
+      <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
+      <excludeFolder url="file://$MODULE_DIR$/target" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="module-library">
+      <library name="Maven: p2.eclipse-plugin:bouncycastle.bcprov-jdk14:138.0.0">
+        <CLASSES>
+          <root url="jar://$MAVEN_REPOSITORY$/p2/osgi/bundle/bouncycastle.bcprov-jdk14/138.0.0/bouncycastle.bcprov-jdk14-138.0.0.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven: p2.eclipse-plugin:ch.qos.logback.classic:1.0.7.v20121108-1250">
+        <CLASSES>
+          <root url="jar://$MAVEN_REPOSITORY$/p2/osgi/bundle/ch.qos.logback.classic/1.0.7.v20121108-1250/ch.qos.logback.classic-1.0.7.v20121108-1250.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven: p2.eclipse-plugin:ch.qos.logback.core:1.0.7.v20121108-1250">
+        <CLASSES>
+          <root url="jar://$MAVEN_REPOSITORY$/p2/osgi/bundle/ch.qos.logback.core/1.0.7.v20121108-1250/ch.qos.logback.core-1.0.7.v20121108-1250.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven: p2.eclipse-plugin:org.slf4j.api:1.7.2.v20121108-1250">
+        <CLASSES>
+          <root url="jar://$MAVEN_REPOSITORY$/p2/osgi/bundle/org.slf4j.api/1.7.2.v20121108-1250/org.slf4j.api-1.7.2.v20121108-1250.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven: p2.eclipse-plugin:ch.rgw.utility:3.2.0.a20160527-0936">
+        <CLASSES>
+          <root url="jar://$MAVEN_REPOSITORY$/ch/elexis/ch.rgw.utility/3.2.0-SNAPSHOT/ch.rgw.utility-3.2.0-SNAPSHOT.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven: p2.eclipse-plugin:org.postgresql:9.2.0.1002-jdbc4">
+        <CLASSES>
+          <root url="jar://$MAVEN_REPOSITORY$/p2/osgi/bundle/org.postgresql/9.2.0.1002-jdbc4/org.postgresql-9.2.0.1002-jdbc4.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven: p2.eclipse-plugin:com.mysql.jdbc:5.1.21">
+        <CLASSES>
+          <root url="jar://$MAVEN_REPOSITORY$/p2/osgi/bundle/com.mysql.jdbc/5.1.21/com.mysql.jdbc-5.1.21.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven: p2.eclipse-plugin:org.h2:1.3.170">
+        <CLASSES>
+          <root url="jar://$MAVEN_REPOSITORY$/p2/osgi/bundle/org.h2/1.3.170/org.h2-1.3.170.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven: p2.eclipse-plugin:org.jdom:1.1.3">
+        <CLASSES>
+          <root url="jar://$MAVEN_REPOSITORY$/p2/osgi/bundle/org.jdom/1.1.3/org.jdom-1.1.3.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven: p2.eclipse-plugin:org.apache.commons.dbcp:1.4.0">
+        <CLASSES>
+          <root url="jar://$MAVEN_REPOSITORY$/p2/osgi/bundle/org.apache.commons.dbcp/1.4.0/org.apache.commons.dbcp-1.4.0.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven: p2.eclipse-plugin:org.apache.commons.pool:1.6.0.v201204271246">
+        <CLASSES>
+          <root url="jar://$MAVEN_REPOSITORY$/p2/osgi/bundle/org.apache.commons.pool/1.6.0.v201204271246/org.apache.commons.pool-1.6.0.v201204271246.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven: p2.eclipse-plugin:org.apache.commons.codec:1.9.0">
+        <CLASSES>
+          <root url="jar://$MAVEN_REPOSITORY$/p2/osgi/bundle/org.apache.commons.codec/1.9.0/org.apache.commons.codec-1.9.0.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven: p2.eclipse-plugin:junit:4.12.0">
+        <CLASSES>
+          <root url="jar://$MAVEN_REPOSITORY$/p2/osgi/bundle/junit/4.12.0/junit-4.12.0.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven: p2.eclipse-plugin:org.eclipse.osgi:3.10.102.v20160118-1700">
+        <CLASSES>
+          <root url="jar://$MAVEN_REPOSITORY$/p2/osgi/bundle/org.eclipse.osgi/3.10.102.v20160118-1700/org.eclipse.osgi-3.10.102.v20160118-1700.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven: p2.eclipse-plugin:org.eclipse.ui:3.8.2.v20121018-234953">
+        <CLASSES>
+          <root url="jar://$MAVEN_REPOSITORY$/p2/osgi/bundle/org.eclipse.ui/3.8.2.v20121018-234953/org.eclipse.ui-3.8.2.v20121018-234953.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven: p2.eclipse-plugin:org.eclipse.core.resources:3.10.1.v20150725-1910">
+        <CLASSES>
+          <root url="jar://$MAVEN_REPOSITORY$/p2/osgi/bundle/org.eclipse.core.resources/3.10.1.v20150725-1910/org.eclipse.core.resources-3.10.1.v20150725-1910.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven: p2.eclipse-plugin:org.eclipse.jface.text:3.8.2.v20121126-164145">
+        <CLASSES>
+          <root url="jar://$MAVEN_REPOSITORY$/p2/osgi/bundle/org.eclipse.jface.text/3.8.2.v20121126-164145/org.eclipse.jface.text-3.8.2.v20121126-164145.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven: p2.eclipse-plugin:org.eclipse.ui.ide:3.8.2.v20121106-170106">
+        <CLASSES>
+          <root url="jar://$MAVEN_REPOSITORY$/p2/osgi/bundle/org.eclipse.ui.ide/3.8.2.v20121106-170106/org.eclipse.ui.ide-3.8.2.v20121106-170106.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven: p2.eclipse-plugin:org.eclipse.core.runtime:3.11.1.v20150903-1804">
+        <CLASSES>
+          <root url="jar://$MAVEN_REPOSITORY$/p2/osgi/bundle/org.eclipse.core.runtime/3.11.1.v20150903-1804/org.eclipse.core.runtime-3.11.1.v20150903-1804.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven: p2.eclipse-plugin:org.eclipse.core.expressions:3.5.0.v20150421-2214">
+        <CLASSES>
+          <root url="jar://$MAVEN_REPOSITORY$/p2/osgi/bundle/org.eclipse.core.expressions/3.5.0.v20150421-2214/org.eclipse.core.expressions-3.5.0.v20150421-2214.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven: p2.eclipse-plugin:com.ibm.icu:54.1.1.v201501272100">
+        <CLASSES>
+          <root url="jar://$MAVEN_REPOSITORY$/p2/osgi/bundle/com.ibm.icu/54.1.1.v201501272100/com.ibm.icu-54.1.1.v201501272100.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven: p2.eclipse-plugin:org.eclipse.equinox.common:3.7.0.v20150402-1709">
+        <CLASSES>
+          <root url="jar://$MAVEN_REPOSITORY$/p2/osgi/bundle/org.eclipse.equinox.common/3.7.0.v20150402-1709/org.eclipse.equinox.common-3.7.0.v20150402-1709.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven: p2.eclipse-plugin:org.eclipse.core.commands:3.7.0.v20150422-0725">
+        <CLASSES>
+          <root url="jar://$MAVEN_REPOSITORY$/p2/osgi/bundle/org.eclipse.core.commands/3.7.0.v20150422-0725/org.eclipse.core.commands-3.7.0.v20150422-0725.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven: p2.eclipse-plugin:org.eclipse.equinox.preferences:3.5.300.v20150408-1437">
+        <CLASSES>
+          <root url="jar://$MAVEN_REPOSITORY$/p2/osgi/bundle/org.eclipse.equinox.preferences/3.5.300.v20150408-1437/org.eclipse.equinox.preferences-3.5.300.v20150408-1437.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven: p2.eclipse-plugin:org.eclipse.equinox.registry:3.6.0.v20150318-1503">
+        <CLASSES>
+          <root url="jar://$MAVEN_REPOSITORY$/p2/osgi/bundle/org.eclipse.equinox.registry/3.6.0.v20150318-1503/org.eclipse.equinox.registry-3.6.0.v20150318-1503.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven: p2.eclipse-plugin:org.eclipse.core.contenttype:3.5.0.v20150421-2214">
+        <CLASSES>
+          <root url="jar://$MAVEN_REPOSITORY$/p2/osgi/bundle/org.eclipse.core.contenttype/3.5.0.v20150421-2214/org.eclipse.core.contenttype-3.5.0.v20150421-2214.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven: p2.eclipse-plugin:org.eclipse.core.databinding.observable:1.5.0.v20150422-0725">
+        <CLASSES>
+          <root url="jar://$MAVEN_REPOSITORY$/p2/osgi/bundle/org.eclipse.core.databinding.observable/1.5.0.v20150422-0725/org.eclipse.core.databinding.observable-1.5.0.v20150422-0725.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven: p2.eclipse-plugin:org.eclipse.core.databinding.property:1.5.0.v20150422-0725">
+        <CLASSES>
+          <root url="jar://$MAVEN_REPOSITORY$/p2/osgi/bundle/org.eclipse.core.databinding.property/1.5.0.v20150422-0725/org.eclipse.core.databinding.property-1.5.0.v20150422-0725.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven: p2.eclipse-plugin:org.eclipse.core.databinding:1.5.0.v20150422-0725">
+        <CLASSES>
+          <root url="jar://$MAVEN_REPOSITORY$/p2/osgi/bundle/org.eclipse.core.databinding/1.5.0.v20150422-0725/org.eclipse.core.databinding-1.5.0.v20150422-0725.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven: p2.eclipse-plugin:org.eclipse.text:3.5.400.v20150505-1044">
+        <CLASSES>
+          <root url="jar://$MAVEN_REPOSITORY$/p2/osgi/bundle/org.eclipse.text/3.5.400.v20150505-1044/org.eclipse.text-3.5.400.v20150505-1044.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven: p2.eclipse-plugin:org.eclipse.core.filesystem:1.5.0.v20150725-1910">
+        <CLASSES>
+          <root url="jar://$MAVEN_REPOSITORY$/p2/osgi/bundle/org.eclipse.core.filesystem/1.5.0.v20150725-1910/org.eclipse.core.filesystem-1.5.0.v20150725-1910.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven: p2.eclipse-plugin:org.eclipse.core.jobs:3.7.0.v20150330-2103">
+        <CLASSES>
+          <root url="jar://$MAVEN_REPOSITORY$/p2/osgi/bundle/org.eclipse.core.jobs/3.7.0.v20150330-2103/org.eclipse.core.jobs-3.7.0.v20150330-2103.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven: p2.eclipse-plugin:org.eclipse.equinox.security:1.2.100.v20150423-1356">
+        <CLASSES>
+          <root url="jar://$MAVEN_REPOSITORY$/p2/osgi/bundle/org.eclipse.equinox.security/1.2.100.v20150423-1356/org.eclipse.equinox.security-1.2.100.v20150423-1356.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven: p2.eclipse-plugin:org.eclipse.core.net:1.2.300.v20141118-1725">
+        <CLASSES>
+          <root url="jar://$MAVEN_REPOSITORY$/p2/osgi/bundle/org.eclipse.core.net/1.2.300.v20141118-1725/org.eclipse.core.net-1.2.300.v20141118-1725.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven: p2.eclipse-plugin:org.eclipse.equinox.app:1.3.300.v20150423-1356">
+        <CLASSES>
+          <root url="jar://$MAVEN_REPOSITORY$/p2/osgi/bundle/org.eclipse.equinox.app/1.3.300.v20150423-1356/org.eclipse.equinox.app-1.3.300.v20150423-1356.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven: p2.eclipse-plugin:org.eclipse.swt:3.8.1.v3836b">
+        <CLASSES>
+          <root url="jar://$MAVEN_REPOSITORY$/p2/osgi/bundle/org.eclipse.swt/3.8.1.v3836b/org.eclipse.swt-3.8.1.v3836b.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven: p2.eclipse-plugin:org.eclipse.jface:3.8.0.v20120912-135020">
+        <CLASSES>
+          <root url="jar://$MAVEN_REPOSITORY$/p2/osgi/bundle/org.eclipse.jface/3.8.0.v20120912-135020/org.eclipse.jface-3.8.0.v20120912-135020.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven: p2.eclipse-plugin:org.eclipse.jface.databinding:1.7.0.v20150406-2148">
+        <CLASSES>
+          <root url="jar://$MAVEN_REPOSITORY$/p2/osgi/bundle/org.eclipse.jface.databinding/1.7.0.v20150406-2148/org.eclipse.jface.databinding-1.7.0.v20150406-2148.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven: p2.eclipse-plugin:org.eclipse.equinox.launcher:1.3.0.v20120522-1813">
+        <CLASSES>
+          <root url="jar://$MAVEN_REPOSITORY$/p2/osgi/bundle/org.eclipse.equinox.launcher/1.3.0.v20120522-1813/org.eclipse.equinox.launcher-1.3.0.v20120522-1813.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven: p2.eclipse-plugin:org.eclipse.equinox.launcher.gtk.linux.x86_64:1.1.200.v20120913-144807">
+        <CLASSES>
+          <root url="jar://$MAVEN_REPOSITORY$/p2/osgi/bundle/org.eclipse.equinox.launcher.gtk.linux.x86_64/1.1.200.v20120913-144807/org.eclipse.equinox.launcher.gtk.linux.x86_64-1.1.200.v20120913-144807.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven: p2.eclipse-feature:org.eclipse.equinox.executable:3.6.0.v20121119-201001-7P7OG2BFLWUl7UnqBnO8V4Of">
+        <CLASSES>
+          <root url="jar://$MAVEN_REPOSITORY$/p2/org/eclipse/update/feature/org.eclipse.equinox.executable/3.6.0.v20121119-201001-7P7OG2BFLWUl7UnqBnO8V4Of/org.eclipse.equinox.executable-3.6.0.v20121119-201001-7P7OG2BFLWUl7UnqBnO8V4Of.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven: p2.eclipse-plugin:org.eclipse.equinox.p2.core:2.4.0.v20150527-1706">
+        <CLASSES>
+          <root url="jar://$MAVEN_REPOSITORY$/p2/osgi/bundle/org.eclipse.equinox.p2.core/2.4.0.v20150527-1706/org.eclipse.equinox.p2.core-2.4.0.v20150527-1706.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven: p2.eclipse-plugin:org.eclipse.equinox.p2.metadata:2.3.0.v20150511-1532">
+        <CLASSES>
+          <root url="jar://$MAVEN_REPOSITORY$/p2/osgi/bundle/org.eclipse.equinox.p2.metadata/2.3.0.v20150511-1532/org.eclipse.equinox.p2.metadata-2.3.0.v20150511-1532.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven: p2.eclipse-plugin:org.eclipse.equinox.p2.metadata.repository:1.2.200.v20150428-1613">
+        <CLASSES>
+          <root url="jar://$MAVEN_REPOSITORY$/p2/osgi/bundle/org.eclipse.equinox.p2.metadata.repository/1.2.200.v20150428-1613/org.eclipse.equinox.p2.metadata.repository-1.2.200.v20150428-1613.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven: p2.eclipse-plugin:org.eclipse.equinox.p2.repository:2.3.100.v20150428-1613">
+        <CLASSES>
+          <root url="jar://$MAVEN_REPOSITORY$/p2/osgi/bundle/org.eclipse.equinox.p2.repository/2.3.100.v20150428-1613/org.eclipse.equinox.p2.repository-2.3.100.v20150428-1613.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven: p2.eclipse-plugin:org.eclipse.equinox.p2.engine:2.4.0.v20150511-1532">
+        <CLASSES>
+          <root url="jar://$MAVEN_REPOSITORY$/p2/osgi/bundle/org.eclipse.equinox.p2.engine/2.4.0.v20150511-1532/org.eclipse.equinox.p2.engine-2.4.0.v20150511-1532.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven: p2.eclipse-plugin:org.tukaani.xz:1.3.0.v201308270617">
+        <CLASSES>
+          <root url="jar://$MAVEN_REPOSITORY$/p2/osgi/bundle/org.tukaani.xz/1.3.0.v201308270617/org.tukaani.xz-1.3.0.v201308270617.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven: p2.eclipse-plugin:org.eclipse.help:3.6.0.v20130326-1254">
+        <CLASSES>
+          <root url="jar://$MAVEN_REPOSITORY$/p2/osgi/bundle/org.eclipse.help/3.6.0.v20130326-1254/org.eclipse.help-3.6.0.v20130326-1254.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven: p2.eclipse-plugin:org.eclipse.ui.workbench:3.8.2.v20121128-133708">
+        <CLASSES>
+          <root url="jar://$MAVEN_REPOSITORY$/p2/osgi/bundle/org.eclipse.ui.workbench/3.8.2.v20121128-133708/org.eclipse.ui.workbench-3.8.2.v20121128-133708.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven: p2.eclipse-plugin:org.eclipse.ui.ide.application:1.0.400.v20120523-1956">
+        <CLASSES>
+          <root url="jar://$MAVEN_REPOSITORY$/p2/osgi/bundle/org.eclipse.ui.ide.application/1.0.400.v20120523-1956/org.eclipse.ui.ide.application-1.0.400.v20120523-1956.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven: p2.eclipse-plugin:org.eclipse.swt.gtk.linux.x86_64:3.8.1.v3836b">
+        <CLASSES>
+          <root url="jar://$MAVEN_REPOSITORY$/p2/osgi/bundle/org.eclipse.swt.gtk.linux.x86_64/3.8.1.v3836b/org.eclipse.swt.gtk.linux.x86_64-3.8.1.v3836b.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+  </component>
+</module>

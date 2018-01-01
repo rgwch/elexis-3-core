@@ -1,0 +1,337 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <resourceExtensions />
+    <wildcardResourcePatterns>
+      <entry name="!?*.java" />
+      <entry name="!?*.form" />
+      <entry name="!?*.class" />
+      <entry name="!?*.groovy" />
+      <entry name="!?*.scala" />
+      <entry name="!?*.flex" />
+      <entry name="!?*.kt" />
+      <entry name="!?*.clj" />
+      <entry name="!?*.aj" />
+    </wildcardResourcePatterns>
+    <annotationProcessing>
+      <profile default="true" name="Default" enabled="false">
+        <processorPath useClasspath="true" />
+      </profile>
+      <profile default="false" name="Annotation profile for ch.elexis.core.ui.importer.div" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="true" />
+        <module name="ch.elexis.core.ui.importer.div" />
+      </profile>
+      <profile default="false" name="Annotation profile for ch.elexis.core.importer.div" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="true" />
+        <module name="ch.elexis.core.importer.div" />
+      </profile>
+      <profile default="false" name="Annotation profile for ch.elexis.core.ui.importer.div.native64" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="true" />
+        <module name="ch.elexis.core.ui.importer.div.native64" />
+      </profile>
+      <profile default="false" name="Annotation profile for ch.elexis.core.ui.importer.div.native32" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="true" />
+        <module name="ch.elexis.core.ui.importer.div.native32" />
+      </profile>
+      <profile default="false" name="Annotation profile for ch.elexis.core.ui.medication" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="true" />
+        <module name="ch.elexis.core.ui.medication" />
+      </profile>
+      <profile default="false" name="Annotation profile for ch.elexis.core.ui.laboratory" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="true" />
+        <module name="ch.elexis.core.ui.laboratory" />
+      </profile>
+      <profile default="false" name="Annotation profile for ch.elexis.core.ui.p2.feature" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="true" />
+        <module name="ch.elexis.core.ui.p2.feature" />
+      </profile>
+      <profile default="false" name="Annotation profile for ch.elexis.core.ui.p2" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="true" />
+        <module name="ch.elexis.core.ui.p2" />
+      </profile>
+      <profile default="false" name="Annotation profile for ch.elexis.core.ui.eigendiagnosen" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="true" />
+        <module name="ch.elexis.core.ui.eigendiagnosen" />
+      </profile>
+      <profile default="false" name="Annotation profile for ch.elexis.core.ui.icons" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="true" />
+        <module name="ch.elexis.core.ui.icons" />
+      </profile>
+      <profile default="false" name="Annotation profile for ch.elexis.core.ui.contacts" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="true" />
+        <module name="ch.elexis.core.ui.contacts" />
+      </profile>
+      <profile default="false" name="Annotation profile for ch.elexis.core.ui.eigenartikel" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="true" />
+        <module name="ch.elexis.core.ui.eigenartikel" />
+      </profile>
+      <profile default="false" name="Annotation profile for ch.elexis.core.mail.ui" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="true" />
+        <module name="ch.elexis.core.mail.ui" />
+      </profile>
+      <profile default="false" name="Annotation profile for ch.elexis.core.mail" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="true" />
+        <module name="ch.elexis.core.mail" />
+      </profile>
+      <profile default="false" name="Annotation profile for ch.elexis.core.ui" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="true" />
+        <module name="ch.elexis.core.ui" />
+      </profile>
+      <profile default="false" name="Annotation profile for ch.elexis.core.logging.default_configuration" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="true" />
+        <module name="ch.elexis.core.logging.default_configuration" />
+      </profile>
+      <profile default="false" name="Annotation profile for ch.elexis.core.logging.feature" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="true" />
+        <module name="ch.elexis.core.logging.feature" />
+      </profile>
+      <profile default="false" name="Annotation profile for ch.elexis.core.scripting.beanshell" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="true" />
+        <module name="ch.elexis.core.scripting.beanshell" />
+      </profile>
+      <profile default="false" name="Annotation profile for ch.elexis.core.logging" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="true" />
+        <module name="ch.elexis.core.logging" />
+      </profile>
+      <profile default="false" name="Annotation profile for ch.elexis.core.eigenartikel" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="true" />
+        <module name="ch.elexis.core.eigenartikel" />
+      </profile>
+      <profile default="false" name="Annotation profile for ch.elexis.core.data" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="true" />
+        <module name="ch.elexis.core.data" />
+      </profile>
+      <profile default="false" name="Annotation profile for ch.elexis.core.eigendiagnosen" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="true" />
+        <module name="ch.elexis.core.eigendiagnosen" />
+      </profile>
+      <profile default="false" name="Annotation profile for ch.elexis.core.common.feature" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="true" />
+        <module name="ch.elexis.core.common.feature" />
+      </profile>
+      <profile default="false" name="Annotation profile for ch.elexis.core.application.feature" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="true" />
+        <module name="ch.elexis.core.application.feature" />
+      </profile>
+      <profile default="false" name="Annotation profile for ch.elexis.core.scheduler" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="true" />
+        <module name="ch.elexis.core.scheduler" />
+      </profile>
+      <profile default="false" name="Annotation profile for ch.elexis.core.console.application" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="true" />
+        <module name="ch.elexis.core.console.application" />
+      </profile>
+      <profile default="false" name="Annotation profile for ch.elexis.core" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="true" />
+        <module name="ch.elexis.core" />
+      </profile>
+      <profile default="false" name="Annotation profile for juno-target" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="true" />
+        <module name="juno-target" />
+      </profile>
+      <profile default="false" name="Annotation profile for ch.elexis.core.application" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="true" />
+        <module name="ch.elexis.core.application" />
+      </profile>
+      <profile default="false" name="Annotation profile for ch.elexis.core.ui.importer.div.tests" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="true" />
+        <module name="ch.elexis.core.ui.importer.div.tests" />
+      </profile>
+      <profile default="false" name="Annotation profile for ch.elexis.core.data.tests" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="true" />
+        <module name="ch.elexis.core.data.tests" />
+      </profile>
+      <profile default="false" name="Annotation profile for ch.elexis.core.p2site" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="true" />
+        <module name="ch.elexis.core.p2site" />
+      </profile>
+      <profile default="false" name="Annotation profile for ch.elexis.core.hl7.v2x.tests" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="true" />
+        <module name="ch.elexis.core.hl7.v2x.tests" />
+      </profile>
+      <profile default="false" name="Annotation profile for ch.elexis.core.ui.medication.os.feature" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="true" />
+        <module name="ch.elexis.core.ui.medication.os.feature" />
+      </profile>
+      <profile default="false" name="Annotation profile for ch.rgw.utility.tests" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="true" />
+        <module name="ch.rgw.utility.tests" />
+      </profile>
+      <profile default="false" name="Annotation profile for ch.rgw.utility" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="true" />
+        <module name="ch.rgw.utility" />
+      </profile>
+      <profile default="false" name="Annotation profile for ch.elexis.core.hl7.v2x" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="true" />
+        <module name="ch.elexis.core.hl7.v2x" />
+      </profile>
+      <profile default="false" name="Annotation profile for ch.elexis.core.ui.medication.os" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="true" />
+        <module name="ch.elexis.core.ui.medication.os" />
+      </profile>
+      <profile default="false" name="Annotation profile for ch.elexis.core.ui.feature" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="true" />
+        <module name="ch.elexis.core.ui.feature" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="ch.elexis.core" target="1.8" />
+      <module name="ch.elexis.core.application" target="1.8" />
+      <module name="ch.elexis.core.application.feature" target="1.8" />
+      <module name="ch.elexis.core.common.feature" target="1.8" />
+      <module name="ch.elexis.core.console.application" target="1.8" />
+      <module name="ch.elexis.core.data" target="1.8" />
+      <module name="ch.elexis.core.data.tests" target="1.8" />
+      <module name="ch.elexis.core.eigenartikel" target="1.8" />
+      <module name="ch.elexis.core.eigendiagnosen" target="1.8" />
+      <module name="ch.elexis.core.hl7.v2x" target="1.8" />
+      <module name="ch.elexis.core.hl7.v2x.tests" target="1.8" />
+      <module name="ch.elexis.core.importer.div" target="1.8" />
+      <module name="ch.elexis.core.logging" target="1.8" />
+      <module name="ch.elexis.core.logging.default_configuration" target="1.8" />
+      <module name="ch.elexis.core.logging.feature" target="1.8" />
+      <module name="ch.elexis.core.mail" target="1.8" />
+      <module name="ch.elexis.core.mail.ui" target="1.8" />
+      <module name="ch.elexis.core.p2site" target="1.8" />
+      <module name="ch.elexis.core.scheduler" target="1.8" />
+      <module name="ch.elexis.core.scripting.beanshell" target="1.8" />
+      <module name="ch.elexis.core.ui" target="1.8" />
+      <module name="ch.elexis.core.ui.contacts" target="1.8" />
+      <module name="ch.elexis.core.ui.eigenartikel" target="1.8" />
+      <module name="ch.elexis.core.ui.eigendiagnosen" target="1.8" />
+      <module name="ch.elexis.core.ui.feature" target="1.8" />
+      <module name="ch.elexis.core.ui.icons" target="1.8" />
+      <module name="ch.elexis.core.ui.importer.div" target="1.8" />
+      <module name="ch.elexis.core.ui.importer.div.native32" target="1.8" />
+      <module name="ch.elexis.core.ui.importer.div.native64" target="1.8" />
+      <module name="ch.elexis.core.ui.importer.div.tests" target="1.8" />
+      <module name="ch.elexis.core.ui.laboratory" target="1.8" />
+      <module name="ch.elexis.core.ui.medication" target="1.8" />
+      <module name="ch.elexis.core.ui.medication.os" target="1.8" />
+      <module name="ch.elexis.core.ui.medication.os.feature" target="1.8" />
+      <module name="ch.elexis.core.ui.p2" target="1.8" />
+      <module name="ch.elexis.core.ui.p2.feature" target="1.8" />
+      <module name="ch.rgw.utility" target="1.8" />
+      <module name="ch.rgw.utility.tests" target="1.8" />
+      <module name="elexis-3-core" target="1.8" />
+      <module name="juno-target" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+</project>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/ch.elexis.core/ch.elexis.core.iml" filepath="$PROJECT_DIR$/ch.elexis.core/ch.elexis.core.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ch.elexis.core.application/ch.elexis.core.application.iml" filepath="$PROJECT_DIR$/ch.elexis.core.application/ch.elexis.core.application.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ch.elexis.core.application.feature/ch.elexis.core.application.feature.iml" filepath="$PROJECT_DIR$/ch.elexis.core.application.feature/ch.elexis.core.application.feature.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ch.elexis.core.common.feature/ch.elexis.core.common.feature.iml" filepath="$PROJECT_DIR$/ch.elexis.core.common.feature/ch.elexis.core.common.feature.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ch.elexis.core.console.application/ch.elexis.core.console.application.iml" filepath="$PROJECT_DIR$/ch.elexis.core.console.application/ch.elexis.core.console.application.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ch.elexis.core.data/ch.elexis.core.data.iml" filepath="$PROJECT_DIR$/ch.elexis.core.data/ch.elexis.core.data.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ch.elexis.core.data.tests/ch.elexis.core.data.tests.iml" filepath="$PROJECT_DIR$/ch.elexis.core.data.tests/ch.elexis.core.data.tests.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ch.elexis.core.eigenartikel/ch.elexis.core.eigenartikel.iml" filepath="$PROJECT_DIR$/ch.elexis.core.eigenartikel/ch.elexis.core.eigenartikel.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ch.elexis.core.eigendiagnosen/ch.elexis.core.eigendiagnosen.iml" filepath="$PROJECT_DIR$/ch.elexis.core.eigendiagnosen/ch.elexis.core.eigendiagnosen.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ch.elexis.core.hl7.v2x/ch.elexis.core.hl7.v2x.iml" filepath="$PROJECT_DIR$/ch.elexis.core.hl7.v2x/ch.elexis.core.hl7.v2x.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ch.elexis.core.hl7.v2x.tests/ch.elexis.core.hl7.v2x.tests.iml" filepath="$PROJECT_DIR$/ch.elexis.core.hl7.v2x.tests/ch.elexis.core.hl7.v2x.tests.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ch.elexis.core.importer.div/ch.elexis.core.importer.div.iml" filepath="$PROJECT_DIR$/ch.elexis.core.importer.div/ch.elexis.core.importer.div.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ch.elexis.core.logging/ch.elexis.core.logging.iml" filepath="$PROJECT_DIR$/ch.elexis.core.logging/ch.elexis.core.logging.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ch.elexis.core.logging.default_configuration/ch.elexis.core.logging.default_configuration.iml" filepath="$PROJECT_DIR$/ch.elexis.core.logging.default_configuration/ch.elexis.core.logging.default_configuration.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ch.elexis.core.logging.feature/ch.elexis.core.logging.feature.iml" filepath="$PROJECT_DIR$/ch.elexis.core.logging.feature/ch.elexis.core.logging.feature.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ch.elexis.core.mail/ch.elexis.core.mail.iml" filepath="$PROJECT_DIR$/ch.elexis.core.mail/ch.elexis.core.mail.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ch.elexis.core.mail.ui/ch.elexis.core.mail.ui.iml" filepath="$PROJECT_DIR$/ch.elexis.core.mail.ui/ch.elexis.core.mail.ui.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ch.elexis.core.p2site/ch.elexis.core.p2site.iml" filepath="$PROJECT_DIR$/ch.elexis.core.p2site/ch.elexis.core.p2site.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ch.elexis.core.scheduler/ch.elexis.core.scheduler.iml" filepath="$PROJECT_DIR$/ch.elexis.core.scheduler/ch.elexis.core.scheduler.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ch.elexis.core.scripting.beanshell/ch.elexis.core.scripting.beanshell.iml" filepath="$PROJECT_DIR$/ch.elexis.core.scripting.beanshell/ch.elexis.core.scripting.beanshell.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ch.elexis.core.ui/ch.elexis.core.ui.iml" filepath="$PROJECT_DIR$/ch.elexis.core.ui/ch.elexis.core.ui.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ch.elexis.core.ui.contacts/ch.elexis.core.ui.contacts.iml" filepath="$PROJECT_DIR$/ch.elexis.core.ui.contacts/ch.elexis.core.ui.contacts.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ch.elexis.core.ui.eigenartikel/ch.elexis.core.ui.eigenartikel.iml" filepath="$PROJECT_DIR$/ch.elexis.core.ui.eigenartikel/ch.elexis.core.ui.eigenartikel.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ch.elexis.core.ui.eigendiagnosen/ch.elexis.core.ui.eigendiagnosen.iml" filepath="$PROJECT_DIR$/ch.elexis.core.ui.eigendiagnosen/ch.elexis.core.ui.eigendiagnosen.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ch.elexis.core.ui.feature/ch.elexis.core.ui.feature.iml" filepath="$PROJECT_DIR$/ch.elexis.core.ui.feature/ch.elexis.core.ui.feature.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ch.elexis.core.ui.icons/ch.elexis.core.ui.icons.iml" filepath="$PROJECT_DIR$/ch.elexis.core.ui.icons/ch.elexis.core.ui.icons.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ch.elexis.core.ui.importer.div/ch.elexis.core.ui.importer.div.iml" filepath="$PROJECT_DIR$/ch.elexis.core.ui.importer.div/ch.elexis.core.ui.importer.div.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ch.elexis.core.ui.importer.div.native32/ch.elexis.core.ui.importer.div.native32.iml" filepath="$PROJECT_DIR$/ch.elexis.core.ui.importer.div.native32/ch.elexis.core.ui.importer.div.native32.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ch.elexis.core.ui.importer.div.native64/ch.elexis.core.ui.importer.div.native64.iml" filepath="$PROJECT_DIR$/ch.elexis.core.ui.importer.div.native64/ch.elexis.core.ui.importer.div.native64.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ch.elexis.core.ui.importer.div.tests/ch.elexis.core.ui.importer.div.tests.iml" filepath="$PROJECT_DIR$/ch.elexis.core.ui.importer.div.tests/ch.elexis.core.ui.importer.div.tests.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ch.elexis.core.ui.laboratory/ch.elexis.core.ui.laboratory.iml" filepath="$PROJECT_DIR$/ch.elexis.core.ui.laboratory/ch.elexis.core.ui.laboratory.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ch.elexis.core.ui.medication/ch.elexis.core.ui.medication.iml" filepath="$PROJECT_DIR$/ch.elexis.core.ui.medication/ch.elexis.core.ui.medication.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ch.elexis.core.ui.medication.os/ch.elexis.core.ui.medication.os.iml" filepath="$PROJECT_DIR$/ch.elexis.core.ui.medication.os/ch.elexis.core.ui.medication.os.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ch.elexis.core.ui.medication.os.feature/ch.elexis.core.ui.medication.os.feature.iml" filepath="$PROJECT_DIR$/ch.elexis.core.ui.medication.os.feature/ch.elexis.core.ui.medication.os.feature.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ch.elexis.core.ui.p2/ch.elexis.core.ui.p2.iml" filepath="$PROJECT_DIR$/ch.elexis.core.ui.p2/ch.elexis.core.ui.p2.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ch.elexis.core.ui.p2.feature/ch.elexis.core.ui.p2.feature.iml" filepath="$PROJECT_DIR$/ch.elexis.core.ui.p2.feature/ch.elexis.core.ui.p2.feature.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ch.rgw.utility/ch.rgw.utility.iml" filepath="$PROJECT_DIR$/ch.rgw.utility/ch.rgw.utility.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ch.rgw.utility.tests/ch.rgw.utility.tests.iml" filepath="$PROJECT_DIR$/ch.rgw.utility.tests/ch.rgw.utility.tests.iml" />
+      <module fileurl="file://$PROJECT_DIR$/elexis-3-core.iml" filepath="$PROJECT_DIR$/elexis-3-core.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ch.elexis.target/juno-target.iml" filepath="$PROJECT_DIR$/ch.elexis.target/juno-target.iml" />
+    </modules>
+  </component>
+</project>

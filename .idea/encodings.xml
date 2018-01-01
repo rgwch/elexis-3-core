@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding">
+    <file url="file://$PROJECT_DIR$" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ch.elexis.core" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ch.elexis.core.application" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ch.elexis.core.application.feature" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ch.elexis.core.common.feature" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ch.elexis.core.console.application" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ch.elexis.core.data" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ch.elexis.core.data.tests" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ch.elexis.core.eigenartikel" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ch.elexis.core.eigendiagnosen" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ch.elexis.core.hl7.v2x" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ch.elexis.core.hl7.v2x.tests" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ch.elexis.core.importer.div" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ch.elexis.core.logging" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ch.elexis.core.logging.default_configuration" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ch.elexis.core.logging.feature" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ch.elexis.core.mail" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ch.elexis.core.mail.ui" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ch.elexis.core.p2site" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ch.elexis.core.scheduler" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ch.elexis.core.scripting.beanshell" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ch.elexis.core.ui" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ch.elexis.core.ui.contacts" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ch.elexis.core.ui.eigenartikel" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ch.elexis.core.ui.eigendiagnosen" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ch.elexis.core.ui.feature" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ch.elexis.core.ui.icons" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ch.elexis.core.ui.importer.div" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ch.elexis.core.ui.importer.div.native32" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ch.elexis.core.ui.importer.div.native64" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ch.elexis.core.ui.importer.div.tests" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ch.elexis.core.ui.laboratory" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ch.elexis.core.ui.medication" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ch.elexis.core.ui.medication.os" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ch.elexis.core.ui.medication.os.feature" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ch.elexis.core.ui.p2" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ch.elexis.core.ui.p2.feature" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ch.elexis.target" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ch.rgw.utility" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ch.rgw.utility.tests" charset="UTF-8" />
+    <file url="PROJECT" charset="UTF-8" />
+  </component>
+</project>
