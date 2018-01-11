@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?pde version="3.5"?>
 
-<product name="Elexis OpenSource" uid="ch.elexis.core.application.ElexisApp" id="ch.elexis.core.application.product" application="ch.elexis.core.application.ElexisApp" version="3.3.0.qualifier" useFeatures="true" includeLaunchers="true">
+<product name="Elexis Ungrad" uid="ch.elexis.core.application.ElexisApp" id="ch.elexis.core.application.product" application="ch.elexis.core.application.ElexisApp" version="3.3.0.qualifier" useFeatures="true" includeLaunchers="true">
 
    <aboutInfo>
-      <image path="rsc/elexislogo2.png"/>
+      <image path="/ch.elexis.core.application/rsc/elexis48.png"/>
       <text>
-         Elexis 3.3 - www.elexis.info
+         Elexis Ungrad - http://www.elexis.ch/ungrad
       </text>
    </aboutInfo>
 
@@ -77,9 +77,12 @@
    </configurations>
 
    <repositories>
-      <repository location="https://download.elexis.info/elexis/3.4/p2/elexis-3-core" enabled="true" name="Elexis-3-core"/>
-      <repository location="https://download.elexis.info/elexis/3.4/p2/elexis-3-base" enabled="true" name="Elexis-3-Base" />
-      <repository location="https://download.elexis.info/elexis/3.4/p2/elexis.3.gpl/" enabled="true" name="Elexis-3-GPL (J.Sigle)" />
+      <repository location="https://download.elexis.info/elexis/3.4/p2/elexis-3-core" enabled="true" />
+      <repository location="https://download.elexis.info/elexis/3.4/p2/elexis-3-base" enabled="true" />
+      <repository location="https://download.elexis.info/elexis/3.4/p2/elexis.3.gpl/" enabled="true" />
+      <repository location="http://www.elexis.ch/ungrad2018/p2/elexis-3-core" enabled="true" />
+      <repository location="http://www.elexis.ch/ungrad2018/p2/elexis-3-base" enabled="true" />
+      <repository location="http://www.elexis.ch/ungrad2018/p2/elexus-ungrad" enabled="true" />
    </repositories>
 
    <preferencesInfo>

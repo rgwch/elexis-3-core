@@ -596,7 +596,7 @@ if ( System.getProperty("git_branch") == null && project.name == 'ch.elexis.core
 						<doctitle>Dokumentation der Java Schnittstellen für Elexis
 							${project.version}.</doctitle>
 						<header><![CDATA[Elexis ${project.version}. See also <a href="http://elexis.info">http://elexis.info</a>]]></header>
-						<bottom><![CDATA[Copyright 2006-2013 Gerry Weirich and many more. See also <a href="http://elexis.info">Elexis</a>: eine freie Software von Ärzten für Ärzte]]></bottom>
+						<bottom><![CDATA[Copyright 2006-2018 Gerry Weirich, Daniel Lutz, Niklaus Giger, Marco Descher, Thomas Huster and many more. See also <a href="http://elexis.info">Elexis</a>: eine freie Software von Ärzten für Ärzte]]></bottom>
 					</configuration>
 				</plugin>
 			</plugins>

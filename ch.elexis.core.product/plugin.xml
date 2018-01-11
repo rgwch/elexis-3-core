@@ -6,7 +6,7 @@
          point="org.eclipse.core.runtime.products">
       <product
             application="ch.elexis.core.application.ElexisApp"
-            name="Elexis OpenSource">
+            name="Elexis Ungrad">
          <property
                name="appName"
                value="Elexis OpenSource">
