@@ -35,7 +35,7 @@ import ch.rgw.tools.TimeTool;
  * und Priorität beeinflussen die Darstellungsreihenfolge und Gruppierung auf dem Laborblatt.
  * 
  * @author Gerry
- * 		
+ * 
  */
 public class LabItem extends PersistentObject implements Comparable<LabItem>, ILabItem {
 	
@@ -59,7 +59,7 @@ public class LabItem extends PersistentObject implements Comparable<LabItem>, IL
 	static final String LABITEMS = "LABORITEMS"; //$NON-NLS-1$
 	private static final Pattern varPattern =
 		Pattern.compile(TextContainerConstants.MATCH_TEMPLATE);
-		
+	
 	@Override
 	protected String getTableName(){
 		return LABITEMS;
@@ -94,8 +94,7 @@ public class LabItem extends PersistentObject implements Comparable<LabItem>, IL
 	 */
 	public LabItem(String k, String t, Kontakt labor, String RefMann, String RefFrau, String Unit,
 		LabItemTyp type, String grp, String seq){
-		this(k, t, (labor != null) ? labor.getId() : null, RefMann, RefFrau, Unit, type, grp,
-			seq);
+		this(k, t, (labor != null) ? labor.getId() : null, RefMann, RefFrau, Unit, type, grp, seq);
 	}
 	
 	/**
@@ -521,7 +520,7 @@ public class LabItem extends PersistentObject implements Comparable<LabItem>, IL
 	 *            the female reference value for the items
 	 * @param unit
 	 *            the unit for the items
-	 * 			
+	 * 
 	 * @return List of {@link LabItem}
 	 */
 	public static List<LabItem> getLabItems(String laborId, String shortDesc, String refM,
@@ -583,42 +582,42 @@ public class LabItem extends PersistentObject implements Comparable<LabItem>, IL
 			labResult.set(LabResult.ITEM_ID, getId());
 		}
 	}
-
+	
 	@Override
 	public String getReferenceMale(){
 		return getRefM();
 	}
-
+	
 	@Override
 	public void setReferenceMale(String value){
 		setRefM(value);
 	}
-
+	
 	@Override
 	public String getReferenceFemale(){
 		return getRefW();
 	}
-
+	
 	@Override
 	public void setReferenceFemale(String value){
 		setRefW(value);
 	}
-
+	
 	@Override
 	public String getPriority(){
 		return getPrio();
 	}
-
+	
 	@Override
 	public void setPriority(String value){
 		setPrio(value);
 	}
-
+	
 	@Override
 	public String getUnit(){
 		return getEinheit();
 	}
-
+	
 	@Override
 	public void setUnit(String value){
 		setEinheit(value);
