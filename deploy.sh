@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
 
-PRODUCTS=${WEBSPACE}/products/elexis-core
-P2=${WEBSPACE}/p2/elexis-core
+PRODUCTS=${WEBSPACE2018}/products/elexis-core
+P2=${WEBSPACE2018}/p2/elexis-core
 
 mkdir -p ${PRODUCTS}/${BUILD_NUMBER}
 mkdir -p ${P2}/${BUILD_NUMBER}
