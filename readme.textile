@@ -6,9 +6,9 @@ h1. Ungrad fork of the elexis-3-core repository
 
 Main differences:
 
-* username is case insensitive (since I feel it's useless and error prone to have a 'Username' and a 'username' who refer to different persons). (pending)
+* username is case insensitive (since I feel it's useless and error prone to have a 'Username' and a 'username' who refer to different persons). (finished)
 
-* change databases on login is possible (to avoid automatic connect -and possibly modify- the productive database with a test case.) (pending)
+* change databases on login is possible (to avoid automatic connect - and possibly modify - the productive database with a test case.) (pending)
 
 * Consultations can be ordered by creation time, not only by date. (since the necessity to create more than one consultation entry per day increased with the latest tarmed revision) (planned)
 
