@@ -8,9 +8,11 @@ Main differences:
 
 * username is case insensitive (since I feel it's useless and error prone to have a 'Username' and a 'username' who refer to different persons). (finished)
 
+* Consultations can be ordered by creation time, not only by date. (since the necessity to create more than one consultation entry per day increased with the latest tarmed revision) (finished)
+
 * change databases on login is possible (to avoid automatic connect - and possibly modify - the productive database with a test case.) (pending)
 
-* Consultations can be ordered by creation time, not only by date. (since the necessity to create more than one consultation entry per day increased with the latest tarmed revision) (planned)
+* Change of "fall" details ist possible with administrator privilege even if bills exist. (planned)
 
 ----
 
