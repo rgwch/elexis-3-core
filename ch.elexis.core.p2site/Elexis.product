@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?pde version="3.5"?>
 
-<product name="Elexis Ungrad" uid="ch.elexis.core.application.ElexisApp" id="ch.elexis.core.application.product" application="ch.elexis.core.application.ElexisApp" version="3.3.0.qualifier" useFeatures="true" includeLaunchers="true">
+<product name="Elexis Ungrad" uid="ch.elexis.core.application.ElexisApp" id="ch.elexis.core.application.product" application="org.eclipse.e4.ui.workbench.swt.E4Application" version="3.4.0.qualifier" useFeatures="true" includeLaunchers="true">
 
    <aboutInfo>
       <image path="/ch.elexis.core.application/rsc/elexis48.png"/>
@@ -29,6 +29,7 @@
    <launcher name="Elexis3">
       <linux icon="rsc/elexis48.xpm"/>
       <macosx icon="rsc/elexis-mac.icns"/>
+      <solaris/>
       <win useIco="true">
          <ico path="rsc/elexis.ico"/>
          <bmp/>
@@ -77,12 +78,10 @@
    </configurations>
 
    <repositories>
-      <repository location="https://download.elexis.info/elexis/3.4/p2/elexis-3-core" enabled="true" />
-      <repository location="https://download.elexis.info/elexis/3.4/p2/elexis-3-base" enabled="true" />
-      <repository location="https://download.elexis.info/elexis/3.4/p2/elexis.3.gpl/" enabled="true" />
-      <repository location="http://www.elexis.ch/ungrad2018/p2/elexis-3-core" enabled="true" />
-      <repository location="http://www.elexis.ch/ungrad2018/p2/elexis-3-base" enabled="true" />
-      <repository location="http://www.elexis.ch/ungrad2018/p2/elexus-ungrad" enabled="true" />
+      <repository location="https://download.elexis.info/elexis/3.4/p2/elexis.3.gpl/" enabled="false" />
+      <repository location="http://www.elexis.ch/ungrad2018/p2/elexis-base" enabled="true" />
+      <repository location="http://www.elexis.ch/ungrad2018/p2/elexis-core" enabled="true" />
+      <repository location="http://www.elexis.ch/ungrad2018/p2/features" enabled="true" />
    </repositories>
 
    <preferencesInfo>
