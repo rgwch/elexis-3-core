@@ -77,9 +77,9 @@
 
    <repositories>
       <repository location="https://download.elexis.info/elexis/3.4/p2/elexis.3.gpl/" enabled="false" />
-      <repository location="http://www.elexis.ch/ungrad2018/p2/elexis-base" enabled="true" />
-      <repository location="http://www.elexis.ch/ungrad2018/p2/elexis-core" enabled="true" />
-      <repository location="http://www.elexis.ch/ungrad2018/p2/features" enabled="true" />
+      <repository location="http://www.elexis.ch/ungrad2018/p2/features/latest" enabled="true" />
+      <repository location="http://www.elexis.ch/ungrad2018/p2/elexis-core/latest" enabled="true" />
+      <repository location="http://www.elexis.ch/ungrad2018/p2/elexis-base/latest" enabled="true" />
    </repositories>
 
    <preferencesInfo>
