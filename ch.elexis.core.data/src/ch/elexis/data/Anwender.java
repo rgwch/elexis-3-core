@@ -236,7 +236,7 @@ public class Anwender extends Person {
 			return false;
 		}
 		
-		if (!username.equals(user.get(FLD_ID))) {
+		if (!username.toLowerCase().equals(user.get(FLD_ID))) {
 			return false;
 		}
 		
