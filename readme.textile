@@ -1,4 +1,19 @@
-h1. Elexis 3 Core Repository
+h1. Ungrad fork of the elexis-3-core repository
+
+* Branch ungrad2018 is closely coupled to branch 3.4 of the original repository.
+* Branch ungrad is loosely coupled to branch 3.1 of the original repository.
+
+
+Main differences:
+
+* username is case insensitive (since I feel it's useless and error prone to have a 'Username' and a 'username' who refer to different persons). (pending)
+
+* change databases on login is possible (to avoid automatic connect -and possibly modify- the productive database with a test case.) (pending)
+
+* Consultations can be ordered by creation time, not only by date. (since the necessity to create more than one consultation entry per day increased with the latest tarmed revision) (planned)
+
+----
+
 
 <a href="https://gitlab.medelexis.ch/elexis/elexis-3-core/commits/master"><img alt="build status" src="https://gitlab.medelexis.ch/elexis/elexis-3-core/badges/master/build.svg" /></a>
 

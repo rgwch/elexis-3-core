@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?pde version="3.5"?>
 
-<product name="Elexis Ungrad" uid="ch.elexis.core.application.ElexisApp" id="ch.elexis.core.application.product" application="org.eclipse.e4.ui.workbench.swt.E4Application" version="3.4.0.qualifier" useFeatures="true" includeLaunchers="true">
+<product name="Elexis Ungrad" uid="ch.elexis.core.application.ElexisApp" id="ch.elexis.core.application.product" application="ch.elexis.core.application.ElexisApp" version="3.4.0.qualifier" useFeatures="true" includeLaunchers="true">
 
    <aboutInfo>
       <image path="/ch.elexis.core.application/rsc/elexis48.png"/>
@@ -29,13 +29,11 @@
    <launcher name="Elexis3">
       <linux icon="rsc/elexis48.xpm"/>
       <macosx icon="rsc/elexis-mac.icns"/>
-      <solaris/>
       <win useIco="true">
          <ico path="rsc/elexis.ico"/>
          <bmp/>
       </win>
    </launcher>
-
 
    <vm>
       <linux include="false">org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8</linux>
