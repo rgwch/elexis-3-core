@@ -433,7 +433,7 @@ public class DBUpdate {
 			FILE_LOCATED,
 			// 3.4.2
 			"UPDATE user_ SET `id` = LOWER(`id`);"+
-			ALTER_TABLE+Konsultation.TABLENAME+ADD+Konsultation.FLD_TIME+" CHAR(6);"
+			ALTER_TABLE+Konsultation.TABLENAME+ADD+Konsultation.FLD_TIME+" CHAR(8);"
 			};
 	//@formatter:on
 	
