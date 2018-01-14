@@ -2747,6 +2747,8 @@ public abstract class PersistentObject implements IPersistentObject {
 	 * @since 3.1
 	 */
 	public static byte[] flattenObject(final Object object){
+		return Blob.flattenObject(object);
+		/*
 		try {
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
 			ZipOutputStream zos = new ZipOutputStream(baos);
@@ -2760,6 +2762,7 @@ public abstract class PersistentObject implements IPersistentObject {
 			ExHandler.handle(ex);
 			return null;
 		}
+		*/
 	}
 	
 	/**
@@ -2817,6 +2820,8 @@ public abstract class PersistentObject implements IPersistentObject {
 	 * @return the original Hashtable or null if no Hashtable could be created from the array
 	 */
 	public static Object foldObject(final byte[] flat, IClassResolver resolver){
+		return Blob.foldObject(flat);
+		/*
 		if (flat.length == 0) {
 			return null;
 		}
@@ -2843,6 +2848,7 @@ public abstract class PersistentObject implements IPersistentObject {
 			log.error("Error unfolding object", ex);
 			return null;
 		}
+		*/
 	}
 	
 	/**

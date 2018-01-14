@@ -588,6 +588,23 @@ public class Kontakt extends PersistentObject {
 		String v;
 		int c;
 		
+		
+		public String getV(){
+			return v;
+		}
+
+		public void setV(String v){
+			this.v = v;
+		}
+
+		public int getC(){
+			return c;
+		}
+
+		public void setC(int c){
+			this.c = c;
+		}
+
 		public statL(){}
 		
 		statL(String vv){
