@@ -519,14 +519,14 @@
        point="org.eclipse.core.runtime.products">
     <product
           application="ch.elexis.core.application.ElexisApp"
-          name="Elexis OpenSource">
+          name="Elexis Ungrad 2018">
        <property
              name="windowImages"
              value="rsc/elexis2_16.gif,rsc/elexis32_2.gif,rsc/elexis48.gif">
        </property>
        <property
              name="aboutText"
-             value="Elexis 3.3 - www.elexis.info">
+             value="Elexis Ungrad - http://www.elexis.ch/ungrad">
        </property>
        <property
              name="aboutImage"
@@ -534,7 +534,7 @@
        </property>
        <property
              name="appName"
-             value="Elexis OpenSource">
+             value="Elexis Ungrad">
        </property>
        <property
         name="rendererFactoryUri"
