@@ -53,6 +53,7 @@ import com.tiff.common.ui.datepicker.DatePickerCombo;
 import com.tiff.common.ui.datepicker.EnhancedDatePickerCombo;
 
 import ch.elexis.admin.AccessControlDefaults;
+import ch.elexis.admin.RoleBasedAccessControl;
 import ch.elexis.core.constants.Preferences;
 import ch.elexis.core.data.activator.CoreHub;
 import ch.elexis.core.data.events.ElexisEventDispatcher;
@@ -844,7 +845,7 @@ public class FallDetailBlatt2 extends Composite implements IUnlockable {
 			}
 		}
 		
-		boolean enable = lockEnabled && (allowFieldUpdate || invoiceCorrection);
+		boolean enable = (lockEnabled && (allowFieldUpdate || invoiceCorrection)) || CoreHub.acl.request(AccessControlDefaults.CASE_MODIFY_SPECIALS) ;
 		
 		tBezeichnung.setEditable(lockEnabled);
 		
