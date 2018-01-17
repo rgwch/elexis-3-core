@@ -16,6 +16,10 @@ cd elexis-3-core
 
 <http://www.elexis.ch/ungrad2018/products/elexis-core/latest/>
 
+## Jenkins Build history
+
+<http://www.elexis.ch:8080/>
+
 ## Main differences to elexis/elexis-3-core
 
 * Modified Login Dialog
