@@ -24,6 +24,8 @@ cd elexis-3-core
 
 * store consultation time in table elexis.behandlungen
 
+* User with appropiate privileges can always modify case Details (Falldetails) 
+
 * modified extinfo fields
 
 * more user feedback on long running operations
