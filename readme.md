@@ -16,6 +16,10 @@ cd elexis-3-core
 
 <http://www.elexis.ch/ungrad2018/products/elexis-core/latest/>
 
+## Jenkins Build history
+
+<http://www.elexis.ch:8080/>
+
 ## Main differences to elexis/elexis-3-core
 
 * Modified Login Dialog
@@ -23,6 +27,8 @@ cd elexis-3-core
 * Case-insensitive usernames
 
 * store consultation time in table elexis.behandlungen
+
+* User with appropiate privileges can always modify case Details (Falldetails) 
 
 * modified extinfo fields
 
