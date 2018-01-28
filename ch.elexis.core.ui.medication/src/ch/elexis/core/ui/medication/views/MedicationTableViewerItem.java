@@ -44,9 +44,9 @@ public class MedicationTableViewerItem {
 	private String rezeptId;
 	private String sortOrder;
 	private String prescriptorId;
+	private String artikelLabel;
 	
 	// lazy computed
-	private String artikelLabel;
 	private Object lastDisposed;
 	private String prescriptorLabel;
 	private String stopReason;
@@ -57,7 +57,7 @@ public class MedicationTableViewerItem {
 	
 	private Date endTime;
 	
-	private MedicationTableViewerItem(Prescription p, StructuredViewer viewer){
+	public MedicationTableViewerItem(Prescription p, StructuredViewer viewer){
 		this.viewer = viewer;
 		String[] values = p.get(false, Prescription.FLD_ARTICLE_ID, Prescription.FLD_ARTICLE,
 			Prescription.FLD_DOSAGE,
@@ -163,12 +163,28 @@ public class MedicationTableViewerItem {
 	
 	public String getArtikelLabel(){
 		if (artikelLabel == null) {
-			if (!resolved && !resolving) {
-				resolving = true;
-				executorService.execute(new ResolveLazyFieldsRunnable(viewer, this));
+			
+		if (artikelStoreToString != null && !artikelStoreToString.isEmpty()) {
+			Artikel artikel =
+				(Artikel) CoreHub.poFactory.createFromString(artikelStoreToString);
+			if (artikel == null) {
+				artikelLabel = "?";
+			} else {
+				artikelLabel = artikel.getLabel();
 			}
+		} else if (artikelId != null && artikelId.isEmpty()) {
+			Artikel artikel = Artikel.load(artikelId);
+			if (artikel != null && artikel.exists()) {
+				artikelLabel = artikel.getLabel();
+			} else {
+				artikelLabel = "?";
+			}
+		} else {
+			artikelLabel = "?";
+		}
 		}
 		return artikelLabel != null ? artikelLabel : "...";
+		
 	}
 	
 	public void setOrder(String i){
@@ -223,7 +239,7 @@ public class MedicationTableViewerItem {
 		@Override
 		public void run(){
 			resolveImage();
-			resolveArticleLabel();
+			// resolveArticleLabel();
 			resolveLastDisposed();
 			resolveStopReason();
 			resolvePrescriptorLabel();
@@ -250,24 +266,7 @@ public class MedicationTableViewerItem {
 		}
 		
 		private void resolveArticleLabel(){
-			if (item.artikelStoreToString != null && !item.artikelStoreToString.isEmpty()) {
-				Artikel artikel =
-					(Artikel) CoreHub.poFactory.createFromString(item.artikelStoreToString);
-				if (artikel == null) {
-					item.artikelLabel = "?";
-				} else {
-					item.artikelLabel = artikel.getLabel();
-				}
-			} else if (item.artikelId != null && !item.artikelId.isEmpty()) {
-				Artikel artikel = Artikel.load(item.artikelId);
-				if (artikel != null && artikel.exists()) {
-					item.artikelLabel = artikel.getLabel();
-				} else {
-					item.artikelLabel = "?";
-				}
-			} else {
-				item.artikelLabel = "?";
-			}
+			
 		}
 		
 		private void resolveImage(){

@@ -78,6 +78,10 @@ import ch.elexis.data.Rezept;
 import ch.elexis.data.Verrechnet;
 import ch.rgw.tools.TimeTool;
 
+/**
+ * Inhalt des Fensters "Medikationsliste"
+ *
+ */
 public class MedicationComposite extends Composite
 		implements ISelectionProvider, ISelectionChangedListener {
 	
@@ -131,7 +135,7 @@ public class MedicationComposite extends Composite
 	private IProgressService progressService;
 	
 	/**
-	 * Create the composite.
+	 * Rahmen-Composite
 	 * 
 	 * @param parent
 	 * @param style
@@ -140,8 +144,9 @@ public class MedicationComposite extends Composite
 	public MedicationComposite(Composite parent, int style, IWorkbenchPartSite partSite){
 		super(parent, style);
 		setLayout(new GridLayout(1, false));
-		
+		// Suchfeld (für History)
 		searchFilterComposite();
+		// Tabelle mit den Medikamenten
 		medicationTableComposite(partSite);
 		stateComposite();
 		medicationDetailComposite();
@@ -153,6 +158,9 @@ public class MedicationComposite extends Composite
 			new DropMedicationReceiver(getShell()));
 	}
 	
+	/*"
+	 *  Suchfeld, das oben erscheint, wenn "History"-Modus aktiv ist
+	 */
 	private void searchFilterComposite(){
 		compositeSearchFilter = new Composite(this, SWT.NONE);
 		compositeSearchFilter.setLayout(new GridLayout(2, false));
@@ -184,6 +192,10 @@ public class MedicationComposite extends Composite
 		medicationHistoryFilter.setSearchText("");
 	}
 	
+	/**
+	 * Medikamentenliste
+	 * @param partSite
+	 */
 	private void medicationTableComposite(IWorkbenchPartSite partSite){
 		tablesComposite = new Composite(this, SWT.NONE);
 		tablesComposite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
@@ -296,6 +308,9 @@ public class MedicationComposite extends Composite
 		return false;
 	}
 	
+	/**
+	 * Unteres Feld mit den Dosoierungen (erscheint wenn ein Medikament markiert ist)
+	 */
 	private void medicationDetailComposite(){
 		compositeMedicationDetail = new Composite(this, SWT.BORDER);
 		GridLayout gl_compositeMedicationDetail = new GridLayout(6, false);
@@ -596,6 +611,9 @@ public class MedicationComposite extends Composite
 		
 	}
 	
+	/**
+	 * Änderung (Dosierung/Stop) an einer Medikationszeile speichern
+	 */
 	private void applyDetailChanges(){
 		MedicationTableViewerItem pres = (MedicationTableViewerItem) selectedMedication.getValue();
 		if (pres == null)

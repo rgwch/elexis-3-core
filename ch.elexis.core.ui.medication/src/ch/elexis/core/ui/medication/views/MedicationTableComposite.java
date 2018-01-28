@@ -29,6 +29,11 @@ import ch.elexis.core.data.events.ElexisEventDispatcher;
 import ch.elexis.core.model.IPersistentObject;
 import ch.elexis.data.Prescription;
 
+/**
+ * Composite, das die Medikemtentabelle in @see MedicationView aufnimmt.
+ * 
+ *
+ */
 public class MedicationTableComposite extends Composite {
 	
 	private static Logger log = LoggerFactory.getLogger(MedicationTableComposite.class);
