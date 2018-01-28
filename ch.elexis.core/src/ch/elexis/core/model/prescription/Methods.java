@@ -1,3 +1,5 @@
+// plugin ch.elexis.core -> ch.elexis.core.model.prescription
+
 package ch.elexis.core.model.prescription;
 
 import java.util.Arrays;
