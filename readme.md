@@ -32,7 +32,9 @@ cd elexis-3-core
 
 * modified extinfo fields
 
-* more user feedback on long running operations
+* medication ui:
+  * a bit more responsive
+  * more user feed back on long running operations
 
 ## See also
 
