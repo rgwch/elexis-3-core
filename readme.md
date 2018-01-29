@@ -35,6 +35,9 @@ cd elexis-3-core
 * medication ui:
   * a bit more responsive
   * more user feed back on long running operations
+  
+* Artikelliste: 
+   * Blackbox-Filter
 
 ## See also
 
