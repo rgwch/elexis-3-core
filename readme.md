@@ -26,8 +26,6 @@ cd elexis-3-core
 
 * Case-insensitive usernames
 
-* store consultation time in table elexis.behandlungen
-
 * User with appropiate privileges can always modify case Details (Falldetails) 
 
 * modified extinfo fields
@@ -38,6 +36,10 @@ cd elexis-3-core
   
 * Artikelliste: 
    * Blackbox-Filter
+  
+* Database
+    * ID fields changed to 36 Chars (RFC 4122 UUIDv4)
+    * Time-Field in "Behandlungen" - allows for better sorting od same-day consultations
 
 ## See also
 
