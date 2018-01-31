@@ -1,3 +1,109 @@
+#/*******************************************************************************
+# * Copyright (c) 2005-2018, G. Weirich and Elexis
+# * All rights reserved. This program and the accompanying materials
+# * are made available under the terms of the Eclipse Public License v1.0
+# * which accompanies this distribution, and is available at
+# * http://www.eclipse.org/legal/epl-v10.html
+# *
+# * Contributors:
+# *    G. Weirich - initial implementation
+# *    
+# *******************************************************************************
+
+# Universelles create-Script für Elexis.
+# Wird von JdbcLink automatisch für mySQL, hsqldb und PostgreSQL angepasst
+# Bei mySQL und PostgreSQL: Database Elexis muss schon existieren, darf aber
+# noch keine Tabellen enthalten.
+# ---------------------------------------------
+# This script can create the elexis database on mysql, hsql and postresql servers
+# Tha database should exist already, but should not contain any tables.
+#
+# WARNING: The database layout is internal to elexis and must not be assumed stable.
+# Fields can be omitted or changed between versions.
+# Access to persistent data has to be done via the API (ch.elexis.data.PersistentObject)
+
+
+# Table for all kinds of contact information (Patients, Relations, Labs)
+CREATE TABLE KONTAKT(
+	ID				VARCHAR(36) primary key,	# UUIDv4 RFC 4122 /OR/ legacy Elexis StringTool.unique()
+	lastupdate      BIGINT,                     # timestamp of last update
+	deleted			CHAR(1) default '0',		# indicates that this object is marked deleted
+	istOrganisation	CHAR(1) default '0',		# this object is an organization 
+	istPerson		CHAR(1) default '0',		# this object is a person
+	istPatient		CHAR(1)	default '0',		# is a patient
+	istAnwender		CHAR(1) default '0',		# is an elexis user
+	istMandant	    CHAR(1) default '0',		# is an elexis mandator
+	istLabor		CHAR(1)	default '0',		# is a lab
+	Land			CHAR(3),					# country as ISO code
+	Geburtsdatum	CHAR(8),					# bithdate as yyyymmdd (ISO 8601 compliant)
+	Geschlecht		CHAR(1),					# sex m or w
+	TITEL			VARCHAR(255),				# title
+	TitelSuffix		VARCHAR(255),				# title suffix
+	Bezeichnung1	VARCHAR(50),				# name1
+	Bezeichnung2	VARCHAR(255),				# name2
+	Bezeichnung3	VARCHAR(255),				# name3
+	Strasse			VARCHAR(255),				# street
+	plz				VARCHAR(6),					# zip-code
+	Ort				VARCHAR(255),				# place (possibly Llanfairpwllgwyngyllgogerychwyrndrobwllllantysiliogogogoch)
+	Telefon1		VARCHAR(255),				# phone1
+	Telefon2		VARCHAR(255),				# phone2
+	fax				VARCHAR(255),				# you'll guess it
+	NatelNr			VARCHAR(255),				# mobile
+	EMail			VARCHAR(255),				# guess 
+	Website			VARCHAR(255),
+	gruppe			VARCHAR(10),				# mandator group
+	patientnr		VARCHAR(40),				# external identifier
+	anschrift		TEXT,						# postal (address sticker)
+	bemerkung		TEXT,						# remarks
+	diagnosen		BLOB,						# diagnoses	
+	persanamnese	BLOB,						# anamnesis
+	sysanamnese		BLOB,						# deprecated, do not use
+	famanamnese	    BLOB,						# deprecated, do not use
+	risiken			TEXT,						# risk factors
+	allergien		TEXT,						# allergies
+	extinfo			BLOB						# other informations (Hashtable)
+);
+
+CREATE INDEX k0 ON KONTAKT(Bezeichnung1);
+
+
+# Verbindung von Kontakten zu Adressbezügen mit einem
+# BezugsTEXT
+CREATE TABLE KONTAKT_ADRESS_JOINT(
+	ID			VARCHAR(36) primary key,
+	lastupdate  BIGINT,
+	deleted		CHAR(1) default '0',
+	myid		VARCHAR(36),					# ID of a KONTAKT 
+	otherid		VARCHAR(36),					# ID of a KONTAKT that ist related to myID
+	bezug		VARCHAR(255),					# Description of the relationship
+	myRType		CHAR(4),						# My formal relationship type
+	otherRType	CHAR(4)							# Other formal relationship type
+);
+
+CREATE INDEX aij1 on KONTAKT_ADRESS_JOINT (myId);
+
+# Ein Fall ist eine benannte Serie von Behandlungen, welche demselben
+# Patienten und demselben Garanten zugeordnet werden. (Aber nicht
+# notwendigerweise demselben Mandanten)
+CREATE TABLE FAELLE(
+	id				VARCHAR(36) primary key,		# UUID
+	lastupdate      BIGINT,                         # timestamp of last write operation
+	deleted			CHAR(1) default '0',			# indicates that this object is marked deleted
+	patientid		VARCHAR(36),					# foreign key from 'KONTAKT' -> patient
+	garantid		VARCHAR(36),					# foreign key from 'KONTAKT' -> bill receiver 
+	kostentrid		VARCHAR(36),					# foreign key from 'KONTAKT' -> insurance
+	versnummer		VARCHAR(25),					# deprecated, do not use
+	fallnummer		VARCHAR(25),					# deprecated, do not use
+	betriebsnummer	VARCHAR(25),					# deprecated, do not use
+	diagnosen		VARCHAR(255),					# diagnoses related to this case
+	datumvon		CHAR(8),						# date of beginning
+	datumbis		CHAR(8),						# end date
+	bezeichnung		VARCHAR(80),					# title of the case
+	grund			VARCHAR(255),					# reason for treatment
+	gesetz			VARCHAR(20),					# deprecated, do not use
+	Status			VARCHAR(80),					# deprecated, do not use
+	ExtInfo			BLOB							# additional informations (hashtable)
+);
 
 CREATE INDEX i3 on FAELLE (PatientID);
 
@@ -10,7 +116,6 @@ CREATE TABLE BEHANDLUNGEN(
 	mandantid		VARCHAR(36),					# foreign key from KONTAKT -> mandator
 	rechnungsid		VARCHAR(36),					# foreign key from RECHNUGNEN -> bill
 	datum			CHAR(8),						# date of treatment as ISO 8601 (YYYYMMDD)
-	zeit			CHAR(8),						# time of treatment as HH:MM:SS
 	diagnosen		VARCHAR(25),					# diagnoses
 	leistungen		VARCHAR(25),					# deprecated, do not use.
 	eintrag			BLOB							# treatment text (as VersionedResource)
@@ -27,7 +132,7 @@ CREATE TABLE ARTIKEL(
 	subid			VARCHAR(20),                    # an ID depending of the type (e.g. Pharmacode)
 	lieferantid		VARCHAR(36),                    # foreign key from KONTAKT -> dealer
 	Klasse			VARCHAR(80),					# class of the objects representing this article
-	Name			VARCHAR(254),					# official name
+	Name			VARCHAR(80),					# official name
 	Name_intern		VARCHAR(254),					# internal name
 	maxbestand		CHAR(4),						# max number to hold on stock
 	minbestand		CHAR(4),						# min number on stock before ordering
@@ -75,8 +180,8 @@ CREATE INDEX PAJ2 on PATIENT_ARTIKEL_JOINT(REZEPTID);
 
 CREATE TABLE ARTIKEL_DETAILS(   
     ARTICLE_ID      VARCHAR(36),                    # foreign key from ARTIKEL                     
-    notes           TEXT,   	                    # informations or usage of the article
-    image           BLOB   	    	                # an image or other binary data
+    notes           TEXT, 		                    # informations or usage of the article
+    image           BLOB     	              	    # an image or other binary data
 );
 
 # Das Konto ist eine Liste sämtlicher Forderungen und Zahlungen
@@ -151,7 +256,7 @@ CREATE TABLE DIAGNOSEN(
 	lastupdate      BIGINT,
 	deleted			CHAR(1) default '0',
 	DG_TXT			VARCHAR(255),
-	DG_CODE			VARCHAR(255),
+	DG_CODE			VARCHAR(80),
 	KLASSE			VARCHAR(80)
 );
 
@@ -492,8 +597,8 @@ CREATE TABLE XID(
 	deleted		CHAR(1) default '0',
 	type		VARCHAR(80),				# class of the object
 	object		VARCHAR(36),				# ID of the object
-	domain		VARCHAR(255),				# Domain of the XID used
-	domain_id	VARCHAR(255),				# ID of the object within that domain
+	domain		VARCHAR(80),				# Domain of the XID used
+	domain_id	VARCHAR(80),				# ID of the object within that domain
 	quality		CHAR(1) default '0'			# Assignment tag of the XID
 );
 CREATE INDEX XIDIDX1 on XID(domain);
@@ -560,7 +665,7 @@ CREATE TABLE STOCK_ENTRY (
 	LASTUPDATE BIGINT DEFAULT NULL,
 	DELETED CHAR(1) DEFAULT '0',
 	STOCK VARCHAR(36) NOT NULL,
-	ARTICLE_TYPE VARCHAR(255) NOT NULL,
+	ARTICLE_TYPE VARCHAR(80) NOT NULL,
 	ARTICLE_ID VARCHAR(36) NOT NULL, 
 	MIN INTEGER DEFAULT 0, 
 	CURRENT INTEGER DEFAULT 0, 
@@ -603,114 +708,6 @@ CREATE TABLE BESTELLUNG_ENTRY (
 ALTER TABLE BESTELLUNG_ENTRY 
 	ADD CONSTRAINT FK_BESTELLUNG_ENTRY_BESTELLUNG_ID FOREIGN KEY (BESTELLUNG) REFERENCES BESTELLUNGEN (ID);
 
-CREATE TABLE ZUSATZADRESSE (
-	ID       	VARCHAR(41) NOT NULL,
- 	LASTUPDATE 	BIGINT DEFAULT NULL,
-  	DELETED 	CHAR(1) DEFAULT '0',
-	Kontakt_ID		VARCHAR(36)  NOT NULL,
-	STRASSE1		VARCHAR(255),
-	STRASSE2		VARCHAR(255),
-	PLZ				VARCHAR(6),		
-	ORT				VARCHAR(255),
-	LAND			CHAR(3),			
-	TYP 			CHAR(4) DEFAULT '0',
-	Anschrift		TEXT,
-	PRIMARY KEY (ID)
-	
-);
 
-CREATE TABLE ROLE (
-  ID VARCHAR(36) NOT NULL,
-  LASTUPDATE BIGINT DEFAULT NULL,
-  DELETED CHAR(1) DEFAULT '0',
-  EXTINFO BLOB,
-  ISSYSTEMROLE CHAR(1) DEFAULT '0',
-  PRIMARY KEY (ID)
-);
- 
-INSERT INTO ROLE (ID, ISSYSTEMROLE) VALUES ('user', '1');
-INSERT INTO ROLE (ID, ISSYSTEMROLE) VALUES ('user_external', '1');
-INSERT INTO ROLE (ID, ISSYSTEMROLE) VALUES ('executive_doctor', '1');
-INSERT INTO ROLE (ID, ISSYSTEMROLE) VALUES ('doctor', '1');
-INSERT INTO ROLE (ID, ISSYSTEMROLE) VALUES ('assistant', '1');
-INSERT INTO ROLE (ID, ISSYSTEMROLE) VALUES ('patient', '1');
-
-CREATE TABLE USER_ROLE_JOINT (
-  ID VARCHAR(36) NOT NULL,
-  LASTUPDATE BIGINT DEFAULT NULL,
-  DELETED CHAR(1) DEFAULT NULL,
-  USER_ID VARCHAR(36) NOT NULL,
-  PRIMARY KEY (ID, USER_ID)
-);
-
-# We must not name the table RIGHT, as this is an SQL keyword
-CREATE TABLE RIGHT_ (
-  ID VARCHAR(36) NOT NULL, 				# from ACE#getUniqueHashFromACE()
-  LASTUPDATE BIGINT DEFAULT NULL,
-  DELETED CHAR(1) DEFAULT '0',
-  LOG_EXECUTION CHAR(1),
-  NAME VARCHAR(256),
-  PARENTID VARCHAR(36),
-  I18N_NAME VARCHAR(256),
-  PRIMARY KEY (ID)
-);
-
-INSERT INTO RIGHT_ (ID, NAME, PARENTID) VALUES ('root', 'root', '');
-
-# Join the roles with the rights
-CREATE TABLE ROLE_RIGHT_JOINT (
-  ID VARCHAR(36) NOT NULL,
-  LASTUPDATE BIGINT DEFAULT NULL,
-  DELETED CHAR(1) DEFAULT NULL,
-  ROLE_ID VARCHAR(36) NOT NULL,
-  PRIMARY KEY (ID, ROLE_ID)
-);
-
-# We prepare a view to join the rights of a user for easy querying
-CREATE OR REPLACE VIEW RIGHTS_PER_ROLE AS SELECT 
-	r.ID AS ROLE_ID, ri.ID AS RIGHT_ID
-FROM 
-	ROLE r
-	LEFT JOIN ROLE_RIGHT_JOINT rrj
-		ON r.ID = rrj.ROLE_ID
-	LEFT JOIN RIGHT_ ri
-		ON rrj.ID = ri.ID
-ORDER BY r.ID;
-
-CREATE TABLE USER_ (
-  ID VARCHAR(36) NOT NULL,				# the username is the id
-  DELETED CHAR(1) DEFAULT '0',
-  KONTAKT_ID VARCHAR(36),				# foreign key to contact table
-  LASTUPDATE BIGINT,
-  HASHED_PASSWORD VARCHAR(64),			# Currently SHA-256
-  SALT VARCHAR(64),						# The SALT used for SHA256_PASSWORD hash
-  IS_ACTIVE CHAR(1) DEFAULT '1', 		# Is this account currently active? If not, any log-in is to be prohibited.
-  IS_ADMINISTRATOR CHAR(1) DEFAULT '0',	# User is an administrator
-  KEYSTORE TEXT,						# For key based authentication or signature purposes
-  EXTINFO BLOB,
-  PRIMARY KEY (ID)
-);
-
-# default password is 'administrator'
-# http://java.dzone.com/articles/secure-password-storage-lots
-INSERT INTO USER_ (ID, IS_ADMINISTRATOR, SALT, HASHED_PASSWORD) 
-	VALUES ('Administrator', '1', '1254bb9a05856b9e', 'b94a0b6fc7be97e0a1585ac85e814d3852668968');
-
-# We prepare a view to join the rights of a user for easy querying
-CREATE OR REPLACE VIEW RIGHTS_PER_USER AS SELECT 
-	u.ID AS USER_ID, ri.ID AS RIGHT_ID, ri.NAME AS RIGHT_NAME
-FROM 
-	USER_ u
-	LEFT JOIN USER_ROLE_JOINT urj 
-		ON u.ID = urj.USER_ID
-	LEFT JOIN ROLE r
-		ON urj.ID = r.ID
-	LEFT JOIN ROLE_RIGHT_JOINT rrj
-		ON r.ID = rrj.ROLE_ID
-	LEFT JOIN RIGHT_ ri
-		ON rrj.ID = ri.ID
-ORDER BY u.ID;
-
-	
-INSERT INTO CONFIG (param,wert) VALUES ('dbversion','3.5.0');
-INSERT INTO CONFIG (param,wert) VALUES ('ElexisVersion','3.4.0');
+INSERT INTO CONFIG (param,wert) VALUES ('dbversion','3.2.5');
+INSERT INTO CONFIG (param,wert) VALUES ('ElexisVersion','3.2.0');
