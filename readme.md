@@ -20,6 +20,13 @@ cd elexis-3-core
 
 <http://www.elexis.ch:8080/>
 
+## Upgrade database
+
+If upgrading from ungrad (2016), read [here](http://www.elexis.ch/ungrad/reference/update_34/) (or try your luck after making a backup - it might run automatically).
+
+If upgrading/transgrading from Legacy-Elexis: Apply the SQL Script `ch.elexis.core.data - rsc/apply_ungrad2018_db.sql`
+This should not break compatibility. It just adds some ungrad specific extensions.
+
 ## Main differences to elexis/elexis-3-core
 
 * Modified Login Dialog
@@ -36,10 +43,14 @@ cd elexis-3-core
   
 * Artikelliste: 
    * Blackbox-Filter
+   * substance filter
+   * ability to import only pharma or non-pharma articles or both.
+   * display of contianed substances for pharma-articles.
   
 * Database
     * ID fields changed to 36 Chars (RFC 4122 UUIDv4)
     * Time-Field in "Behandlungen" - allows for better sorting od same-day consultations
+    * time field in Behandlungen.
 
 ## See also
 
