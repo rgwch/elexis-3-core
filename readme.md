@@ -24,8 +24,8 @@ cd elexis-3-core
 
 If upgrading from ungrad (2016), read [here](http://www.elexis.ch/ungrad/reference/update_34/) (or try your luck after making a backup - it might run automatically).
 
-If upgrading/transgrading from Legacy-Elexis: Apply the SQL Script `ch.elexis.core.data - rsc/apply_ungrad2018_db.sql`
-This should not break compatibility. It just adds some ungrad specific extensions.
+If upgrading/transgrading from Legacy-Elexis: Apply the SQL Script `ch.elexis.core.data - rsc/dbScripts/apply_ungrad2018_db.sql`
+This should not break compatibility. It just adds some ungrad specific extensions. Applying it several times also won't hurt.
 
 ## Main differences to elexis/elexis-3-core
 
