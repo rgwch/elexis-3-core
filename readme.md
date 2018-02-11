@@ -46,6 +46,7 @@ This should not break compatibility. It just adds some ungrad specific extension
    * substance filter
    * ability to import only pharma or non-pharma articles or both.
    * display of contianed substances for pharma-articles.
+   * Replace "Mepha Sorter" with a more generic "Preferred Provider Sorter"
   
 * Database
     * ID fields changed to 36 Chars (RFC 4122 UUIDv4)
