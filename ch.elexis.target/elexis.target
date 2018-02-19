@@ -1,6 +1,65 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?pde version="3.8"?><target name="Elexis" sequenceNumber="1510846812">
+<?pde version="3.8"?><target name="Elexis" sequenceNumber="1510846824">
 <locations>
+<location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="slicer" includeSource="true" type="InstallableUnit">
+<unit id="au.com.bytecode.opencsv" version="2.4.0"/>
+<unit id="bcprov" version="1.46.0"/>
+<unit id="bouncycastle.bcmail-jdk14" version="138.0.0"/>
+<unit id="bouncycastle.bcprov-jdk14" version="138.0.0"/>
+<unit id="ca.uhn.hapi.fhir.hapi-fhir-base" version="3.2.0"/>
+<unit id="ca.uhn.hapi.fhir.hapi-fhir-client" version="3.2.0"/>
+<unit id="ca.uhn.hapi.fhir.hapi-fhir-structures-dstu2" version="3.2.0"/>
+<unit id="ca.uhn.hapi.fhir.hapi-fhir-utilities" version="3.2.0"/>
+<unit id="com.fasterxml.jackson.core.jackson-annotations" version="2.7.0"/>
+<unit id="com.fasterxml.jackson.core.jackson-core" version="2.7.4"/>
+<unit id="com.fasterxml.jackson.core.jackson-databind" version="2.7.4"/>
+<unit id="com.google.code.findbugs.jsr305" version="1.3.9"/>
+<unit id="com.google.errorprone.error_prone_annotations" version="2.0.18"/>
+<unit id="com.google.gson" version="2.8.1"/>
+<unit id="com.google.guava" version="23.0.0"/>
+<unit id="com.google.j2objc.annotations" version="1.1.0"/>
+<unit id="com.hazelcast" version="3.6.3"/>
+<unit id="com.healthmarketscience.jackcess" version="2.1.4"/>
+<unit id="com.lowagie.itext" version="2.0.8"/>
+<unit id="com.sun.jna" version="3.0.9"/>
+<unit id="io.netty.buffer" version="4.1.1.Final"/>
+<unit id="io.netty.codec" version="4.1.1.Final"/>
+<unit id="io.netty.codec-dns" version="4.1.1.Final"/>
+<unit id="io.netty.codec-http" version="4.1.1.Final"/>
+<unit id="io.netty.codec-http2" version="4.1.1.Final"/>
+<unit id="io.netty.codec-socks" version="4.1.1.Final"/>
+<unit id="io.netty.common" version="4.1.1.Final"/>
+<unit id="io.netty.handler" version="4.1.1.Final"/>
+<unit id="io.netty.handler-proxy" version="4.1.1.Final"/>
+<unit id="io.netty.resolver" version="4.1.1.Final"/>
+<unit id="io.netty.resolver-dns" version="4.1.1.Final"/>
+<unit id="io.netty.transport" version="4.1.1.Final"/>
+<unit id="io.vertx.core" version="3.3.0"/>
+<unit id="io.vertx.hazelcast" version="3.3.0"/>
+<unit id="io.vertx.web" version="3.3.0"/>
+<unit id="jcl.over.slf4j" version="1.7.25"/>
+<unit id="jfree.chart-swt" version="1.0.9"/>
+<unit id="jfree.jcommon" version="1.0.16"/>
+<unit id="junit" version="4.12.0"/>
+<unit id="org.apache.commons.codec" version="1.10.0"/>
+<unit id="org.apache.commons.io" version="2.5.0"/>
+<unit id="org.apache.commons.lang" version="2.6.0"/>
+<unit id="org.apache.commons.lang3" version="3.6.0"/>
+<unit id="org.apache.commons.logging" version="1.2.0"/>
+<unit id="org.apache.httpcomponents.httpclient" version="4.5.3"/>
+<unit id="org.apache.httpcomponents.httpcore" version="4.4.6"/>
+<unit id="org.codehaus.mojo.animal-sniffer-annotations" version="1.14.0"/>
+<unit id="org.hamcrest.core" version="1.3.0"/>
+<unit id="org.jdom" version="1.1.3"/>
+<unit id="org.jfree.chart" version="1.0.17"/>
+<unit id="org.jfree.jcommon" version="1.0.21"/>
+<unit id="org.odftoolkit.odfdom-java" version="0.8.6"/>
+<unit id="slf4j.api" version="1.7.25"/>
+<unit id="vertx-auth-common" version="3.3.0"/>
+<unit id="xerces.Impl" version="2.9.1"/>
+<unit id="xml-apis" version="1.3.4"/>
+<repository location="http://www.elexis.ch/ungrad2018/p2/dependencies/latest/"/>
+</location>
 <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="slicer" includeSource="true" type="InstallableUnit">
 <unit id="ag.ion.bion.workbench.office.editor.activation" version="2.0.14"/>
 <unit id="ag.ion.bion.workbench.office.editor.activation.nl1" version="2.0.14"/>
@@ -37,24 +96,6 @@
 <unit id="c3p0" version="0.9.1.1"/>
 <unit id="c3p0.source" version="0.9.1.1"/>
 <unit id="ca.odell.glazedlists" version="1.9.0.v201303080712"/>
-<unit id="ca.uhn.hapi.osgi-base" version="1.2.0"/>
-<unit id="ca.uhn.hapi.osgi-base.source" version="1.2.0"/>
-<unit id="ca.uhn.hapi.structures-v21" version="1.2.0"/>
-<unit id="ca.uhn.hapi.structures-v21.source" version="1.2.0"/>
-<unit id="ca.uhn.hapi.structures-v22" version="1.2.0"/>
-<unit id="ca.uhn.hapi.structures-v22.source" version="1.2.0"/>
-<unit id="ca.uhn.hapi.structures-v23" version="1.2.0"/>
-<unit id="ca.uhn.hapi.structures-v23.source" version="1.2.0"/>
-<unit id="ca.uhn.hapi.structures-v231" version="1.2.0"/>
-<unit id="ca.uhn.hapi.structures-v231.source" version="1.2.0"/>
-<unit id="ca.uhn.hapi.structures-v24" version="1.2.0"/>
-<unit id="ca.uhn.hapi.structures-v24.source" version="1.2.0"/>
-<unit id="ca.uhn.hapi.structures-v25" version="1.2.0"/>
-<unit id="ca.uhn.hapi.structures-v25.source" version="1.2.0"/>
-<unit id="ca.uhn.hapi.structures-v251" version="1.2.0"/>
-<unit id="ca.uhn.hapi.structures-v251.source" version="1.2.0"/>
-<unit id="ca.uhn.hapi.structures-v26" version="2.2.0"/>
-<unit id="ca.uhn.hapi.structures-v26.source" version="2.2.0"/>
 <unit id="cal10n.api" version="0.7.4"/>
 <unit id="cal10n.api.source" version="0.7.4"/>
 <unit id="cglib.nodep" version="2.2.2"/>
@@ -105,7 +146,6 @@
 <unit id="findbugsAnnotations" version="2.0.3"/>
 <unit id="groovy-all" version="1.5.7"/>
 <unit id="groovy-all.source" version="1.5.7"/>
-<unit id="hapi-fhir-osgi-core" version="2.4.0"/>
 <unit id="jackson-core-lgpl" version="1.0.1"/>
 <unit id="jackson-core-lgpl.source" version="1.0.1"/>
 <unit id="javassist" version="3.10.0.GA"/>
@@ -324,48 +364,6 @@
 <unit id="xpp3.min" version="1.1.3.4_O"/>
 <repository location="http://download.elexis.info/elexis/master/p2/target/"/>
 </location>
-<location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="slicer" includeSource="true" type="InstallableUnit">
-<unit id="au.com.bytecode.opencsv" version="2.4.0"/>
-<unit id="bcprov" version="1.46.0"/>
-<unit id="bouncycastle.bcmail-jdk14" version="138.0.0"/>
-<unit id="bouncycastle.bcprov-jdk14" version="138.0.0"/>
-<unit id="com.fasterxml.jackson.core.jackson-annotations" version="2.7.0"/>
-<unit id="com.fasterxml.jackson.core.jackson-core" version="2.7.4"/>
-<unit id="com.fasterxml.jackson.core.jackson-databind" version="2.7.4"/>
-<unit id="com.healthmarketscience.jackcess" version="2.1.4"/>
-<unit id="com.lowagie.itext" version="2.0.8"/>
-<unit id="com.sun.jna" version="3.0.9"/>
-<unit id="io.netty.buffer" version="4.1.1.Final"/>
-<unit id="io.netty.codec" version="4.1.1.Final"/>
-<unit id="io.netty.codec-dns" version="4.1.1.Final"/>
-<unit id="io.netty.codec-http" version="4.1.1.Final"/>
-<unit id="io.netty.codec-http2" version="4.1.1.Final"/>
-<unit id="io.netty.codec-socks" version="4.1.1.Final"/>
-<unit id="io.netty.common" version="4.1.1.Final"/>
-<unit id="io.netty.handler" version="4.1.1.Final"/>
-<unit id="io.netty.handler-proxy" version="4.1.1.Final"/>
-<unit id="io.netty.resolver" version="4.1.1.Final"/>
-<unit id="io.netty.resolver-dns" version="4.1.1.Final"/>
-<unit id="io.netty.transport" version="4.1.1.Final"/>
-<unit id="io.vertx.core" version="3.3.0"/>
-<unit id="io.vertx.web" version="3.3.0"/>
-<unit id="jfree.chart-swt" version="1.0.9"/>
-<unit id="jfree.jcommon" version="1.0.16"/>
-<unit id="junit" version="4.12.0"/>
-<unit id="org.apache.commons.codec" version="1.9.0"/>
-<unit id="org.apache.commons.lang" version="2.6.0"/>
-<unit id="org.apache.commons.logging" version="1.2.0"/>
-<unit id="org.apache.httpcomponents.httpclient" version="4.5.2"/>
-<unit id="org.apache.httpcomponents.httpcore" version="4.4.5"/>
-<unit id="org.hamcrest.core" version="1.3.0"/>
-<unit id="org.jdom" version="1.1.3"/>
-<unit id="org.jfree.chart" version="1.0.17"/>
-<unit id="org.jfree.jcommon" version="1.0.21"/>
-<unit id="org.odftoolkit.odfdom-java" version="0.8.6"/>
-<unit id="vertx-auth-common" version="3.3.0"/>
-<unit id="xerces.Impl" version="2.9.1"/>
-<unit id="xml-apis" version="1.3.4"/>
-<repository location="http://www.elexis.ch/ungrad/p2/dependencies/latest/"/>
-</location>
+<location path="${eclipse_home}" type="Profile"/>
 </locations>
 </target>
