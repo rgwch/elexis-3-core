@@ -23,6 +23,8 @@ public class MimeTool {
 			"pps", "application/mspowerpoint"
 		}, {
 			"png", "image/png"
+		},{
+			"txt", "text/plain"
 		}
 	};
 	

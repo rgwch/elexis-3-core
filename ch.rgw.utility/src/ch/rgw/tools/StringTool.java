@@ -826,7 +826,7 @@ public class StringTool {
 		long idx = sequence % salties.length;
 		char start = salties[(int) idx];
 		return new StringBuilder().append(start).append(Long.toHexString(t4))
-			.append(Long.toHexString((long) Math.random() * 1000)).append(sequence).toString();
+			.append(Long.toHexString((long) (Math.random() * 1000))).append(sequence).toString();
 	}
 	
 	/**
