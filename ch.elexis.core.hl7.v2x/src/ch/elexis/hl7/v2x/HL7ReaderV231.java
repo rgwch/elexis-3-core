@@ -87,7 +87,7 @@ public class HL7ReaderV231 extends HL7Reader {
 					.getOBR();
 				String obrObservationDateTime =
 					obr.getObr7_ObservationDateTime().getTs1_TimeOfAnEvent().getValue();
-					
+				
 				setOrderComment(oru, idx, obrObservationDateTime);
 				
 				for (int i = 0; i < oru.getPIDPD1NK1NTEPV1PV2ORCOBRNTEOBXNTECTI()
@@ -106,7 +106,7 @@ public class HL7ReaderV231 extends HL7Reader {
 							String code = "";
 							if (ce.getCe3_NameOfCodingSystem() != null)
 								code = ce.getCe3_NameOfCodingSystem().getValue();
-								
+							
 							group = getGroup(code, ce);
 							sequence = getSequence(code, ce);
 							
@@ -158,10 +158,10 @@ public class HL7ReaderV231 extends HL7Reader {
 				oru.getMSH().getMsh4_SendingFacility().getHd1_NamespaceID().getValue();
 			String dateTimeOfMessage =
 				oru.getMSH().getMsh7_DateTimeOfMessage().getTs1_TimeOfAnEvent().getValue();
-				
+			
 			PID pid =
 				oru.getPIDPD1NK1NTEPV1PV2ORCOBRNTEOBXNTECTI().getPIDPD1NK1NTEPV1PV2().getPID();
-				
+			
 			String patid = pid.getPid3_PatientIdentifierList(0).getCx1_ID().getValue();
 			String patid_alternative = pid.getPid4_AlternatePatientIDPID(0).getCx1_ID().getValue();
 			if (StringTool.isNothing(patid)) {
@@ -187,7 +187,7 @@ public class HL7ReaderV231 extends HL7Reader {
 			String orderNumber =
 				oru.getPIDPD1NK1NTEPV1PV2ORCOBRNTEOBXNTECTI().getORCOBRNTEOBXNTECTI().getORC()
 					.getOrc2_PlacerOrderNumber().getEi1_EntityIdentifier().getValue();
-					
+			
 			FN familyLastName = pid.getPid5_PatientName(0).getFamilyLastName();
 			if (familyLastName.getFn1_FamilyName().getValue() != null
 				|| familyLastName.getFn2_LastNamePrefix().getValue() != null)
@@ -200,7 +200,7 @@ public class HL7ReaderV231 extends HL7Reader {
 			
 			observation = new ObservationMessage(sendingApplication, sendingFacility,
 				dateTimeOfMessage, patid, patientName, patid_alternative, orderNumber);
-				
+			
 			birthDate = pid.getPid7_DateTimeOfBirth().getTs1_TimeOfAnEvent().getValue();
 			sex = pid.getSex().getValue();
 			
@@ -209,7 +209,7 @@ public class HL7ReaderV231 extends HL7Reader {
 				// name and birthdate
 				list =
 					patientResolver.findPatientByNameAndBirthdate(lastName, firstName, birthDate);
-					
+				
 				if ((list != null) && (list.size() == 1)) {
 					pat = list.get(0);
 				} else {
@@ -299,11 +299,12 @@ public class HL7ReaderV231 extends HL7Reader {
 		String observationTime = "";
 		String status = "";
 		Boolean flag;
+		String rawAbnormalFlags;
 		
 		if (valueType.equals(HL7Constants.OBX_VALUE_TYPE_ED)) {
 			String observationId =
 				obx.getObx3_ObservationIdentifier().getCe1_Identifier().getValue();
-				
+			
 			if (!"DOCUMENT".equals(observationId)) {
 				logger.warn(MessageFormat.format(
 					Messages.getString("HL7_ORU_R01.Error_WrongObsIdentifier"), observationId));
@@ -349,15 +350,16 @@ public class HL7ReaderV231 extends HL7Reader {
 			itemCode = obx.getObx3_ObservationIdentifier().getCe1_Identifier().getValue();
 			unit = obx.getObx6_Units().getCe1_Identifier().getValue();
 			range = obx.getObx7_ReferencesRange().getValue();
-			flag = isPathologic(obx.getObx8_AbnormalFlags(0).getValue());
+			rawAbnormalFlags = obx.getObx8_AbnormalFlags(0).getValue();
+			flag = isPathologic(rawAbnormalFlags);
 			observationTime =
 				obx.getObx14_DateTimeOfTheObservation().getTs1_TimeOfAnEvent().getValue();
 			status = obx.getObx11_ObservationResultStatus().getValue();
 			
 			LabResultData lrd = new LabResultData(itemCode, name, unit, value, range, flag,
-				defaultDateTime, observationTime, commentNTE, group, sequence, status,
-				extractName(obx.getObx4_ObservationSubID()));
-				
+				rawAbnormalFlags, defaultDateTime, observationTime, commentNTE, group, sequence,
+				status, extractName(obx.getObx4_ObservationSubID()));
+			
 			if (valueType.equals(HL7Constants.OBX_VALUE_TYPE_NM)
 				|| valueType.equals(HL7Constants.OBX_VALUE_TYPE_SN)) {
 				lrd.setIsNumeric(true);

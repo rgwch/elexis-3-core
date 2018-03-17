@@ -144,8 +144,8 @@ public class HL7ReaderV26 extends HL7Reader {
 		return "";
 	}
 	
-	private void setPatient(ORU_R01 oru, final boolean createIfNotFound) throws ParseException,
-		HL7Exception{
+	private void setPatient(ORU_R01 oru, final boolean createIfNotFound)
+		throws ParseException, HL7Exception{
 		List<? extends IPatient> list = new ArrayList<IPatient>();
 		String lastName = ""; //$NON-NLS-1$
 		String firstName = ""; //$NON-NLS-1$
@@ -191,9 +191,8 @@ public class HL7ReaderV26 extends HL7Reader {
 			// pid = pidflds[pidflds.length - 1];
 			
 			// place order number
-			String orderNumber =
-				oru.getPATIENT_RESULT().getORDER_OBSERVATION().getORC().getOrc2_PlacerOrderNumber()
-					.getEi1_EntityIdentifier().getValue();
+			String orderNumber = oru.getPATIENT_RESULT().getORDER_OBSERVATION().getORC()
+				.getOrc2_PlacerOrderNumber().getEi1_EntityIdentifier().getValue();
 			
 			if (pid.getPid5_PatientName(0).getFamilyName().getFn1_Surname().getValue() != null)
 				lastName = pid.getPid5_PatientName(0).getFamilyName().getFn1_Surname().getValue();
@@ -201,9 +200,8 @@ public class HL7ReaderV26 extends HL7Reader {
 				firstName = pid.getPid5_PatientName(0).getGivenName().getValue();
 			String patientName = firstName + " " + lastName;
 			
-			observation =
-				new ObservationMessage(sendingApplication, sendingFacility, dateTimeOfMessage,
-					patid, patientName, patid_alternative, orderNumber);
+			observation = new ObservationMessage(sendingApplication, sendingFacility,
+				dateTimeOfMessage, patid, patientName, patid_alternative, orderNumber);
 			
 			birthDate = pid.getDateTimeOfBirth().getValue();
 			sex = pid.getAdministrativeSex().getValue();
@@ -211,7 +209,8 @@ public class HL7ReaderV26 extends HL7Reader {
 			if ((patid == null) || (list.size() != 1)) {
 				// We did not find the patient using the PatID, so we try the
 				// name and birthdate
-				list = patientResolver.findPatientByNameAndBirthdate(lastName, firstName, birthDate);
+				list =
+					patientResolver.findPatientByNameAndBirthdate(lastName, firstName, birthDate);
 				
 				if ((list != null) && (list.size() == 1)) {
 					pat = list.get(0);
@@ -224,7 +223,7 @@ public class HL7ReaderV26 extends HL7Reader {
 						
 						pat = patientResolver.createPatient(lastName, firstName, birthDate, sex);
 						pat.setPatientNr(patid);
-
+						
 						if (adr != null) {
 							if (adr.getStreetAddress() != null) {
 								pat.setStreet(adr.getStreetAddress().getComponent(0).toString());
@@ -305,6 +304,7 @@ public class HL7ReaderV26 extends HL7Reader {
 		String observationTime = "";
 		String status = "";
 		Boolean flag;
+		String rawAbnormalFlags;
 		
 		if (valueType.equals(HL7Constants.OBX_VALUE_TYPE_ED)) {
 			String observationId =
@@ -348,14 +348,14 @@ public class HL7ReaderV26 extends HL7Reader {
 			itemCode = obx.getObx3_ObservationIdentifier().getCwe1_Identifier().getValue();
 			unit = obx.getObx6_Units().getCwe1_Identifier().getValue();
 			range = obx.getObx7_ReferencesRange().getValue();
-			flag = isPathologic(obx.getObx8_AbnormalFlags(0).getValue());
+			rawAbnormalFlags = obx.getObx8_AbnormalFlags(0).getValue();
+			flag = isPathologic(rawAbnormalFlags);
 			observationTime = obx.getObx14_DateTimeOfTheObservation().getValue();
 			status = obx.getObx11_ObservationResultStatus().getValue();
 			
-			LabResultData lrd =
-				new LabResultData(itemCode, name, unit, value, range, flag, defaultDateTime,
-					observationTime, commentNTE, group, sequence, status,
-					extractName(obx.getObx4_ObservationSubID()));
+			LabResultData lrd = new LabResultData(itemCode, name, unit, value, range, flag,
+				rawAbnormalFlags, defaultDateTime, observationTime, commentNTE, group, sequence,
+				status, extractName(obx.getObx4_ObservationSubID()));
 			
 			if (valueType.equals(HL7Constants.OBX_VALUE_TYPE_NM)
 				|| valueType.equals(HL7Constants.OBX_VALUE_TYPE_SN)) {
@@ -379,7 +379,7 @@ public class HL7ReaderV26 extends HL7Reader {
 		possibleNames.add(obx.getObx3_ObservationIdentifier().getCwe1_Identifier().getValue());
 		return HL7Helper.determineName(possibleNames);
 	}
-
+	
 	@Override
 	public OrcMessage getOrcMessage(){
 		try {

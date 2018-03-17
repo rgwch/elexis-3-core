@@ -14,7 +14,7 @@ public class DocumentStoreServiceHolder {
 		DocumentStoreServiceHolder.localDocumentStore = service;
 	}
 	
-	public static void unbind(DocumentStore service){
+	public void unbind(DocumentStore service){
 		DocumentStoreServiceHolder.localDocumentStore = null;
 	}
 	

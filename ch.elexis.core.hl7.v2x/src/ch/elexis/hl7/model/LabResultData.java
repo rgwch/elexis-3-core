@@ -8,10 +8,10 @@ import ch.elexis.hl7.util.HL7Helper;
 
 public class LabResultData extends AbstractData {
 	public enum LabResultStatus {
-		UNDEFINED, FINAL, INTERMEDIATE, CHANGE;
+			UNDEFINED, FINAL, INTERMEDIATE, CHANGE;
 		
 		public static LabResultStatus getStatus(String code){
-			if("F".equals(code)) {
+			if ("F".equals(code)) {
 				return FINAL;
 			} else if ("I".equals(code)) {
 				return INTERMEDIATE;
@@ -30,13 +30,14 @@ public class LabResultData extends AbstractData {
 	private LabResultStatus resultStatus;
 	private Date obrDateTime;
 	private Boolean flag;
+	private String rawAbnormalFlag;
 	private boolean isNumeric = false;
 	private boolean isFormatedText = false;
 	private boolean isPlainText = false;
 	
 	public LabResultData(String code, String name, String unit, String value, String range,
-		Boolean flag, String obrDateTime, String dateStr, String comment, String group,
-		String sequence, String resultStatus, String subId) throws ParseException{
+		Boolean flag, String rawAbnormalFlag, String obrDateTime, String dateStr, String comment,
+		String group, String sequence, String resultStatus, String subId) throws ParseException{
 		super(name, dateStr, comment, group, sequence);
 		
 		this.setCode(code);
@@ -44,6 +45,7 @@ public class LabResultData extends AbstractData {
 		this.setValue(value);
 		this.setRange(range);
 		this.setFlag(flag);
+		this.setRawAbnormalFlag(rawAbnormalFlag);
 		this.subId = subId;
 		this.resultStatus = LabResultStatus.getStatus(resultStatus);
 		if (obrDateTime != null && obrDateTime.length() > 0) {
@@ -54,7 +56,7 @@ public class LabResultData extends AbstractData {
 	public LabResultStatus getResultStatus(){
 		return resultStatus;
 	}
-
+	
 	public String getCode(){
 		return code;
 	}
@@ -107,6 +109,14 @@ public class LabResultData extends AbstractData {
 	
 	public void setFlag(Boolean flag){
 		this.flag = flag;
+	}
+	
+	public String getRawAbnormalFlag(){
+		return rawAbnormalFlag;
+	}
+	
+	public void setRawAbnormalFlag(String rawAbnormalFlag){
+		this.rawAbnormalFlag = rawAbnormalFlag;
 	}
 	
 	public boolean isNumeric(){

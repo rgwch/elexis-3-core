@@ -192,7 +192,7 @@ def read_issue(id = 5760)
   issue.subject = issue.subject[0..79] if issue.subject
   puts "Fetched ticket #{id} #{issue.status}" if $VERBOSE
   @nr_loaded += 1
-  $stdout.write "\n (re-)loaded #{@nr_loaded} tickets." if @nr_loaded % 100 == 0
+  $stdout.write "\n (re-)loaded #{@nr_loaded}/#{@ticket_cache.size} tickets." if @nr_loaded % 100 == 0
   $stdout.write '.'
   @ticket_cache[id] = issue
   issue
@@ -206,7 +206,7 @@ end
 
 def emit_mediawiki_changelog(all_commits, file)
   mediawiki = File.open(file, 'w+')
-  mediawiki.puts "= Changelog für Elexis 3.4 ab 3.4.0 ="
+  mediawiki.puts "= Changelog für Elexis 3.5 ab 3.5.0 ="
   mediawiki.puts ""
   mediawiki.puts "Die Zahlen in Klammern beziehen sich auf das nicht öffentlich zugängliche Ticket-System der Firma Medelexis AG"
   mediawiki.puts ""
@@ -301,7 +301,10 @@ at_exit do
   end if @nr_loaded.size != @ticket_cache.size
 end
 # Order of next calls is necessary!
+<<<<<<< HEAD
 @history = []
+=======
+>>>>>>> 3.5
 if @options[:mediawiki]
   raise "from and to must be given" unless @options[:from] && @options[:to]
   git_directories = (Dir.glob('.git') + Dir.glob('*/.git')).collect{|x| File.expand_path(File.dirname(x)) }

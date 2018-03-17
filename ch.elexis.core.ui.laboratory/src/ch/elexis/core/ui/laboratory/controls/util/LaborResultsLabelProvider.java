@@ -74,15 +74,31 @@ public class LaborResultsLabelProvider extends ColumnLabelProvider {
 	}
 	
 	private String getPathologicString(LabResult labResult){
+<<<<<<< HEAD
+=======
+		PathologicDescription pathologicDescription = labResult.getPathologicDescription();
+>>>>>>> 3.5
 		StringBuilder sb = new StringBuilder();
 		if (labResult.isFlag(LabResultConstants.PATHOLOGIC)) {
 			sb.append("pathologisch");
 		} else {
+<<<<<<< HEAD
 			sb.append("nicht pathologisch");
 		}
 		PathologicDescription description = labResult.getPathologicDescription();
 		if (description != null && !(description.getDescription() == Description.UNKNOWN)) {
 			sb.append(" - ").append(description.getLabel());
+=======
+			if (labResult.isPathologicFlagIndetermined(pathologicDescription)) {
+				sb.append("nicht bestimmt");
+			} else {
+				sb.append("nicht pathologisch");
+			}
+		}
+		if (pathologicDescription != null
+			&& !(pathologicDescription.getDescription() == Description.UNKNOWN)) {
+			sb.append(" - ").append(pathologicDescription.getLabel());
+>>>>>>> 3.5
 		}
 		return sb.toString();
 	}
@@ -185,5 +201,33 @@ public class LaborResultsLabelProvider extends ColumnLabelProvider {
 			}
 		}
 		return Display.getCurrent().getSystemColor(SWT.COLOR_BLACK);
+	}
+	
+	@Override
+	public Color getBackground(Object element){
+		if (element instanceof LaborItemResults) {
+			TimeTool date =
+				(TimeTool) column.getColumn().getData(LaborResultsComposite.COLUMN_DATE_KEY);
+			if (date != null) {
+				List<LabResult> results =
+					((LaborItemResults) element).getResult(date.toString(TimeTool.DATE_COMPACT));
+				if (results != null) {
+					boolean pathologic = false;
+					boolean indetermined = false;
+					for (LabResult labResult : results) {
+						if (labResult.isFlag(LabResultConstants.PATHOLOGIC)) {
+							pathologic = true;
+							break;
+						} else {
+							indetermined = labResult.isPathologicFlagIndetermined(null);
+						}
+					}
+					if (!pathologic && indetermined) {
+						return Display.getCurrent().getSystemColor(SWT.COLOR_YELLOW);
+					}
+				}
+			}
+		}
+		return null;
 	}
 }
