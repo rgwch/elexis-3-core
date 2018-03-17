@@ -57,7 +57,6 @@ public class HL7ReaderV25 extends HL7Reader {
 		super(message);
 	}
 	
-
 	@Override
 	public String getSender() throws ElexisException{
 		String sender;
@@ -97,16 +96,6 @@ public class HL7ReaderV25 extends HL7Reader {
 				for (int i = 0; i < observationGroupCount; i++) {
 					ORU_R01_OBSERVATION observationGroup = orderObservationGroup.getOBSERVATION(i);
 					
-<<<<<<< HEAD
-					OBX obx = observationGroup.getOBX();
-					if ("MAT"
-						.equals(obx.getObservationIdentifier().getCe1_Identifier().toString())) {
-						// we skip the material entry
-						continue;
-					}
-					
-=======
->>>>>>> 3.5
 					// get notes and comments
 					String commentNTE = getComments(orderObservationGroup, i);
 					
@@ -155,8 +144,8 @@ public class HL7ReaderV25 extends HL7Reader {
 		return "";
 	}
 	
-	private void setPatient(ORU_R01 oru, final boolean createIfNotFound) throws ParseException,
-		HL7Exception{
+	private void setPatient(ORU_R01 oru, final boolean createIfNotFound)
+		throws ParseException, HL7Exception{
 		List<? extends IPatient> list = new ArrayList<IPatient>();
 		String lastName = ""; //$NON-NLS-1$
 		String firstName = ""; //$NON-NLS-1$
@@ -203,9 +192,8 @@ public class HL7ReaderV25 extends HL7Reader {
 			// pid = pidflds[pidflds.length - 1];
 			
 			// place order number
-			String orderNumber =
-				oru.getPATIENT_RESULT().getORDER_OBSERVATION().getORC().getOrc2_PlacerOrderNumber()
-					.getEi1_EntityIdentifier().getValue();
+			String orderNumber = oru.getPATIENT_RESULT().getORDER_OBSERVATION().getORC()
+				.getOrc2_PlacerOrderNumber().getEi1_EntityIdentifier().getValue();
 			
 			if (pid.getPid5_PatientName(0).getFamilyName().getFn1_Surname().getValue() != null)
 				lastName = pid.getPid5_PatientName(0).getFamilyName().getFn1_Surname().getValue();
@@ -213,9 +201,8 @@ public class HL7ReaderV25 extends HL7Reader {
 				firstName = pid.getPid5_PatientName(0).getGivenName().getValue();
 			String patientName = firstName + " " + lastName;
 			
-			observation =
-				new ObservationMessage(sendingApplication, sendingFacility, dateTimeOfMessage,
-					patid, patientName, patid_alternative, orderNumber);
+			observation = new ObservationMessage(sendingApplication, sendingFacility,
+				dateTimeOfMessage, patid, patientName, patid_alternative, orderNumber);
 			
 			birthDate = pid.getDateTimeOfBirth().getTs1_Time().getValue();
 			sex = pid.getAdministrativeSex().getValue();
@@ -223,7 +210,8 @@ public class HL7ReaderV25 extends HL7Reader {
 			if ((patid == null) || (list.size() != 1)) {
 				// We did not find the patient using the PatID, so we try the
 				// name and birthdate
-				list = patientResolver.findPatientByNameAndBirthdate(lastName, firstName, birthDate);
+				list =
+					patientResolver.findPatientByNameAndBirthdate(lastName, firstName, birthDate);
 				
 				if ((list != null) && (list.size() == 1)) {
 					pat = list.get(0);
@@ -363,10 +351,9 @@ public class HL7ReaderV25 extends HL7Reader {
 			observationTime = obx.getObx14_DateTimeOfTheObservation().getTs1_Time().getValue();
 			status = obx.getObx11_ObservationResultStatus().getValue();
 			
-			LabResultData lrd =
-				new LabResultData(itemCode, name, unit, value, range, flag, rawAbnormalFlags, defaultDateTime,
-					observationTime, commentNTE, group, sequence, status,
-					extractName(obx.getObx4_ObservationSubID()));
+			LabResultData lrd = new LabResultData(itemCode, name, unit, value, range, flag,
+				rawAbnormalFlags, defaultDateTime, observationTime, commentNTE, group, sequence,
+				status, extractName(obx.getObx4_ObservationSubID()));
 			
 			if (valueType.equals(HL7Constants.OBX_VALUE_TYPE_NM)
 				|| valueType.equals(HL7Constants.OBX_VALUE_TYPE_SN)) {
@@ -416,7 +403,7 @@ public class HL7ReaderV25 extends HL7Reader {
 		}
 		return null;
 	}
-
+	
 	private OrcMessage extractOrc(ORC orc) throws HL7Exception{
 		if (orc != null) {
 			OrcMessage orcMessage = new OrcMessage();
