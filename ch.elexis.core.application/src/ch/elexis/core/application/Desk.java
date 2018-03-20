@@ -135,10 +135,10 @@ public class Desk implements IApplication {
 			ex.printStackTrace();
 			return -1;
 		} finally {
-			ElexisEventDispatcher.getInstance().shutDown();
+			// ElexisEventDispatcher.getInstance().shutDown();
 			// give ElexisEventDispatcher time to shut down
-			Thread.sleep(100);
-			UiDesk.getDisplay().dispose();
+			//Thread.sleep(200);
+			//UiDesk.getDisplay().dispose();
 		}
 	}
 		

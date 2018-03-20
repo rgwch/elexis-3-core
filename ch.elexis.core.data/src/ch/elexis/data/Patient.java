@@ -36,6 +36,7 @@ import ch.elexis.core.data.activator.CoreHub;
 import ch.elexis.core.data.events.ElexisEventDispatcher;
 import ch.elexis.core.data.interfaces.events.MessageEvent;
 import ch.elexis.core.jdt.Nullable;
+import ch.elexis.core.model.MaritalStatus;
 import ch.elexis.core.model.prescription.EntryType;
 import ch.rgw.tools.ExHandler;
 import ch.rgw.tools.JdbcLink;
@@ -764,6 +765,10 @@ public class Patient extends Person {
 			return Kontakt.load((String) guardianId);
 		}
 		return null;
+	}
+	
+	public MaritalStatus getMaritalStatus(){
+		return MaritalStatus.UNKNOWN;
 	}
 	
 	@SuppressWarnings("unchecked")
