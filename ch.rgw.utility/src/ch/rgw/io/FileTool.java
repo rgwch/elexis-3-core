@@ -394,17 +394,19 @@ public class FileTool {
 			}
 		}
 		BufferedOutputStream bos = new BufferedOutputStream(os);
+		BufferedInputStream bis=new BufferedInputStream(is);
 		int l = 0;
-		byte[] buffer = new byte[8192];
-		do {
-			l = is.read(buffer);
-			if (l != -1) {
-				if (md != null) {
-					md.update(buffer, 0, l);
-				}
-				bos.write(buffer, 0, l);
+		byte[] buffer = new byte[65535];
+		while (true) {
+			int r = bis.read(buffer);
+			if (r == -1) {
+				break;
 			}
-		} while (l == buffer.length);
+			if (md != null) {
+				md.update(buffer, 0, r);
+			}
+			bos.write(buffer, 0, r);
+		}
 		
 		bos.flush();
 		// bos.close closing would kill an outer zipoutput or objectoutputstream
