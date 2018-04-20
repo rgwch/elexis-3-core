@@ -62,6 +62,7 @@ public class HistoryDisplay extends Composite implements BackgroundJobListener,
 	private static final int PAGING_FETCHSIZE = 20;
 	
 	private PagingComposite pagingComposite;
+	private Patient actPatient;
 	
 	public HistoryDisplay(Composite parent, final IViewSite site){
 		this(parent, site, false);
@@ -170,18 +171,13 @@ public class HistoryDisplay extends Composite implements BackgroundJobListener,
 	 * @param ev
 	 */
 	public void load(Patient pat, @Nullable ElexisEvent ev){
-		// lazy loading konsultations		
-		if (pat != null) {
-			lKons.clear();
-			Fall[] faelle = pat.getFaelle();
-			for (Fall f : faelle) {
-				load(f, false);
-			}
-			pagingComposite.setup(1, lKons.size(), PAGING_FETCHSIZE);
+		int page = 1;
+		// remember page if patient did not change
+		if (actPatient != null && actPatient.equals(pat)) {
+			page = pagingComposite.getCurrentPage();
 		}
-		
 		if (ev == null || ev.getObject() instanceof Patient) {
-			UiDesk.getDisplay().asyncExec(new Runnable() {
+			UiDesk.getDisplay().syncExec(new Runnable() {
 				public void run(){
 					if (!isDisposed()) {
 						scrolledComposite.setOrigin(0, 0);
@@ -194,6 +190,17 @@ public class HistoryDisplay extends Composite implements BackgroundJobListener,
 				}
 			});
 		}
+		
+		// lazy loading konsultations		
+		if (pat != null) {
+			lKons.clear();
+			Fall[] faelle = pat.getFaelle();
+			for (Fall f : faelle) {
+				load(f, false);
+			}
+			pagingComposite.setup(page, lKons.size(), PAGING_FETCHSIZE);
+		}
+		actPatient = pat;
 	}
 	
 	public void jobFinished(BackgroundJob j){

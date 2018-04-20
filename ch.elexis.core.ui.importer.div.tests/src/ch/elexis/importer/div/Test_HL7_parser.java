@@ -348,7 +348,7 @@ public class Test_HL7_parser {
 		assertEquals(LabItemTyp.NUMERIC, aItem.getTyp());
 		assertTrue(aItem.getGroup().contains(Messages.HL7Parser_AutomaticAddedGroup));
 		assertEquals("HL7_Test", aItem.getLabor().getKuerzel());
-		assertTrue(aItem.getLabor().getLabel().contains("Labor HL7_Test Labor"));
+		assertEquals(AllTests.testLab.getId(), aItem.getLabor().getId());
 		Query<Patient> pqr = new Query<Patient>(Patient.class);
 		List<Patient> pqrr = pqr.execute();
 		assertEquals(1, pqrr.size());
