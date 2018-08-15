@@ -47,7 +47,7 @@ import ch.rgw.tools.StringTool;
  */
 public class Anwender extends Person {
 	
-	public static final String ADMINISTRATOR = "Administrator";
+	public static final String ADMINISTRATOR = "administrator";
 	
 	public static final String FLD_LABEL = "Label"; // contains username
 	public static final String FLD_JOINT_REMINDERS = "Reminders";

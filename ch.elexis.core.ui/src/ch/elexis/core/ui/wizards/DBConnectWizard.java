@@ -125,7 +125,8 @@ public class DBConnectWizard extends Wizard {
 		if (storage != null) {
 			storedConnectionList =
 				(List<DBConnection>) PersistentObject.foldObject(StringTool.dePrintable(storage), ccResolver);
-		} else {
+		}
+		if(storedConnectionList==null || storedConnectionList.isEmpty()){
 			// initialize the current connection (if available)
 			storedConnectionList = new ArrayList<DBConnection>();
 			String cnt = CoreHub.localCfg.get(Preferences.CFG_FOLDED_CONNECTION, null);
@@ -230,7 +231,6 @@ public class DBConnectWizard extends Wizard {
 				String user =
 					PersistentObject.checkNull(hConn.get(Preferences.CFG_FOLDED_CONNECTION_USER));
 				String combined = user + "@" + currConnString;
-				
 				for (DBConnection dbConnection : storedConnectionList) {
 					if (combined.equalsIgnoreCase(dbConnection.username + "@"
 						+ dbConnection.connectionString)) {
