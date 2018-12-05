@@ -3072,6 +3072,7 @@ public abstract class PersistentObject implements IPersistentObject {
 			while (rs.next()) {
 				// DatabaseMetaData#getTables() specifies TABLE_NAME is in
 				// column 3
+				// System.out.println(rs.getString(3));
 				if (rs.getString(3).equalsIgnoreCase(tableName))
 					nrFounds++;
 			}
@@ -3087,7 +3088,7 @@ public abstract class PersistentObject implements IPersistentObject {
 			// Anmerkung von Niklaus Giger
 			log.error("Tabelle " + tableName + " " + nrFounds + "-mal gefunden!!");
 		}
-		return nrFounds == 1;
+		return nrFounds > 0;
 	}
 	
 	/**
