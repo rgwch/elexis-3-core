@@ -3057,6 +3057,10 @@ public abstract class PersistentObject implements IPersistentObject {
 		// Vergleich schaut nicht auf Gross/Klein-Schreibung, da thomas
 		// schon H2-DB gesehen hat, wo entweder alles gross oder alles klein war
 		try (Connection conn = defaultConnection.getConnection()) {
+			final String myCatalog = conn.getCatalog();
+			if(myCatalog == null) {
+				log.error("No catalog information available");
+			}
 			DatabaseMetaData dmd = conn.getMetaData();
 			String[] searchBase;
 			if (considerViews) {
@@ -3068,13 +3072,14 @@ public abstract class PersistentObject implements IPersistentObject {
 					"TABLE"
 				};
 			}
-			ResultSet rs = dmd.getTables(null, null, "%", searchBase);
+			ResultSet rs = dmd.getTables(myCatalog, null, "%", searchBase);
 			while (rs.next()) {
 				// DatabaseMetaData#getTables() specifies TABLE_NAME is in
 				// column 3
-				// System.out.println(rs.getString(3));
-				if (rs.getString(3).equalsIgnoreCase(tableName))
+				String foundTableName = rs.getString(3);
+				if (tableName.equalsIgnoreCase(foundTableName)) {
 					nrFounds++;
+				}
 			}
 			
 		} catch (SQLException je) {
@@ -3088,9 +3093,8 @@ public abstract class PersistentObject implements IPersistentObject {
 			// Anmerkung von Niklaus Giger
 			log.error("Tabelle " + tableName + " " + nrFounds + "-mal gefunden!!");
 		}
-		return nrFounds > 0;
-	}
-	
+		return nrFounds == 1;
+}
 	/**
 	 * Convert an arbitrary value into the database format
 	 * 
