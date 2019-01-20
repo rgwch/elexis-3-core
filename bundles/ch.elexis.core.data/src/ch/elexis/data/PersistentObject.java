@@ -219,7 +219,7 @@ public abstract class PersistentObject implements IPersistentObject {
 	 *         Settings mit dieser Datenbank verbunden.
 	 * @return true für ok, false wenn keine Verbindung hergestellt werden konnte.
 	 */
-	public static boolean connect(final Settings cfg){
+	public static boolean connect(final Settings isNotUsedAnymore){
 		DBConnection dbConnection = new DBConnection();
 		dbConnection.setDBUser(System.getProperty(ElexisSystemPropertyConstants.CONN_DB_USERNAME));
 		dbConnection

@@ -41,10 +41,11 @@ public class LoginDialog extends TitleAreaDialog {
 	Text usr, pwd;
 	boolean hasUsers;
 	ButtonEnabler be = new ButtonEnabler();
+	Shell parentShell;
 	
 	public LoginDialog(Shell parentShell){
 		super(parentShell);
-		
+		this.parentShell=parentShell;
 		Query<Anwender> qbe = new Query<Anwender>(Anwender.class);
 		List<Anwender> list = qbe.execute();
 		hasUsers = (list.size() > 1);

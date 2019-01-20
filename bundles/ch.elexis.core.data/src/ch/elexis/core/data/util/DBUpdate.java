@@ -462,6 +462,7 @@ public class DBUpdate {
 	 * @return
 	 */
 	public static boolean doUpdate(){
+		
 		String dbv = CoreHub.globalCfg.get("dbversion", null);
 		if (dbv == null) {
 			log.error("Kann keine Version lesen");
