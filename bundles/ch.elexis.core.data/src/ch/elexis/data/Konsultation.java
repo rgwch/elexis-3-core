@@ -77,7 +77,7 @@ public class Konsultation extends PersistentObject implements Comparable<Konsult
 	public static final String FLD_JOINT_DIAGNOSEN = "Diagnosen";
 	public static final String FLD_BILLABLE = "billable";
 	
-	private static final String TABLENAME = "BEHANDLUNGEN";
+	public static final String TABLENAME = "BEHANDLUNGEN";
 	volatile int actEntry;
 	
 	protected String getTableName(){

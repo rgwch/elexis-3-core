@@ -1,9 +1,6 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?pde?>
-<!-- generated with https://github.com/eclipse-cbi/targetplatform-dsl -->
-<target name="Elexis" sequenceNumber="1544609494">
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><?pde?><!-- generated with https://github.com/eclipse-cbi/targetplatform-dsl --><target name="Elexis" sequenceNumber="1544609494">
   <locations>
-    <location includeMode="slicer" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="false" type="InstallableUnit">
+    <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="slicer" includeSource="true" type="InstallableUnit">
       <unit id="org.eclipse.equinox.executable.feature.group" version="3.7.2.v20171108-1834"/>
       <unit id="org.eclipse.rcp.feature.group" version="4.7.3.v20180330-0640"/>
       <unit id="org.eclipse.platform.feature.group" version="4.7.3.v20180330-0640"/>
@@ -357,5 +354,50 @@
       <unit id="xpp3.min" version="1.1.3.4_O"/>
       <repository location="http://download.elexis.info/elexis/3.7/p2/target/"/>
     </location>
+	  <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="slicer" includeSource="true" type="InstallableUnit">
+		  <unit id="au.com.bytecode.opencsv" version="2.4.0"/>
+		  <unit id="bcprov" version="1.46.0"/>
+		  <unit id="bouncycastle.bcmail-jdk14" version="138.0.0"/>
+		  <unit id="bouncycastle.bcprov-jdk14" version="138.0.0"/>
+		  <unit id="com.fasterxml.jackson.core.jackson-annotations" version="2.7.0"/>
+		  <unit id="com.fasterxml.jackson.core.jackson-core" version="2.7.4"/>
+		  <unit id="com.fasterxml.jackson.core.jackson-databind" version="2.7.4"/>
+		  <unit id="com.hazelcast" version="3.6.3"/>
+		  <unit id="com.healthmarketscience.jackcess" version="2.1.4"/>
+		  <unit id="com.lowagie.itext" version="2.0.8"/>
+		  <unit id="com.sun.jna" version="3.0.9"/>
+		  <unit id="io.netty.buffer" version="4.1.1.Final"/>
+		  <unit id="io.netty.codec" version="4.1.1.Final"/>
+		  <unit id="io.netty.codec-dns" version="4.1.1.Final"/>
+		  <unit id="io.netty.codec-http" version="4.1.1.Final"/>
+		  <unit id="io.netty.codec-http2" version="4.1.1.Final"/>
+		  <unit id="io.netty.codec-socks" version="4.1.1.Final"/>
+		  <unit id="io.netty.common" version="4.1.1.Final"/>
+		  <unit id="io.netty.handler" version="4.1.1.Final"/>
+		  <unit id="io.netty.handler-proxy" version="4.1.1.Final"/>
+		  <unit id="io.netty.resolver" version="4.1.1.Final"/>
+		  <unit id="io.netty.resolver-dns" version="4.1.1.Final"/>
+		  <unit id="io.netty.transport" version="4.1.1.Final"/>
+		  <unit id="io.vertx.core" version="3.3.0"/>
+		  <unit id="io.vertx.hazelcast" version="3.3.0"/>
+		  <unit id="io.vertx.web" version="3.3.0"/>
+		  <unit id="jfree.chart-swt" version="1.0.9"/>
+		  <unit id="jfree.jcommon" version="1.0.16"/>
+		  <unit id="junit" version="4.12.0"/>
+		  <unit id="org.apache.commons.codec" version="1.9.0"/>
+		  <unit id="org.apache.commons.lang" version="2.6.0"/>
+		  <unit id="org.apache.commons.logging" version="1.2.0"/>
+		  <unit id="org.apache.httpcomponents.httpclient" version="4.5.2"/>
+		  <unit id="org.apache.httpcomponents.httpcore" version="4.4.5"/>
+		  <unit id="org.hamcrest.core" version="1.3.0"/>
+		  <unit id="org.jdom" version="1.1.3"/>
+		  <unit id="org.jfree.chart" version="1.0.17"/>
+		  <unit id="org.jfree.jcommon" version="1.0.21"/>
+		  <unit id="org.odftoolkit.odfdom-java" version="0.8.6"/>
+		  <unit id="vertx-auth-common" version="3.3.0"/>
+		  <unit id="xerces.Impl" version="2.9.1"/>
+		  <unit id="xml-apis" version="1.3.4"/>
+		  <repository location="https://elexis.ch/ungrad2018/p2/dependencies/latest/"/>
+	  </location>
   </locations>
 </target>
