@@ -235,9 +235,11 @@ public class Anwender extends Person {
 			return false;
 		}
 		
+		/* Does this make sense? Should always be true here...
 		if(!username.equals(user.get(FLD_ID))) {
 			return false;
 		}
+		*/
 
 		// is the user currently active, or locked?
 		if (!user.isActive()) {
