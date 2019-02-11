@@ -29,40 +29,40 @@ CREATE TABLE KONTAKT(
 	id				VARCHAR(40) primary key,	# UUID
 	lastupdate      BIGINT,                     # timestamp of last update
 	deleted			CHAR(1) default '0',		# indicates that this object is marked deleted
-	istOrganisation	CHAR(1) default '0',		# this object is an organization 
-	istPerson		CHAR(1) default '0',		# this object is a person
-	istPatient		CHAR(1)	default '0',		# is a patient
-	istAnwender		CHAR(1) default '0',		# is an elexis user
-	istMandant	    CHAR(1) default '0',		# is an elexis mandator
-	istLabor		CHAR(1)	default '0',		# is a lab
-	Land			CHAR(3),					# country as ISO code
-	Geburtsdatum	CHAR(8),					# bithdate as yyyymmdd
-	Geschlecht		CHAR(1),					# sex m or w
-	TITEL			VARCHAR(255),				# title
+	istorganisation	CHAR(1) default '0',		# this object is an organization 
+	istperson		CHAR(1) default '0',		# this object is a person
+	istpatient		CHAR(1)	default '0',		# is a patient
+	istanwender		CHAR(1) default '0',		# is an elexis user
+	istmandant	    CHAR(1) default '0',		# is an elexis mandator
+	istlabor		CHAR(1)	default '0',		# is a lab
+	land			CHAR(3),					# country as ISO code
+	geburtsdatum	CHAR(8),					# bithdate as yyyymmdd
+	geschlecht		CHAR(1),					# sex m or w
+	Titel			VARCHAR(255),				# title
 	TitelSuffix		VARCHAR(255),				# title suffix
 	Bezeichnung1	VARCHAR(255),				# name1
 	Bezeichnung2	VARCHAR(255),				# name2
 	Bezeichnung3	VARCHAR(255),				# name3
 	Strasse			VARCHAR(255),				# street
-	Plz				VARCHAR(6),					# zip-code
+	plz				VARCHAR(6),					# zip-code
 	Ort				VARCHAR(255),				# place (don't try Llanfairpwllgwyngyllgogerychwyrndrobwllllantysiliogogogoch)
 	Telefon1		VARCHAR(30),				# phone1
 	Telefon2		VARCHAR(30),				# phone2
-	Fax				VARCHAR(30),				# you'll guess it
+	fax				VARCHAR(30),				# you'll guess it
 	NatelNr			VARCHAR(30),				# mobile
-	EMail			VARCHAR(255),				# guess 
+	Email			VARCHAR(255),				# guess 
 	Website			VARCHAR(255),
-	Gruppe			VARCHAR(10),				# mandator group
-	PatientNr		VARCHAR(40),				# external identifier
-	Anschrift		TEXT,						# postal (address sticker)
-	Bemerkung		TEXT,						# remarks
-	Diagnosen		BLOB,						# diagnoses	
-	PersAnamnese	BLOB,						# anamnesis
-	SysAnamnese		BLOB,						# deprecated, do not use
-	FamAnamnese	    BLOB,						# deprecated, do not use
-	Risiken			TEXT,						# risk factors
-	Allergien		TEXT,						# allergies
-	ExtInfo			BLOB						# other informations (Hashtable)
+	gruppe			VARCHAR(10),				# mandator group
+	patientnr		VARCHAR(40),				# external identifier
+	anschrift		TEXT,						# postal (address sticker)
+	bemerkung		TEXT,						# remarks
+	diagnosen		BLOB,						# diagnoses	
+	persanamnese	BLOB,						# anamnesis
+	sysanamnese		BLOB,						# deprecated, do not use
+	famanamnese	    BLOB,						# deprecated, do not use
+	risiken			TEXT,						# risk factors
+	allergien		TEXT,						# allergies
+	extinfo			BLOB						# other informations (Hashtable)
 );
 
 CREATE INDEX k0 ON KONTAKT(Bezeichnung1);
@@ -74,9 +74,9 @@ CREATE TABLE KONTAKT_ADRESS_JOINT(
 	id			VARCHAR(40) primary key,
 	lastupdate  BIGINT,
 	deleted		CHAR(1) default '0',
-	myID		VARCHAR(40),					# ID of a KONTAKT 
-	otherID		VARCHAR(40),					# ID of a KONTAKT that ist related to myID
-	Bezug		VARCHAR(80),					# Description of the relationship
+	myid		VARCHAR(40),					# ID of a KONTAKT 
+	otherid		VARCHAR(40),					# ID of a KONTAKT that ist related to myID
+	bezug		VARCHAR(80),					# Description of the relationship
 	myRType		CHAR(4),						# My formal relationship type
 	otherRType	CHAR(4)							# Other formal relationship type
 );
@@ -90,20 +90,20 @@ CREATE TABLE FAELLE(
 	id				VARCHAR(40) primary key,		# UUID
 	lastupdate      BIGINT,                         # timestamp of last write operation
 	deleted			CHAR(1) default '0',			# indicates that this object is marked deleted
-	PatientID		VARCHAR(40),					# foreign key from 'KONTAKT' -> patient
-	GarantID		VARCHAR(40),					# foreign key from 'KONTAKT' -> bill receiver 
-	KostentrID		VARCHAR(40),					# foreign key from 'KONTAKT' -> insurance
-	VersNummer		VARCHAR(40),					# deprecated, do not use
-	FallNummer		VARCHAR(40),					# deprecated, do not use
-	BetriebsNummer	VARCHAR(40),					# deprecated, do not use
-	Diagnosen		VARCHAR(80),					# diagnoses related to this case
-	DatumVon		CHAR(8),						# date of beginning
-	DatumBis		CHAR(8),						# end date
-	Bezeichnung		VARCHAR(80),					# title of the case
-	Grund			VARCHAR(80),					# reason for treatment
+	patientid		VARCHAR(40),					# foreign key from 'KONTAKT' -> patient
+	garantid		VARCHAR(40),					# foreign key from 'KONTAKT' -> bill receiver 
+	kostentrid		VARCHAR(40),					# foreign key from 'KONTAKT' -> insurance
+	versnummer		VARCHAR(40),					# deprecated, do not use
+	fallnummer		VARCHAR(40),					# deprecated, do not use
+	betriebsnummer	VARCHAR(40),					# deprecated, do not use
+	diagnosen		VARCHAR(80),					# diagnoses related to this case
+	datumvon		CHAR(8),						# date of beginning
+	datumbis		CHAR(8),						# end date
+	bezeichnung		VARCHAR(80),					# title of the case
+	grund			VARCHAR(80),					# reason for treatment
 	Gesetz			VARCHAR(20),					# deprecated, do not use
 	Status			VARCHAR(80),					# deprecated, do not use
-	ExtInfo			BLOB							# additional informations (hashtable)
+	EXTINFO			BLOB							# additional informations (hashtable)
 );
 
 CREATE INDEX i3 on FAELLE (PatientID);
@@ -113,14 +113,14 @@ CREATE TABLE BEHANDLUNGEN(
 	id				VARCHAR(40) primary key,		# UUID
 	lastupdate      BIGINT,                         # timestamp
 	deleted			CHAR(1) default '0',			# indicates that this object is marked deleted
-	FallID			VARCHAR(40),					# foreign key from FAELLE -> case we belong to
-	MandantID		VARCHAR(40),					# foreign key from KONTAKT -> mandator
-	RechnungsID		VARCHAR(40),					# foreign key from RECHNUGNEN -> bill
-	Datum			CHAR(8),						# date of treatment
+	fallid			VARCHAR(40),					# foreign key from FAELLE -> case we belong to
+	mandantid		VARCHAR(40),					# foreign key from KONTAKT -> mandator
+	rechnungsid		VARCHAR(40),					# foreign key from RECHNUGNEN -> bill
+	datum			CHAR(8),						# date of treatment
 	Zeit			CHAR(8),
-	Diagnosen		VARCHAR(40),					# diagnoses
-	Leistungen		VARCHAR(40),					# deprecated, do not use.
-	Eintrag			BLOB							# treatment text (as VersionedResource)
+	diagnosen		VARCHAR(40),					# diagnoses
+	leistungen		VARCHAR(40),					# deprecated, do not use.
+	eintrag			BLOB							# treatment text (as VersionedResource)
 );
 
 CREATE INDEX i4 on BEHANDLUNGEN (FallID);
@@ -131,24 +131,24 @@ CREATE TABLE ARTIKEL(
 	lastupdate      BIGINT,                         # timestamp
 	deleted			CHAR(1) default '0',			# indicates that this object is marked deleted
 	EAN				VARCHAR(15),                    # the european article number
-	SubID			VARCHAR(20),                    # an ID depending of the type (e.g. Pharmacode)
-	LieferantID		VARCHAR(40),                    # foreign key from KONTAKT -> dealer
+	subid			VARCHAR(20),                    # an ID depending of the type (e.g. Pharmacode)
+	lieferantid		VARCHAR(40),                    # foreign key from KONTAKT -> dealer
 	Klasse			VARCHAR(80),					# class of the objects representing this article
 	Name			VARCHAR(127),					# official name
 	Name_intern		VARCHAR(127),					# internal name
-	Maxbestand		CHAR(4),						# max number to hold on stock
-	Minbestand		CHAR(4),						# min number on stock before ordering
-	Istbestand		CHAR(4),						# actual number on stock
-	EK_Preis		CHAR(8),						# cost (buy) in cents/rp
-	VK_Preis		CHAR(8),						# price (sell) in cents/rp
-	Typ				VARCHAR(15),					# type of the article
-	Codeclass		VARCHAR(10),					# used differently
-	ExtID			VARCHAR(40),					# used differently
-	LastImport		CHAR(8),						# date of last import (yyyymmdd)
+	maxbestand		CHAR(4),						# max number to hold on stock
+	minbestand		CHAR(4),						# min number on stock before ordering
+	istbestand		CHAR(4),						# actual number on stock
+	ek_Preis		CHAR(8),						# cost (buy) in cents/rp
+	vk_Preis		CHAR(8),						# price (sell) in cents/rp
+	typ				VARCHAR(15),					# type of the article
+	codeclass		VARCHAR(10),					# used differently
+	extid			VARCHAR(40),					# used differently
+	lastimport		CHAR(8),						# date of last import (yyyymmdd)
 	ValidFrom		CHAR(8),			
 	ValidTo			CHAR(8),
 	ATC_code		VARCHAR(255),
-	ExtInfo			BLOB							# additional informations (hashtable)
+	extinfo			BLOB							# additional informations (hashtable)
 );
 
 CREATE INDEX i5 on ARTIKEL (Name);
@@ -162,14 +162,14 @@ CREATE TABLE PATIENT_ARTIKEL_JOINT(
 	id				VARCHAR(40) primary key,
 	lastupdate      BIGINT,
 	deleted			CHAR(1) default '0',
-	PatientID		VARCHAR(40),					# foreign key from KONTAKT
-	ArtikelID		VARCHAR(40),					# foreign key from ARTIKEL  !!!! DEPRECATED DO NOT USE !!!
+	patientid		VARCHAR(40),					# foreign key from KONTAKT
+	artikelid		VARCHAR(40),					# foreign key from ARTIKEL  !!!! DEPRECATED DO NOT USE !!!
 	Artikel			VARCHAR(255),					# cheap copy of article. replaces ArtikelID
-	RezeptID		VARCHAR(40),					# prescription where this article was last given
+	REZEPTID		VARCHAR(40),					# prescription where this article was last given
 	DateFrom		CHAR(24),						# first date
 	DateUntil		CHAR(24),						# date the medication was stopped
 	Dosis			VARCHAR(255),					# number
-	Anzahl			CHAR(3),
+	ANZAHL			CHAR(3),
 	Bemerkung		VARCHAR(255),
 	prescType		CHAR(2),						# the type of medication (fixed, prn)
 	sortOrder		CHAR(3),						# manual sort order
@@ -194,12 +194,12 @@ CREATE TABLE KONTO(
 	id				VARCHAR(40) primary key,
 	lastupdate      BIGINT,
 	deleted			CHAR(1) default '0',
-	PatientID		VARCHAR(40),              # foreign key from KONTAKT 
+	patientid		VARCHAR(40),              # foreign key from KONTAKT 
 	RechnungsID		VARCHAR(40),              # foreign key from RECHNUNG
 	ZahlungsID		VARCHAR(40),              # foreign key from ZAHLUNG
-	Betrag			CHAR(8),
-	Datum			CHAR(8),
-	Bemerkung		VARCHAR(80),
+	betrag			CHAR(8),
+	datum			CHAR(8),
+	bemerkung		VARCHAR(80),
 	account			VARCHAR(255)
 );
 
@@ -211,15 +211,15 @@ CREATE TABLE LEISTUNGEN(
 	id				VARCHAR(40) primary key,
 	lastupdate      BIGINT,
 	deleted			CHAR(1) default '0',
-	BEHANDLUNG		VARCHAR(40),
-	LEISTG_TXT		VARCHAR(255),
-	LEISTG_CODE		VARCHAR(40),
-	KLASSE			VARCHAR(80),
-	ZAHL			CHAR(3),
-	EK_KOSTEN		CHAR(8),
+	behandlung		VARCHAR(40),
+	leistg_txt		VARCHAR(255),
+	leistg_code		VARCHAR(40),
+	klasse			VARCHAR(80),
+	zahl			CHAR(3),
+	ek_kosten		CHAR(8),
 	VK_TP			CHAR(8),
 	VK_SCALE		CHAR(8),
-	VK_PREIS		CHAR(8),
+	vk_preis		CHAR(8),
 	SCALE			CHAR(4) DEFAULT '100',
 	SCALE2			CHAR(4) DEFAULT '100',
 	userID			VARCHAR(40),				# foreign key on user
