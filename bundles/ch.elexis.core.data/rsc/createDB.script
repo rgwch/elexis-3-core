@@ -38,20 +38,20 @@ CREATE TABLE KONTAKT(
 	land			CHAR(3),					# country as ISO code
 	geburtsdatum	CHAR(8),					# bithdate as yyyymmdd
 	geschlecht		CHAR(1),					# sex m or w
-	Titel			VARCHAR(255),				# title
-	TitelSuffix		VARCHAR(255),				# title suffix
-	Bezeichnung1	VARCHAR(255),				# name1
-	Bezeichnung2	VARCHAR(255),				# name2
-	Bezeichnung3	VARCHAR(255),				# name3
-	Strasse			VARCHAR(255),				# street
+	titel			VARCHAR(255),				# title
+	titelsuffix		VARCHAR(255),				# title suffix
+	bezeichnung1	VARCHAR(255),				# name1
+	bezeichnung2	VARCHAR(255),				# name2
+	bezeichnung3	VARCHAR(255),				# name3
+	strasse			VARCHAR(255),				# street
 	plz				VARCHAR(6),					# zip-code
-	Ort				VARCHAR(255),				# place (don't try Llanfairpwllgwyngyllgogerychwyrndrobwllllantysiliogogogoch)
-	Telefon1		VARCHAR(30),				# phone1
-	Telefon2		VARCHAR(30),				# phone2
+	ort				VARCHAR(255),				# place (don't try Llanfairpwllgwyngyllgogerychwyrndrobwllllantysiliogogogoch)
+	telefon1		VARCHAR(30),				# phone1
+	telefon2		VARCHAR(30),				# phone2
 	fax				VARCHAR(30),				# you'll guess it
-	NatelNr			VARCHAR(30),				# mobile
-	Email			VARCHAR(255),				# guess 
-	Website			VARCHAR(255),
+	natelnr			VARCHAR(30),				# mobile
+	email			VARCHAR(255),				# guess 
+	website			VARCHAR(255),
 	gruppe			VARCHAR(10),				# mandator group
 	patientnr		VARCHAR(40),				# external identifier
 	anschrift		TEXT,						# postal (address sticker)
@@ -77,8 +77,8 @@ CREATE TABLE KONTAKT_ADRESS_JOINT(
 	myid		VARCHAR(40),					# ID of a KONTAKT 
 	otherid		VARCHAR(40),					# ID of a KONTAKT that ist related to myID
 	bezug		VARCHAR(80),					# Description of the relationship
-	myRType		CHAR(4),						# My formal relationship type
-	otherRType	CHAR(4)							# Other formal relationship type
+	myrtype		CHAR(4),						# My formal relationship type
+	otherrtype	CHAR(4)							# Other formal relationship type
 );
 
 CREATE INDEX aij1 on KONTAKT_ADRESS_JOINT (myId);
@@ -101,9 +101,9 @@ CREATE TABLE FAELLE(
 	datumbis		CHAR(8),						# end date
 	bezeichnung		VARCHAR(80),					# title of the case
 	grund			VARCHAR(80),					# reason for treatment
-	Gesetz			VARCHAR(20),					# deprecated, do not use
-	Status			VARCHAR(80),					# deprecated, do not use
-	EXTINFO			BLOB							# additional informations (hashtable)
+	gesetz			VARCHAR(20),					# deprecated, do not use
+	status			VARCHAR(80),					# deprecated, do not use
+	extinfo			BLOB							# additional informations (hashtable)
 );
 
 CREATE INDEX i3 on FAELLE (PatientID);
@@ -130,12 +130,12 @@ CREATE TABLE ARTIKEL(
 	id				VARCHAR(40) primary key,		# UUID
 	lastupdate      BIGINT,                         # timestamp
 	deleted			CHAR(1) default '0',			# indicates that this object is marked deleted
-	EAN				VARCHAR(15),                    # the european article number
+	ean				VARCHAR(15),                    # the european article number
 	subid			VARCHAR(20),                    # an ID depending of the type (e.g. Pharmacode)
 	lieferantid		VARCHAR(40),                    # foreign key from KONTAKT -> dealer
-	Klasse			VARCHAR(80),					# class of the objects representing this article
-	Name			VARCHAR(127),					# official name
-	Name_intern		VARCHAR(127),					# internal name
+	klasse			VARCHAR(80),					# class of the objects representing this article
+	name			VARCHAR(127),					# official name
+	name_intern		VARCHAR(127),					# internal name
 	maxbestand		CHAR(4),						# max number to hold on stock
 	minbestand		CHAR(4),						# min number on stock before ordering
 	istbestand		CHAR(4),						# actual number on stock
@@ -145,9 +145,9 @@ CREATE TABLE ARTIKEL(
 	codeclass		VARCHAR(10),					# used differently
 	extid			VARCHAR(40),					# used differently
 	lastimport		CHAR(8),						# date of last import (yyyymmdd)
-	ValidFrom		CHAR(8),			
-	ValidTo			CHAR(8),
-	ATC_code		VARCHAR(255),
+	validfrom		CHAR(8),			
+	validto			CHAR(8),
+	atc_code		VARCHAR(255),
 	extinfo			BLOB							# additional informations (hashtable)
 );
 
@@ -164,25 +164,25 @@ CREATE TABLE PATIENT_ARTIKEL_JOINT(
 	deleted			CHAR(1) default '0',
 	patientid		VARCHAR(40),					# foreign key from KONTAKT
 	artikelid		VARCHAR(40),					# foreign key from ARTIKEL  !!!! DEPRECATED DO NOT USE !!!
-	Artikel			VARCHAR(255),					# cheap copy of article. replaces ArtikelID
-	REZEPTID		VARCHAR(40),					# prescription where this article was last given
-	DateFrom		CHAR(24),						# first date
-	DateUntil		CHAR(24),						# date the medication was stopped
-	Dosis			VARCHAR(255),					# number
-	ANZAHL			CHAR(3),
-	Bemerkung		VARCHAR(255),
-	prescType		CHAR(2),						# the type of medication (fixed, prn)
-	sortOrder		CHAR(3),						# manual sort order
-	prescDate		CHAR(8),						# date medication was prescribed
+	artikel			VARCHAR(255),					# cheap copy of article. replaces ArtikelID
+	rezeptid		VARCHAR(40),					# prescription where this article was last given
+	datefrom		CHAR(24),						# first date
+	dateuntil		CHAR(24),						# date the medication was stopped
+	dosis			VARCHAR(255),					# number
+	anzahl			CHAR(3),
+	bemerkung		VARCHAR(255),
+	presctype		CHAR(2),						# the type of medication (fixed, prn)
+	sortorder		CHAR(3),						# manual sort order
+	prescdate		CHAR(8),						# date medication was prescribed
 	prescriptor		VARCHAR(40),					# the contact that prescribed this 
-	ExtInfo			BLOB
+	extinfo			BLOB
 );
 
 CREATE INDEX paj1 on PATIENT_ARTIKEL_JOINT(PATIENTID);
 CREATE INDEX PAJ2 on PATIENT_ARTIKEL_JOINT(REZEPTID);
 
 CREATE TABLE ARTIKEL_DETAILS(   
-    ARTICLE_ID      VARCHAR(40),                    # foreign key from ARTIKEL                     
+    article_id      VARCHAR(40),                    # foreign key from ARTIKEL                     
     notes           TEXT,                           # informations or usage of the article
     image           BLOB                            # an image or other binary data
 );
@@ -195,8 +195,8 @@ CREATE TABLE KONTO(
 	lastupdate      BIGINT,
 	deleted			CHAR(1) default '0',
 	patientid		VARCHAR(40),              # foreign key from KONTAKT 
-	RechnungsID		VARCHAR(40),              # foreign key from RECHNUNG
-	ZahlungsID		VARCHAR(40),              # foreign key from ZAHLUNG
+	rechnungsid		VARCHAR(40),              # foreign key from RECHNUNG
+	zahlungsid		VARCHAR(40),              # foreign key from ZAHLUNG
 	betrag			CHAR(8),
 	datum			CHAR(8),
 	bemerkung		VARCHAR(80),
@@ -217,25 +217,25 @@ CREATE TABLE LEISTUNGEN(
 	klasse			VARCHAR(80),
 	zahl			CHAR(3),
 	ek_kosten		CHAR(8),
-	VK_TP			CHAR(8),
-	VK_SCALE		CHAR(8),
+	vk_tp			CHAR(8),
+	vk_scale		CHAR(8),
 	vk_preis		CHAR(8),
-	SCALE			CHAR(4) DEFAULT '100',
-	SCALE2			CHAR(4) DEFAULT '100',
-	userID			VARCHAR(40),				# foreign key on user
-	DETAIL			BLOB
+	scale			CHAR(4) DEFAULT '100',
+	scale2			CHAR(4) DEFAULT '100',
+	userid			VARCHAR(40),				# foreign key on user
+	detail			BLOB
 );
 
 CREATE INDEX lst1 on LEISTUNGEN(BEHANDLUNG);
 CREATE INDEX lst2 on LEISTUNGEN(KlASSE,LEISTG_CODE);
 
 CREATE TABLE EK_PREISE(
-	TYP				VARCHAR(80),
+	typ				VARCHAR(80),
 	id				VARCHAR(40),
 	lastupdate      BIGINT,
-	DATUM_VON		CHAR(8),
-	DATUM_BIS		CHAR(8),
-	MULTIPLIKATOR	CHAR(8)
+	datum_von		CHAR(8),
+	datum_bis		CHAR(8),
+	multiplikator	CHAR(8)
 );
 
 CREATE INDEX ekp1 ON EK_PREISE (TYP);
@@ -246,9 +246,9 @@ CREATE TABLE VK_PREISE(
 	TYP				VARCHAR(80),
 	id				VARCHAR(40),
 	lastupdate      BIGINT,
-	DATUM_VON		CHAR(8),
-	DATUM_BIS		CHAR(8),
-	MULTIPLIKATOR	CHAR(8)
+	datum_von		CHAR(8),
+	datum_bis		CHAR(8),
+	multiplikator	CHAR(8)
 );
 
 CREATE INDEX vkp1 on VK_PREISE (TYP);
@@ -259,20 +259,20 @@ CREATE TABLE DIAGNOSEN(
 	id				VARCHAR(40) primary key,
 	lastupdate      BIGINT,
 	deleted			CHAR(1) default '0',
-	DG_TXT			VARCHAR(255),
-	DG_CODE			VARCHAR(40),
-	KLASSE			VARCHAR(80)
+	dg_txt			VARCHAR(255),
+	dg_code			VARCHAR(40),
+	klasse			VARCHAR(80)
 );
 
-CREATE INDEX dg1 on DIAGNOSEN (KLASSE,DG_CODE);
+CREATE INDEX dg1 on DIAGNOSEN (klasse,dg_code);
 
 CREATE TABLE BEHDL_DG_JOINT(
 	id				VARCHAR(40),
 	lastupdate      BIGINT,
 	deleted			CHAR(1) default '0',
-	BehandlungsID	VARCHAR(40),
-	DiagnoseID		VARCHAR(40),
-	PRIMARY KEY (BehandlungsID, DiagnoseID)
+	Behandlungsid	VARCHAR(40),
+	Diagnoseid		VARCHAR(40),
+	PRIMARY KEY (Behandlungsid, Diagnoseid)
 );
 
 # Verschiedene Konfigurationsdaten
@@ -291,19 +291,19 @@ CREATE TABLE BRIEFE(
 	id				VARCHAR(40) primary key,
 	lastupdate      BIGINT,
 	deleted			CHAR(1) default '0',
-	Betreff			VARCHAR(255),
-	Datum			CHAR(24),
+	betreff			VARCHAR(255),
+	datum			CHAR(24),
 	modifiziert		CHAR(24),
 	gedruckt		CHAR(8),
 	geloescht		CHAR(2),
 	note			TEXT,		  		   # Notizen
-	AbsenderID		VARCHAR(40),           # foreign key from KONTAKT
-	DestID			VARCHAR(40),           # foreign key from KONTAKT
-	BehandlungsID	VARCHAR(40),           # foreign key from BEHANDLUNG
-	PatientID		VARCHAR(40),           # foreign key from KONTAKT
-	Typ				VARCHAR(30),
-	MimeType		VARCHAR(80),
-	Path			TEXT
+	absenderid		VARCHAR(40),           # foreign key from KONTAKT
+	destid			VARCHAR(40),           # foreign key from KONTAKT
+	behandlungsid	VARCHAR(40),           # foreign key from BEHANDLUNG
+	patientid		VARCHAR(40),           # foreign key from KONTAKT
+	typ				VARCHAR(30),
+	mimetype		VARCHAR(80),
+	path			TEXT
 );
 
 CREATE INDEX i8 on BRIEFE (BehandlungsID);
@@ -313,11 +313,11 @@ CREATE TABLE OUTPUT_LOG(
 	id				VARCHAR(40) primary key,
 	lastupdate		BIGINT,
 	deleted			CHAR(1) default '0',
-	ObjectID		VARCHAR(40),		# foreign key from object
-	ObjectType		VARCHAR(80),		# Class ob object
-	Datum			CHAR(8),
-	Outputter		VARCHAR(80),		# identification of the output device/program
-	ExtInfo			BLOB				# outputter specific information
+	objectid		VARCHAR(40),		# foreign key from object
+	objecttype		VARCHAR(80),		# Class ob object
+	datum			CHAR(8),
+	outputter		VARCHAR(80),		# identification of the output device/program
+	extinfo			BLOB				# outputter specific information
 );
 
 CREATE INDEX bal_i1 ON OUTPUT_LOG (ObjectID);
@@ -327,51 +327,51 @@ CREATE TABLE RECHNUNGEN(
 	id				VARCHAR(40) primary key,     # UUID
 	lastupdate      BIGINT,
 	deleted			CHAR(1) default '0',         # indicates that this object is marked deleted
-	RnNummer		VARCHAR(8),                  # Number of the bill (unique within this database)
-	FallID			VARCHAR(40),                 # foreign key from FAELLE (case this bill belongs to)
-	MandantID		VARCHAR(40),                 # foreign key from KONTAKT (mandator this bill beongs to)
-	RnDatum			CHAR(8),                     # date of creating this bill
-	RnStatus		VARCHAR(20),                 # state of this bill (e.g. open, payed)
-	RnDatumVon	    CHAR(8),                     # date of first treatment billed
-	RnDatumBis		CHAR(8),                     # date of last treatment billed
-	Betrag			CHAR(8),                     # amount in Rp / cents
-	StatusDatum		CHAR(8),                     # date of last state change
-	ExtInfo			BLOB                         # hastable for trace infos etc.
+	rnnummer		VARCHAR(8),                  # Number of the bill (unique within this database)
+	fallid			VARCHAR(40),                 # foreign key from FAELLE (case this bill belongs to)
+	mandantid		VARCHAR(40),                 # foreign key from KONTAKT (mandator this bill beongs to)
+	rndatum			CHAR(8),                     # date of creating this bill
+	rnstatus		VARCHAR(20),                 # state of this bill (e.g. open, payed)
+	rndatumvon	    CHAR(8),                     # date of first treatment billed
+	rndatumbis		CHAR(8),                     # date of last treatment billed
+	betrag			CHAR(8),                     # amount in Rp / cents
+	statusdatum		CHAR(8),                     # date of last state change
+	extinfo			BLOB                         # hastable for trace infos etc.
 );
 
-CREATE INDEX Rn1 on RECHNUNGEN (FallID);
-CREATE INDEX Rn2 on RECHNUNGEN (MandantID);
-CREATE INDEX Rn3 ON RECHNUNGEN (RnStatus);
-CREATE INDEX Rn4 ON RECHNUNGEN (RnDatumVon);
-CREATE INDEX Rn5 ON RECHNUNGEN (RnDatumBis);
+CREATE INDEX Rn1 on RECHNUNGEN (fallid);
+CREATE INDEX Rn2 on RECHNUNGEN (mandantid);
+CREATE INDEX Rn3 ON RECHNUNGEN (rnstatus);
+CREATE INDEX Rn4 ON RECHNUNGEN (rndatumvon);
+CREATE INDEX Rn5 ON RECHNUNGEN (rndatumbis);
 
 # payments
 CREATE TABLE ZAHLUNGEN(
 	id				VARCHAR(40) primary key,     # UUID
 	lastupdate      BIGINT,
 	deleted			CHAR(1) default '0',         # indicates that this object is marked deleted
-	RechnungsID		VARCHAR(40),                 # bill this payment belongs to (can be null)
-	Betrag			CHAR(8),                     # amount of this payment in Rp/cents
-	Datum			CHAR(8),                     # date of this payment
-	Bemerkung		VARCHAR(80)                  # remark
+	rechnungsid		VARCHAR(40),                 # bill this payment belongs to (can be null)
+	betrag			CHAR(8),                     # amount of this payment in Rp/cents
+	datum			CHAR(8),                     # date of this payment
+	bemerkung		VARCHAR(80)                  # remark
 );
 
-CREATE INDEX zahl1 on ZAHLUNGEN(RechnungsID);
+CREATE INDEX zahl1 on ZAHLUNGEN(rechnungsid);
 
 CREATE TABLE REMINDERS(
 	id				VARCHAR(40) primary key,
 	lastupdate      BIGINT,
 	deleted			CHAR(1) default '0',
-	IdentID			VARCHAR(40),                 # foreign key from KONTAKT
-	OriginID		VARCHAR(40),                 # foreign key from KONTAKT
-	Responsible  	VARCHAR(40),                 # foreign key from KONTAKT
-	DateDue			CHAR(8),
-	Status			VARCHAR(1),
-	Typ				VARCHAR(1),
-	Params			TEXT,
-	Message			TEXT,
+	identid			VARCHAR(40),                 # foreign key from KONTAKT
+	originid		VARCHAR(40),                 # foreign key from KONTAKT
+	responsible  	VARCHAR(40),                 # foreign key from KONTAKT
+	datedue			CHAR(8),
+	status			VARCHAR(1),
+	typ				VARCHAR(1),
+	params			TEXT,
+	message			TEXT,
 	priority		CHAR(1),
-	actionType		CHAR(2),
+	actiontype		CHAR(2),
 	subject			VARCHAR(160)
 );
 
@@ -379,17 +379,17 @@ CREATE TABLE REMINDERS_RESPONSIBLE_LINK(
 	id				VARCHAR(40),
 	lastupdate      BIGINT,
 	deleted			CHAR(1) default '0',
-	ReminderID		VARCHAR(40),                  # foreign key from REMINDERS
-	ResponsibleID	VARCHAR(40),               # foreign key from KONTAKT
-	PRIMARY KEY (ReminderID, ResponsibleID)
+	reminderid		VARCHAR(40),                  # foreign key from REMINDERS
+	responsibleid	VARCHAR(40),               # foreign key from KONTAKT
+	PRIMARY KEY (reminderid, responsibleid)
 );
 
-CREATE INDEX rrl1 on REMINDERS_RESPONSIBLE_LINK (ReminderID);
-CREATE INDEX rrl2 on REMINDERS_RESPONSIBLE_LINK (ResponsibleID);
+CREATE INDEX rrl1 on REMINDERS_RESPONSIBLE_LINK (reminderid);
+CREATE INDEX rrl2 on REMINDERS_RESPONSIBLE_LINK (responsibleid);
 
-CREATE INDEX rem1 on REMINDERS (IdentID);
-CREATE INDEX rem2 on REMINDERS (DateDue);
-CREATE INDEX rem3 ON REMINDERS (Responsible);
+CREATE INDEX rem1 on REMINDERS (identid);
+CREATE INDEX rem2 on REMINDERS (datedue);
+CREATE INDEX rem3 ON REMINDERS (responsible);
 
 
 # Die Trace-Table kann (wenn Trace eingeschaltet wurde) jeden Schreibzugriff
@@ -398,13 +398,13 @@ CREATE INDEX rem3 ON REMINDERS (Responsible);
 # korrigiert werden.
 CREATE TABLE TRACES(
 	logtime			BIGINT,
-	Workstation		VARCHAR(40),
-	Username		VARCHAR(30),
+	workstation		VARCHAR(40),
+	username		VARCHAR(30),
 	action			TEXT
 );
 
 CREATE INDEX trace1 on TRACES(logtime);
-CREATE INDEX trace2 on TRACES(Username);
+CREATE INDEX trace2 on TRACES(username);
 
 # Das Schwarze Brett der Praxis
 CREATE TABLE BBS(
