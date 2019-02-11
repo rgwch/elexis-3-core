@@ -716,90 +716,90 @@ CREATE TABLE BESTELLUNG_ENTRY (
 ALTER TABLE BESTELLUNG_ENTRY 
 	ADD CONSTRAINT FK_BESTELLUNG_ENTRY_BESTELLUNG_ID FOREIGN KEY (BESTELLUNG) REFERENCES BESTELLUNGEN (ID);
 
-CREATE TABLE USER_ (
+CREATE TABLE user_ (
   id VARCHAR(40) NOT NULL,				# the username is the id
   deleted CHAR(1) DEFAULT '0',
-  KONTAKT_ID VARCHAR(40),				# foreign key to contact table
-  LASTUPDATE BIGINT,
-  HASHED_PASSWORD VARCHAR(64),			# Currently SHA-256
-  SALT VARCHAR(64),						# The SALT used for SHA256_PASSWORD hash
-  IS_ACTIVE CHAR(1) DEFAULT '1', 		# Is this account currently active? If not, any log-in is to be prohibited.
-  IS_ADMINISTRATOR CHAR(1) DEFAULT '0',	# User is an administrator
-  KEYSTORE TEXT,						# For key based authentication or signature purposes
-  EXTINFO BLOB,
-  PRIMARY KEY (ID)
+  kontakt_id VARCHAR(40),				# foreign key to contact table
+  lastupdate BIGINT,
+  hashed_password VARCHAR(64),			# Currently SHA-256
+  salt VARCHAR(64),						# The SALT used for SHA256_PASSWORD hash
+  is_active CHAR(1) DEFAULT '1', 		# Is this account currently active? If not, any log-in is to be prohibited.
+  is_administrator CHAR(1) DEFAULT '0',	# User is an administrator
+  keystore TEXT,						# For key based authentication or signature purposes
+  extinfo BLOB,
+  PRIMARY KEY (id)
 );
 
-CREATE TABLE ROLE (
+CREATE TABLE role (
   id VARCHAR(40) NOT NULL,
-  LASTUPDATE BIGINT DEFAULT NULL,
+  lastupdate BIGINT DEFAULT NULL,
   deleted CHAR(1) DEFAULT '0',
-  EXTINFO BLOB,
-  ISSYSTEMROLE CHAR(1) DEFAULT '0',
-  PRIMARY KEY (ID)
+  extinfo BLOB,
+  issystemrole CHAR(1) DEFAULT '0',
+  PRIMARY KEY (id)
 );
  
-INSERT INTO ROLE (ID, ISSYSTEMROLE) VALUES ('user', '1');
-INSERT INTO ROLE (ID, ISSYSTEMROLE) VALUES ('user_external', '1');
-INSERT INTO ROLE (ID, ISSYSTEMROLE) VALUES ('executive_doctor', '1');
-INSERT INTO ROLE (ID, ISSYSTEMROLE) VALUES ('doctor', '1');
-INSERT INTO ROLE (ID, ISSYSTEMROLE) VALUES ('assistant', '1');
-INSERT INTO ROLE (ID, ISSYSTEMROLE) VALUES ('patient', '1');
+INSERT INTO ROLE (id, issystemrole) VALUES ('user', '1');
+INSERT INTO ROLE (id, issystemrole) VALUES ('user_external', '1');
+INSERT INTO ROLE (id, issystemrole) VALUES ('executive_doctor', '1');
+INSERT INTO ROLE (id, issystemrole) VALUES ('doctor', '1');
+INSERT INTO ROLE (id, issystemrole) VALUES ('assistant', '1');
+INSERT INTO ROLE (id, issystemrole) VALUES ('patient', '1');
 
-CREATE TABLE USER_ROLE_JOINT (
+CREATE TABLE user_role_joint (
   id VARCHAR(40) NOT NULL,
-  LASTUPDATE BIGINT DEFAULT NULL,
+  lastupdate BIGINT DEFAULT NULL,
   deleted CHAR(1) DEFAULT NULL,
-  USER_ID VARCHAR(40) NOT NULL,
-  PRIMARY KEY (ID, USER_ID)
+  user_id VARCHAR(40) NOT NULL,
+  PRIMARY KEY (id, user_id)
 );
 
 # We must not name the table RIGHT, as this is an SQL keyword
-CREATE TABLE RIGHT_ (
+CREATE TABLE right_ (
   id VARCHAR(40) NOT NULL, 				# from ACE#getUniqueHashFromACE()
-  LASTUPDATE BIGINT DEFAULT NULL,
+  lastupdate BIGINT DEFAULT NULL,
   deleted CHAR(1) DEFAULT '0',
-  LOG_EXECUTION CHAR(1),
-  NAME VARCHAR(256),
-  PARENTID VARCHAR(40),
-  I18N_NAME VARCHAR(256),
-  PRIMARY KEY (ID)
+  log_execution CHAR(1),
+  name VARCHAR(256),
+  parentid VARCHAR(40),
+  i18n_name VARCHAR(256),
+  PRIMARY KEY (id)
 );
 
-INSERT INTO RIGHT_ (ID, NAME, PARENTID) VALUES ('root', 'root', '');
+INSERT INTO right_ (id, name, parentid) VALUES ('root', 'root', '');
 
 # Join the roles with the rights
-CREATE TABLE ROLE_RIGHT_JOINT (
+CREATE TABLE role_right_joint (
   id VARCHAR(40) NOT NULL,
-  LASTUPDATE BIGINT DEFAULT NULL,
+  lastupdate BIGINT DEFAULT NULL,
   deleted CHAR(1) DEFAULT NULL,
-  ROLE_ID VARCHAR(40) NOT NULL,
-  PRIMARY KEY (ID, ROLE_ID)
+  role_id VARCHAR(40) NOT NULL,
+  PRIMARY KEY (id, role_id)
 );
 
 # We prepare a view to join the rights of a user for easy querying
 CREATE OR REPLACE VIEW RIGHTS_PER_ROLE AS SELECT 
 	r.id AS ROLE_ID, ri.id AS RIGHT_ID
 FROM 
-	ROLE r
-	LEFT JOIN ROLE_RIGHT_JOINT rrj
-		ON r.id = rrj.ROLE_ID
-	LEFT JOIN RIGHT_ ri
+	role r
+	LEFT JOIN role_right_joint rrj
+		ON r.id = rrj.role_id
+	LEFT JOIN right_ ri
 		ON rrj.id = ri.id
 ORDER BY r.id;
 
 # We prepare a view to join the rights of a user for easy querying
-CREATE OR REPLACE VIEW RIGHTS_PER_USER AS SELECT 
-	u.id AS USER_ID, ri.id AS RIGHT_ID, ri.NAME AS RIGHT_NAME
+CREATE OR REPLACE VIEW rights_per_user AS SELECT 
+	u.id AS user_id, ri.id AS right_id, ri.name AS right_name
 FROM 
-	USER_ u
-	LEFT JOIN USER_ROLE_JOINT urj 
-		ON u.id = urj.USER_ID
-	LEFT JOIN ROLE r
+	user_ u
+	LEFT JOIN user_role_joint urj 
+		ON u.id = urj.user_id
+	LEFT JOIN role r
 		ON urj.id = r.id
-	LEFT JOIN ROLE_RIGHT_JOINT rrj
-		ON r.id = rrj.ROLE_id
-	LEFT JOIN RIGHT_ ri
+	LEFT JOIN role_right_joint rrj
+		ON r.id = rrj.role_id
+	LEFT JOIN right_ ri
 		ON rrj.id = ri.id
 ORDER BY u.id;
 
@@ -809,4 +809,4 @@ INSERT INTO CONFIG (param,wert) VALUES ('ElexisVersion','3.2.0');
 # Hack for Fall#Gesetz and cost-bearer transfer in 3.6
 # This script is clearly only executed on a new database, where we do not need
 # to transfer the old values, hence we initialize the resp. done flag
-INSERT INTO CONFIG (lastupdate,param,wert) VALUES (1,'FallGesetzCostBearerMigratedTo36','1');
+INSERT INTO config (lastupdate,param,wert) VALUES (1,'FallGesetzCostBearerMigratedTo36','1');
