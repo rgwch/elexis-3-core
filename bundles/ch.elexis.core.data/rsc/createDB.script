@@ -243,7 +243,7 @@ CREATE INDEX ekp2 ON EK_PREISE (DATUM_VON);
 
 
 CREATE TABLE VK_PREISE(
-	TYP				VARCHAR(80),
+	typ				VARCHAR(80),
 	id				VARCHAR(40),
 	lastupdate      BIGINT,
 	datum_von		CHAR(8),
@@ -435,12 +435,12 @@ CREATE TABLE LABORITEMS(
 	deleted		CHAR(1) default '0',
 	kuerzel		VARCHAR(80),
 	titel		VARCHAR(80),
-	laborID		VARCHAR(40),                   # foreign key from KONTAKT
-	RefMann		VARCHAR(256),
-	RefFrauOrTx VARCHAR(256),
-	Einheit		VARCHAR(20),
+	laborid		VARCHAR(40),                   # foreign key from KONTAKT
+	refmann		VARCHAR(256),
+	reffrauortx VARCHAR(256),
+	einheit		VARCHAR(20),
 	typ			CHAR(1),
-	Gruppe		VARCHAR(40),
+	gruppe		VARCHAR(40),
 	prio		CHAR(3),
 	billingcode	VARCHAR(128),					# Code for automatic billing (from e.g EAL2009)
 	export		VARCHAR(100),
@@ -451,7 +451,7 @@ CREATE TABLE LABORITEMS(
 );
 	
 CREATE INDEX labit1 on LABORITEMS(kuerzel);
-CREATE INDEX labit2 on LABORITEMS(laborID);
+CREATE INDEX labit2 on LABORITEMS(laborid);
 
 # Laborwerte sind zuordnungen von Laboritems zu Datum und Patient
 # mit dem entsprechenden Resultat.
@@ -460,27 +460,27 @@ CREATE TABLE LABORWERTE(
 	id			VARCHAR(40) primary key,
 	lastupdate  BIGINT,
 	deleted		CHAR(1) default '0',
-	PatientID	VARCHAR(40),              # foreign key from KONTAKT
+	patientid	VARCHAR(40),              # foreign key from KONTAKT
 	datum		CHAR(8),
 	zeit        CHAR(6),
-	ItemID		VARCHAR(40),                # foreign key from LABORIMTEMS
-	Resultat	VARCHAR(255),
-	Flags		VARCHAR(10),
-	Origin		VARCHAR(30),
+	itemid		VARCHAR(40),                # foreign key from LABORIMTEMS
+	resultat	VARCHAR(255),
+	flags		VARCHAR(10),
+	origin		VARCHAR(30),
 	unit        VARCHAR(255),
 	analysetime VARCHAR(24),
 	observationtime VARCHAR(24),
 	transmissiontime VARCHAR(24),
 	refmale     VARCHAR(255),
 	reffemale   VARCHAR(255),
-	OriginID    VARCHAR(40),
-	Kommentar	TEXT,
-	ExtInfo		BLOB
+	originid    VARCHAR(40),
+	kommentar	TEXT,
+	extinfo		BLOB
 );
 
-CREATE INDEX labor1 on LABORWERTE (PatientID);
+CREATE INDEX labor1 on LABORWERTE (patientid);
 CREATE INDEX labor2 on LABORWERTE (datum);
-CREATE INDEX labor3 on LABORWERTE (ItemID);
+CREATE INDEX labor3 on LABORWERTE (itemid);
 
 CREATE TABLE LABGROUPS(
    id VARCHAR(40) primary key,
@@ -491,9 +491,9 @@ CREATE TABLE LABGROUPS(
 
 CREATE TABLE LABGROUP_ITEM_JOINT(
      lastupdate      BIGINT,
-     GroupID        VARCHAR(40),
-     ItemID         VARCHAR(40),
-     Comment        TEXT
+     groupid        VARCHAR(40),
+     itemid         VARCHAR(40),
+     comment        TEXT
 ); 
 
 CREATE TABLE LABORDER (
@@ -521,15 +521,15 @@ CREATE TABLE REZEPTE(
 	id			VARCHAR(40) primary key,
 	lastupdate  BIGINT,
 	deleted		CHAR(1) default '0',
-	PatientID	VARCHAR(40),                  # foreign key from KONTAKT
-	MandantID	VARCHAR(40),                  # foreign key from KONTAKT
-	BriefID		VARCHAR(40),                  # foreign key from BRIEFE
+	patientid	VARCHAR(40),                  # foreign key from KONTAKT
+	mandantid	VARCHAR(40),                  # foreign key from KONTAKT
+	briefid		VARCHAR(40),                  # foreign key from BRIEFE
 	datum		CHAR(8),
-	RpTxt		TEXT,
-	RpZusatz	VARCHAR(80)
+	rptxt		TEXT,
+	rpzusatz	VARCHAR(80)
 );	
 
-CREATE INDEX rp1 on REZEPTE(PatientID);
+CREATE INDEX rp1 on REZEPTE(patientid);
 
 # Tabelle zum Speichern von benannten BLOB's verschiedener Herkunft
 CREATE TABLE HEAP(
@@ -544,28 +544,28 @@ CREATE TABLE AUF(
 	id			VARCHAR(40) primary key,
 	lastupdate  BIGINT,
 	deleted		CHAR(1) default '0',
-	PatientID	VARCHAR(40),
-	FallID		VARCHAR(40),
-	BriefID		VARCHAR(40),
-	Prozent		CHAR(3),
-	DatumAUZ	CHAR(8),
-	DatumVon	CHAR(8),
-	DatumBis	CHAR(8),
-	Grund		VARCHAR(50),
-	AUFZusatz	VARCHAR(80)
+	patientid	VARCHAR(40),
+	fallid		VARCHAR(40),
+	briefid		VARCHAR(40),
+	prozent		CHAR(3),
+	datumauz	CHAR(8),
+	datumvon	CHAR(8),
+	datumbis	CHAR(8),
+	grund		VARCHAR(50),
+	aufzusatz	VARCHAR(80)
 );
 	
-CREATE INDEX AUF1 on AUF(PatientID);
+CREATE INDEX AUF1 on AUF(patientid);
 
 CREATE TABLE EIGENLEISTUNGEN(
 	id			VARCHAR(40) primary key,
 	lastupdate  BIGINT,
 	deleted		CHAR(1) default '0',
-	Code		VARCHAR(20),
-	Bezeichnung VARCHAR(80),
-	EK_PREIS	CHAR(6),
-	VK_PREIS	CHAR(6),
-	ZEIT		CHAR(4)
+	code		VARCHAR(20),
+	bezeichnung VARCHAR(80),
+	ek_preis	CHAR(6),
+	vk_preis	CHAR(6),
+	zeit		CHAR(4)
 );
 
 CREATE TABLE HEAP2(
@@ -573,31 +573,31 @@ CREATE TABLE HEAP2(
 	deleted		CHAR(1) default '0',
 	datum		CHAR(8),
 	lastupdate  BIGINT,
-	Contents	BLOB
+	contents	BLOB
 );
 
 CREATE TABLE LOGS(
 	id			VARCHAR(40) primary key,	# log entry's id
 	lastupdate  BIGINT,
 	deleted     char(1) default '0',
-	OID			VARCHAR(255),				# foreign key on modified object
+	oid			VARCHAR(255),				# foreign key on modified object
 	datum		CHAR(8),					# date of modification
 	typ			VARCHAR(20),				
-	userID		VARCHAR(40),				# foreign key on modifying user
+	userid		VARCHAR(40),				# foreign key on modifying user
 	station		VARCHAR(255),				# modifying workstation name
-	ExtInfo		BLOB
+	extinfo		BLOB
 );
 
 CREATE TABLE USERCONFIG(
 	id			VARCHAR(40),
 	deleted		CHAR(1) default '0',
     lastupdate  BIGINT,
-	UserID		VARCHAR(40),
-	Param		VARCHAR(80),
-	Value		TEXT
+	userid		VARCHAR(40),
+	param		VARCHAR(80),
+	value		TEXT
 );
-CREATE INDEX UCFG ON USERCONFIG(Param);
-CREATE INDEX UCFG2 ON USERCONFIG(UserID);
+CREATE INDEX UCFG ON USERCONFIG(param);
+CREATE INDEX UCFG2 ON USERCONFIG(userid);
 
 CREATE TABLE XID(
 	id			VARCHAR(40) primary key,
@@ -616,15 +616,15 @@ CREATE INDEX XIDIDX3 on XID(object);
 CREATE TABLE ETIKETTEN(  
     id          VARCHAR(40) primary key,
     lastupdate  BIGINT,
-    Image       VARCHAR(40),
+    image       VARCHAR(40),
     deleted     CHAR(1) default '0',
     importance	VARCHAR(7),
-    Name        VARCHAR(40),
+    name        VARCHAR(40),
     foreground  CHAR(6),
     background  CHAR(6),
     classes     VARCHAR(255)
 );
-CREATE INDEX ETIKETTE1 on ETIKETTEN(Name);
+CREATE INDEX ETIKETTE1 on ETIKETTEN(name);
 
 CREATE TABLE ETIKETTEN_OBJECT_LINK(
     lastupdate  BIGINT,
@@ -644,98 +644,98 @@ CREATE TABLE DBIMAGE (
     id             VARCHAR(40) primary key,
     lastupdate     BIGINT,
     deleted        CHAR(1) default '0',
-    Datum          CHAR(8),
-    Prefix		   VARCHAR(80),				# A Unique ID of the image creator/importer
-    Title          VARCHAR(80),  			# A title unique within the prefix's namespace
-    Bild           BLOB
+    datum          CHAR(8),
+    prefix		   VARCHAR(80),				# A Unique ID of the image creator/importer
+    title          VARCHAR(80),  			# A title unique within the prefix's namespace
+    bild           BLOB
 );
 CREATE INDEX DBIMAGE1 on DBIMAGE(Title);     
 
 CREATE TABLE STOCK (
-	id VARCHAR(40) NOT NULL,
-	LASTUPDATE BIGINT DEFAULT NULL,
-	deleted CHAR(1) DEFAULT '0',
-	PRIORITY INTEGER DEFAULT 255,
-	CODE CHAR(3), 
-	DESCRIPTION VARCHAR(255), 
-	LOCATION VARCHAR(255), 
-	OWNER VARCHAR(40), 
-	RESPONSIBLE VARCHAR(40),
-	DRIVER_UUID VARCHAR(64), 
-	DRIVER_CONFIG TEXT,
-	PRIMARY KEY (ID)
+	id 				VARCHAR(40) NOT NULL,
+	lastupdate 		BIGINT DEFAULT NULL,
+	deleted 		CHAR(1) DEFAULT '0',
+	priority 		INTEGER DEFAULT 255,
+	code 			CHAR(3), 
+	description 	VARCHAR(255), 
+	location 		VARCHAR(255), 
+	owner 			VARCHAR(40), 
+	responsible 	VARCHAR(40),
+	driver_uuid 	VARCHAR(64), 
+	driver_config 	TEXT,
+	PRIMARY KEY (id)
 );
 
 INSERT INTO STOCK (ID, CODE, PRIORITY) VALUES ('STD', 'STD', '0');
 
 CREATE TABLE STOCK_ENTRY (
-	id VARCHAR(40) NOT NULL,
-	LASTUPDATE BIGINT DEFAULT NULL,
-	deleted CHAR(1) DEFAULT '0',
-	STOCK VARCHAR(40) NOT NULL,
-	ARTICLE_TYPE VARCHAR(255) NOT NULL,
-	ARTICLE_ID VARCHAR(40) NOT NULL, 
-	MIN INTEGER DEFAULT 0, 
-	CURRENT INTEGER DEFAULT 0, 
-	MAX INTEGER DEFAULT 0, 
-	FRACTIONUNITS INTEGER DEFAULT 0,
-	PROVIDER VARCHAR(40), 
-	PRIMARY KEY (ID)
+	id 				VARCHAR(40) NOT NULL,
+	lastupdate 		BIGINT DEFAULT NULL,
+	deleted 		CHAR(1) DEFAULT '0',
+	stock 			VARCHAR(40) NOT NULL,
+	article_type 	VARCHAR(255) NOT NULL,
+	article_id 		VARCHAR(40) NOT NULL, 
+	min				integer DEFAULT 0, 
+	current			integer DEFAULT 0, 
+	max				integer DEFAULT 0, 
+	fractionunits 	INTEGER DEFAULT 0,
+	provider 		VARCHAR(40), 
+	PRIMARY KEY (id)
 );
 
-CREATE INDEX STOCK_ENTRY_STOCK0 ON STOCK_ENTRY(STOCK);
-CREATE INDEX STOCK_ENTRY_TYPE0 ON STOCK_ENTRY(ARTICLE_TYPE);
-CREATE INDEX STOCK_ENTRY_ID0 ON STOCK_ENTRY(ARTICLE_ID);
+CREATE INDEX STOCK_ENTRY_STOCK0 ON STOCK_ENTRY(stock);
+CREATE INDEX STOCK_ENTRY_TYPE0 ON STOCK_ENTRY(article_type);
+CREATE INDEX STOCK_ENTRY_ID0 ON STOCK_ENTRY(article_id);
 
 ALTER TABLE STOCK_ENTRY 
-	ADD CONSTRAINT FK_STOCK_ENTRY_STOCK_ID FOREIGN KEY (STOCK) REFERENCES STOCK (ID);
+	ADD CONSTRAINT fk_stock_entry_stock_id FOREIGN KEY (stock) REFERENCES stock (id);
 	
-CREATE TABLE IF NOT EXISTS BESTELLUNGEN (
+CREATE TABLE IF NOT EXISTS bestellungen (
 	id       	VARCHAR(80) NOT NULL,
- 	LASTUPDATE 	BIGINT DEFAULT NULL,
+ 	lastupdate 	BIGINT DEFAULT NULL,
   	deleted 	CHAR(1) DEFAULT '0',
-	DATUM  	    CHAR(8),
-	CONTENTS 	BLOB,
-	PRIMARY KEY (ID)
+	datum  	    CHAR(8),
+	contents 	BLOB,
+	PRIMARY KEY (id)
 );
 
-CREATE TABLE BESTELLUNG_ENTRY (
-	id VARCHAR(40) NOT NULL,
-	LASTUPDATE BIGINT DEFAULT NULL,
-	deleted CHAR(1) DEFAULT '0',
-	BESTELLUNG VARCHAR(80) NOT NULL, 
-	STOCK VARCHAR(40), 
-	ARTICLE_TYPE VARCHAR(255) NOT NULL,
-	ARTICLE_ID VARCHAR(40) NOT NULL,
-	COUNT INTEGER DEFAULT '0',
-	PROVIDER VARCHAR(40),
-	STATE INTEGER DEFAULT '0',
-	PRIMARY KEY (ID)
+CREATE TABLE bestellung_entry (
+	id 				VARCHAR(40) NOT NULL,
+	lastupdate 		BIGINT DEFAULT NULL,
+	deleted 		CHAR(1) DEFAULT '0',
+	bestellung 		VARCHAR(80) NOT NULL, 
+	stock 			VARCHAR(40), 
+	article_type 	VARCHAR(255) NOT NULL,
+	article_id 		VARCHAR(40) NOT NULL,
+	count			INTEGER DEFAULT '0',
+	provider 		VARCHAR(40),
+	state 			INTEGER DEFAULT '0',
+	PRIMARY KEY (id)
 );
 
-ALTER TABLE BESTELLUNG_ENTRY 
-	ADD CONSTRAINT FK_BESTELLUNG_ENTRY_BESTELLUNG_ID FOREIGN KEY (BESTELLUNG) REFERENCES BESTELLUNGEN (ID);
+ALTER TABLE bestellung_entry 
+	ADD CONSTRAINT fk_bestellung_entry_bestellung_id FOREIGN KEY (bestellung) REFERENCES bestellungen (id);
 
 CREATE TABLE user_ (
-  id VARCHAR(40) NOT NULL,				# the username is the id
-  deleted CHAR(1) DEFAULT '0',
-  kontakt_id VARCHAR(40),				# foreign key to contact table
-  lastupdate BIGINT,
-  hashed_password VARCHAR(64),			# Currently SHA-256
-  salt VARCHAR(64),						# The SALT used for SHA256_PASSWORD hash
-  is_active CHAR(1) DEFAULT '1', 		# Is this account currently active? If not, any log-in is to be prohibited.
-  is_administrator CHAR(1) DEFAULT '0',	# User is an administrator
-  keystore TEXT,						# For key based authentication or signature purposes
-  extinfo BLOB,
+  id 				VARCHAR(40) NOT NULL,		# the username is the id
+  deleted 			CHAR(1) DEFAULT '0',
+  kontakt_id 		VARCHAR(40),				# foreign key to contact table
+  lastupdate 		BIGINT,
+  hashed_password 	VARCHAR(64),				# Currently SHA-256
+  salt 				VARCHAR(64),				# The SALT used for SHA256_PASSWORD hash
+  is_active	 		CHAR(1) DEFAULT '1', 		# Is this account currently active? 
+  is_administrator 	CHAR(1) DEFAULT '0',		# User is an administrator
+  keystore 			TEXT,						# For key based authentication or signature purposes
+  extinfo 			BLOB,
   PRIMARY KEY (id)
 );
 
 CREATE TABLE role (
-  id VARCHAR(40) NOT NULL,
-  lastupdate BIGINT DEFAULT NULL,
-  deleted CHAR(1) DEFAULT '0',
-  extinfo BLOB,
-  issystemrole CHAR(1) DEFAULT '0',
+  id 				VARCHAR(40) NOT NULL,
+  lastupdate 		BIGINT DEFAULT 0,
+  deleted 			CHAR(1) DEFAULT '0',
+  extinfo 			BLOB,
+  issystemrole 		CHAR(1) DEFAULT '0',
   PRIMARY KEY (id)
 );
  
@@ -747,22 +747,22 @@ INSERT INTO ROLE (id, issystemrole) VALUES ('assistant', '1');
 INSERT INTO ROLE (id, issystemrole) VALUES ('patient', '1');
 
 CREATE TABLE user_role_joint (
-  id VARCHAR(40) NOT NULL,
-  lastupdate BIGINT DEFAULT NULL,
-  deleted CHAR(1) DEFAULT NULL,
-  user_id VARCHAR(40) NOT NULL,
+  id 				VARCHAR(40) NOT NULL,
+  lastupdate 		BIGINT DEFAULT 0,
+  deleted 			CHAR(1) DEFAULT NULL,
+  user_id 			VARCHAR(40) NOT NULL,
   PRIMARY KEY (id, user_id)
 );
 
 # We must not name the table RIGHT, as this is an SQL keyword
 CREATE TABLE right_ (
-  id VARCHAR(40) NOT NULL, 				# from ACE#getUniqueHashFromACE()
-  lastupdate BIGINT DEFAULT NULL,
-  deleted CHAR(1) DEFAULT '0',
-  log_execution CHAR(1),
-  name VARCHAR(256),
-  parentid VARCHAR(40),
-  i18n_name VARCHAR(256),
+  id 				VARCHAR(40) NOT NULL, 				# from ACE#getUniqueHashFromACE()
+  lastupdate 		BIGINT DEFAULT 0,
+  deleted 			CHAR(1) DEFAULT '0',
+  log_execution 	CHAR(1),
+  name 				VARCHAR(256),
+  parentid 			VARCHAR(40),
+  i18n_name 		VARCHAR(256),
   PRIMARY KEY (id)
 );
 
@@ -770,16 +770,16 @@ INSERT INTO right_ (id, name, parentid) VALUES ('root', 'root', '');
 
 # Join the roles with the rights
 CREATE TABLE role_right_joint (
-  id VARCHAR(40) NOT NULL,
-  lastupdate BIGINT DEFAULT NULL,
-  deleted CHAR(1) DEFAULT NULL,
-  role_id VARCHAR(40) NOT NULL,
+  id 				VARCHAR(40) NOT NULL,
+  lastupdate 		BIGINT DEFAULT 0,
+  deleted 			CHAR(1) DEFAULT NULL,
+  role_id 			VARCHAR(40) NOT NULL,
   PRIMARY KEY (id, role_id)
 );
 
 # We prepare a view to join the rights of a user for easy querying
 CREATE OR REPLACE VIEW RIGHTS_PER_ROLE AS SELECT 
-	r.id AS ROLE_ID, ri.id AS RIGHT_ID
+	r.id AS role_id, ri.id AS right_id
 FROM 
 	role r
 	LEFT JOIN role_right_joint rrj
