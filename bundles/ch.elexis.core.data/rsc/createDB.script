@@ -25,7 +25,7 @@
 
 
 # Table for all kinds of contact information (Patients, Relations, Labs)
-CREATE TABLE if not exists KONTAKT(
+CREATE TABLE kontakt(
 	id				VARCHAR(40) primary key,	# UUID
 	lastupdate      BIGINT,                     # timestamp of last update
 	deleted			CHAR(1) default '0',		# indicates that this object is marked deleted
@@ -70,7 +70,7 @@ CREATE INDEX k0 ON KONTAKT(Bezeichnung1);
 
 # Verbindung von Kontakten zu Adressbezügen mit einem
 # BezugsTEXT
-CREATE TABLE IF NOT EXISTS KONTAKT_ADRESS_JOINT(
+CREATE TABLE  kontakt_adress_joint(
 	id			VARCHAR(40) primary key,
 	lastupdate  BIGINT,
 	deleted		CHAR(1) default '0',
@@ -86,7 +86,7 @@ CREATE INDEX aij1 on KONTAKT_ADRESS_JOINT (myId);
 # Ein Fall ist eine benannte Serie von Behandlungen, welche demselben
 # Patienten und demselben Garanten zugeordnet werden. (Aber nicht
 # notwendigerweise demselben Mandanten)
-CREATE TABLE IF NOT EXISTS  FAELLE(
+CREATE TABLE   faelle(
 	id				VARCHAR(40) primary key,		# UUID
 	lastupdate      BIGINT,                         # timestamp of last write operation
 	deleted			CHAR(1) default '0',			# indicates that this object is marked deleted
@@ -109,7 +109,7 @@ CREATE TABLE IF NOT EXISTS  FAELLE(
 CREATE INDEX i3 on FAELLE (PatientID);
 
 # Eine Behandlung ist ein einzelner Mandant/Patient - Kontakt
-CREATE TABLE IF NOT EXISTS BEHANDLUNGEN(
+CREATE TABLE  behandlungen(
 	id				VARCHAR(40) primary key,		# UUID
 	lastupdate      BIGINT,                         # timestamp
 	deleted			CHAR(1) default '0',			# indicates that this object is marked deleted
@@ -126,7 +126,7 @@ CREATE TABLE IF NOT EXISTS BEHANDLUNGEN(
 CREATE INDEX i4 on BEHANDLUNGEN (FallID);
 
 # 
-CREATE TABLE IF NOT EXISTS ARTIKEL(
+CREATE TABLE  artikel(
 	id				VARCHAR(40) primary key,		# UUID
 	lastupdate      BIGINT,                         # timestamp
 	deleted			CHAR(1) default '0',			# indicates that this object is marked deleted
@@ -158,7 +158,7 @@ CREATE INDEX art3 on ARTIKEL (Codeclass);
 
 
 # Relation of an article to a patient
-CREATE TABLE IF NOT EXISTS PATIENT_ARTIKEL_JOINT(
+CREATE TABLE  PATIENT_ARTIKEL_JOINT(
 	id				VARCHAR(40) primary key,
 	lastupdate      BIGINT,
 	deleted			CHAR(1) default '0',
@@ -178,10 +178,10 @@ CREATE TABLE IF NOT EXISTS PATIENT_ARTIKEL_JOINT(
 	extinfo			BLOB
 );
 
-CREATE INDEX IF NOT EXISTS paj1 on PATIENT_ARTIKEL_JOINT(PATIENTID);
+CREATE INDEX paj1 on PATIENT_ARTIKEL_JOINT(PATIENTID);
 CREATE INDEX PAJ2 on PATIENT_ARTIKEL_JOINT(REZEPTID);
 
-CREATE TABLE IF NOT EXISTS ARTIKEL_DETAILS(   
+CREATE TABLE  ARTIKEL_DETAILS(   
     article_id      VARCHAR(40),                    # foreign key from ARTIKEL                     
     notes           TEXT,                           # informations or usage of the article
     image           BLOB                            # an image or other binary data
@@ -190,7 +190,7 @@ CREATE TABLE IF NOT EXISTS ARTIKEL_DETAILS(
 # Das Konto ist eine Liste sämtlicher Forderungen und Zahlungen
 # Somit lässt sich für jeden Patienten über alle bisherigen
 # Rechnungen eine übergreifende Bilanz erstellen und verrechnen.
-CREATE TABLE IF NOT EXISTS KONTO(
+CREATE TABLE  konto(
 	id				VARCHAR(40) primary key,
 	lastupdate      BIGINT,
 	deleted			CHAR(1) default '0',
@@ -207,7 +207,7 @@ CREATE INDEX konto1 on KONTO (Datum);
 CREATE INDEX konto2 on KONTO (PatientID);
 
 # Eine Leistung ist eine einzelne Verrechnungsposition
-CREATE TABLE IF NOT EXISTS LEISTUNGEN(
+CREATE TABLE  LEISTUNGEN(
 	id				VARCHAR(40) primary key,
 	lastupdate      BIGINT,
 	deleted			CHAR(1) default '0',
@@ -229,7 +229,7 @@ CREATE TABLE IF NOT EXISTS LEISTUNGEN(
 CREATE INDEX lst1 on LEISTUNGEN(BEHANDLUNG);
 CREATE INDEX lst2 on LEISTUNGEN(KlASSE,LEISTG_CODE);
 
-CREATE TABLE IF NOT EXISTS EK_PREISE(
+CREATE TABLE  ek_preise(
 	typ				VARCHAR(80),
 	id				VARCHAR(40),
 	lastupdate      BIGINT,
@@ -242,7 +242,7 @@ CREATE INDEX ekp1 ON EK_PREISE (TYP);
 CREATE INDEX ekp2 ON EK_PREISE (DATUM_VON);
 
 
-CREATE TABLE IF NOT EXISTS VK_PREISE(
+CREATE TABLE  vk_preise(
 	typ				VARCHAR(80),
 	id				VARCHAR(40),
 	lastupdate      BIGINT,
@@ -255,7 +255,7 @@ CREATE INDEX vkp1 on VK_PREISE (TYP);
 CREATE INDEX vkp2 on VK_PREISE (DATUM_VON);
 
 
-CREATE TABLE IF NOT EXISTS DIAGNOSEN(
+CREATE TABLE  diagnosen(
 	id				VARCHAR(40) primary key,
 	lastupdate      BIGINT,
 	deleted			CHAR(1) default '0',
@@ -264,9 +264,9 @@ CREATE TABLE IF NOT EXISTS DIAGNOSEN(
 	klasse			VARCHAR(80)
 );
 
-CREATE INDEX dg1 on DIAGNOSEN (klasse,dg_code);
+CREATE INDEX dg1 on diagnosen (klasse,dg_code);
 
-CREATE TABLE IF NOT EXISTS BEHDL_DG_JOINT(
+CREATE TABLE  behdl_dg_joint(
 	id				VARCHAR(40),
 	lastupdate      BIGINT,
 	deleted			CHAR(1) default '0',
@@ -276,7 +276,7 @@ CREATE TABLE IF NOT EXISTS BEHDL_DG_JOINT(
 );
 
 # Verschiedene Konfigurationsdaten
-CREATE TABLE IF NOT EXISTS config(
+CREATE TABLE  config(
 	id				VARCHAR(40),
 	deleted			char(1) default '0',
     lastupdate      BIGINT,
@@ -287,7 +287,7 @@ CREATE TABLE IF NOT EXISTS config(
 # Briefe werden nicht in dieser Tabelle gespeichert.
 # Hier befinden sich nur Verweise und Metainformationen zu
 # den eigentlichen Briefen (welche in HEAP oder im Dateisystem sein können).
-CREATE TABLE IF NOT EXISTS briefe(
+CREATE TABLE  briefe(
 	id				VARCHAR(40) primary key,
 	lastupdate      BIGINT,
 	deleted			CHAR(1) default '0',
@@ -309,7 +309,7 @@ CREATE TABLE IF NOT EXISTS briefe(
 CREATE INDEX i8 on BRIEFE (BehandlungsID);
 
 # Output log for letters, prescriptions etc.
-CREATE TABLE IF NOT EXISTS output_log(
+CREATE TABLE  output_log(
 	id				VARCHAR(40) primary key,
 	lastupdate		BIGINT,
 	deleted			CHAR(1) default '0',
@@ -323,7 +323,7 @@ CREATE TABLE IF NOT EXISTS output_log(
 CREATE INDEX bal_i1 ON OUTPUT_LOG (ObjectID);
 
 # Bills
-CREATE TABLE IF NOT EXISTS rechnungen(
+CREATE TABLE  rechnungen(
 	id				VARCHAR(40) primary key,     # UUID
 	lastupdate      BIGINT,
 	deleted			CHAR(1) default '0',         # indicates that this object is marked deleted
@@ -346,7 +346,7 @@ CREATE INDEX Rn4 ON RECHNUNGEN (rndatumvon);
 CREATE INDEX Rn5 ON RECHNUNGEN (rndatumbis);
 
 # payments
-CREATE TABLE IF NOT EXISTS zahlungen(
+CREATE TABLE  zahlungen(
 	id				VARCHAR(40) primary key,     # UUID
 	lastupdate      BIGINT,
 	deleted			CHAR(1) default '0',         # indicates that this object is marked deleted
@@ -358,7 +358,7 @@ CREATE TABLE IF NOT EXISTS zahlungen(
 
 CREATE INDEX zahl1 on ZAHLUNGEN(rechnungsid);
 
-CREATE TABLE IF NOT EXISTS reminders(
+CREATE TABLE  reminders(
 	id				VARCHAR(40) primary key,
 	lastupdate      BIGINT,
 	deleted			CHAR(1) default '0',
@@ -375,7 +375,7 @@ CREATE TABLE IF NOT EXISTS reminders(
 	subject			VARCHAR(160)
 );
 
-CREATE TABLE IF NOT EXISTS reminders_responsible_link(
+CREATE TABLE  reminders_responsible_link(
 	id				VARCHAR(40),
 	lastupdate      BIGINT,
 	deleted			CHAR(1) default '0',
@@ -396,7 +396,7 @@ CREATE INDEX rem3 ON REMINDERS (responsible);
 # auf die Datenbank protokollieren, und zwar mit Zeit, Datum, Arbeitsstation 
 # und dort angemeldetem Benutzer. so können Fehlbedienungen besser erfasst und
 # korrigiert werden.
-CREATE TABLE IF NOT EXISTS TRACES(
+CREATE TABLE traces(
 	logtime			BIGINT,
 	workstation		VARCHAR(40),
 	username		VARCHAR(30),
@@ -407,7 +407,7 @@ CREATE INDEX trace1 on TRACES(logtime);
 CREATE INDEX trace2 on TRACES(username);
 
 # Das Schwarze Brett der Praxis
-CREATE TABLE IF NOT EXISTS BBS(
+CREATE TABLE  BBS(
 	id			VARCHAR(40) primary key,
 	lastupdate  BIGINT,
 	deleted			CHAR(1) default '0',
@@ -429,7 +429,7 @@ CREATE INDEX bbs1 on BBS (reference);
 # aufgelistet wird, und eine Priorität mit der es innerhalb dieser Gruppe
 # gelistet ist.
 
-CREATE TABLE IF NOT EXISTS laboritems(
+CREATE TABLE  laboritems(
 	id			VARCHAR(40) primary key,
 	lastupdate  BIGINT,
 	deleted		CHAR(1) default '0',
@@ -456,7 +456,7 @@ CREATE INDEX labit2 on LABORITEMS(laborid);
 # Laborwerte sind zuordnungen von Laboritems zu Datum und Patient
 # mit dem entsprechenden Resultat.
 
-CREATE TABLE IF NOT EXISTS laborwerte(
+CREATE TABLE  laborwerte(
 	id			VARCHAR(40) primary key,
 	lastupdate  BIGINT,
 	deleted		CHAR(1) default '0',
@@ -482,21 +482,21 @@ CREATE INDEX labor1 on LABORWERTE (patientid);
 CREATE INDEX labor2 on LABORWERTE (datum);
 CREATE INDEX labor3 on LABORWERTE (itemid);
 
-CREATE TABLE IF NOT EXISTS labgroups(
+CREATE TABLE  labgroups(
    id VARCHAR(40) primary key,
    lastupdate   BIGINT,
    deleted		CHAR(1) default '0',
    name VARCHAR(30)
 ); 
 
-CREATE TABLE IF NOT EXISTS labgroup_item_joint(
+CREATE TABLE  labgroup_item_joint(
      lastupdate      BIGINT,
      groupid        VARCHAR(40),
      itemid         VARCHAR(40),
      comment        TEXT
 ); 
 
-CREATE TABLE IF NOT EXISTS laborder (
+CREATE TABLE  laborder (
 	id VARCHAR(40) primary key,
 	lastupdate BIGINT,
 	deleted CHAR(1) default '0',
@@ -517,7 +517,7 @@ CREATE INDEX laborder2 ON LABORDER (mandant);
 CREATE INDEX laborder3 ON LABORDER (patient);
 CREATE INDEX laborder4 ON LABORDER (orderid);
 
-CREATE TABLE IF NOT EXISTS rezepte(
+CREATE TABLE  rezepte(
 	id			VARCHAR(40) primary key,
 	lastupdate  BIGINT,
 	deleted		CHAR(1) default '0',
@@ -532,7 +532,7 @@ CREATE TABLE IF NOT EXISTS rezepte(
 CREATE INDEX rp1 on REZEPTE(patientid);
 
 # Tabelle zum Speichern von benannten BLOB's verschiedener Herkunft
-CREATE TABLE IF NOT EXISTS heap(
+CREATE TABLE  heap(
 	id			VARCHAR(80) primary key,
 	lastupdate  BIGINT,
 	deleted		CHAR(1) default '0',
@@ -540,7 +540,7 @@ CREATE TABLE IF NOT EXISTS heap(
 	datum		CHAR(8)
 );
 
-CREATE TABLE IF NOT EXISTS auf(
+CREATE TABLE  auf(
 	id			VARCHAR(40) primary key,
 	lastupdate  BIGINT,
 	deleted		CHAR(1) default '0',
@@ -557,7 +557,7 @@ CREATE TABLE IF NOT EXISTS auf(
 	
 CREATE INDEX AUF1 on AUF(patientid);
 
-CREATE TABLE IF NOT EXISTS eigenleistungen(
+CREATE TABLE  eigenleistungen(
 	id			VARCHAR(40) primary key,
 	lastupdate  BIGINT,
 	deleted		CHAR(1) default '0',
@@ -568,7 +568,7 @@ CREATE TABLE IF NOT EXISTS eigenleistungen(
 	zeit		CHAR(4)
 );
 
-CREATE TABLE IF NOT EXISTS heap2(
+CREATE TABLE  heap2(
 	id		    VARCHAR(80) primary key,
 	deleted		CHAR(1) default '0',
 	datum		CHAR(8),
@@ -576,7 +576,7 @@ CREATE TABLE IF NOT EXISTS heap2(
 	contents	BLOB
 );
 
-CREATE TABLE IF NOT EXISTS logs(
+CREATE TABLE  logs(
 	id			VARCHAR(40) primary key,	# log entry's id
 	lastupdate  BIGINT,
 	deleted     char(1) default '0',
@@ -588,7 +588,7 @@ CREATE TABLE IF NOT EXISTS logs(
 	extinfo		BLOB
 );
 
-CREATE TABLE IF NOT EXISTS userconfig(
+CREATE TABLE  userconfig(
 	id			VARCHAR(40),
 	deleted		CHAR(1) default '0',
     lastupdate  BIGINT,
@@ -599,7 +599,7 @@ CREATE TABLE IF NOT EXISTS userconfig(
 CREATE INDEX UCFG ON USERCONFIG(param);
 CREATE INDEX UCFG2 ON USERCONFIG(userid);
 
-CREATE TABLE IF NOT EXISTS xid(
+CREATE TABLE  xid(
 	id			VARCHAR(40) primary key,
 	lastupdate  BIGINT,
 	deleted		CHAR(1) default '0',
@@ -613,7 +613,7 @@ CREATE INDEX XIDIDX1 on XID(domain);
 CREATE INDEX XIDIDX2 on XID(domain_id);
 CREATE INDEX XIDIDX3 on XID(object);
 
-CREATE TABLE IF NOT EXISTS etiketten(  
+CREATE TABLE  etiketten(  
     id          VARCHAR(40) primary key,
     lastupdate  BIGINT,
     image       VARCHAR(40),
@@ -626,7 +626,7 @@ CREATE TABLE IF NOT EXISTS etiketten(
 );
 CREATE INDEX ETIKETTE1 on ETIKETTEN(name);
 
-CREATE TABLE IF NOT EXISTS etiketten_object_link(
+CREATE TABLE  etiketten_object_link(
     lastupdate  BIGINT,
 	obj			VARCHAR(40),
 	etikette	VARCHAR(40)
@@ -634,13 +634,13 @@ CREATE TABLE IF NOT EXISTS etiketten_object_link(
 CREATE INDEX ETIKETTE2 on ETIKETTEN_OBJECT_LINK(obj);
 CREATE INDEX ETIKETTE3 on ETIKETTEN_OBJECT_LINK(etikette);
 
-CREATE TABLE IF NOT EXISTS etiketten_objclass_link(
+CREATE TABLE  etiketten_objclass_link(
 	objclass VARCHAR(80),
 	sticker VARCHAR(40)
 );
 CREATE INDEX eol1 on ETIKETTEN_OBJCLASS_LINK(objclass);
 
-CREATE TABLE IF NOT EXISTS dbimage (
+CREATE TABLE  dbimage (
     id             VARCHAR(40) primary key,
     lastupdate     BIGINT,
     deleted        CHAR(1) default '0',
@@ -651,7 +651,7 @@ CREATE TABLE IF NOT EXISTS dbimage (
 );
 CREATE INDEX DBIMAGE1 on DBIMAGE(Title);     
 
-CREATE TABLE IF NOT EXISTS stock (
+CREATE TABLE  stock (
 	id 				VARCHAR(40) NOT NULL,
 	lastupdate 		BIGINT DEFAULT NULL,
 	deleted 		CHAR(1) DEFAULT '0',
@@ -668,7 +668,7 @@ CREATE TABLE IF NOT EXISTS stock (
 
 INSERT INTO STOCK (ID, CODE, PRIORITY) VALUES ('STD', 'STD', '0');
 
-CREATE TABLE IF NOT EXISTS stock_entry (
+CREATE TABLE  stock_entry (
 	id 				VARCHAR(40) NOT NULL,
 	lastupdate 		BIGINT DEFAULT NULL,
 	deleted 		CHAR(1) DEFAULT '0',
@@ -690,7 +690,7 @@ CREATE INDEX STOCK_ENTRY_ID0 ON STOCK_ENTRY(article_id);
 ALTER TABLE STOCK_ENTRY 
 	ADD CONSTRAINT fk_stock_entry_stock_id FOREIGN KEY (stock) REFERENCES stock (id);
 	
-CREATE TABLE IF NOT EXISTS bestellungen (
+CREATE TABLE  bestellungen (
 	id       	VARCHAR(80) NOT NULL,
  	lastupdate 	BIGINT DEFAULT NULL,
   	deleted 	CHAR(1) DEFAULT '0',
@@ -699,7 +699,7 @@ CREATE TABLE IF NOT EXISTS bestellungen (
 	PRIMARY KEY (id)
 );
 
-CREATE TABLE IF NOT EXISTS bestellung_entry (
+CREATE TABLE  bestellung_entry (
 	id 				VARCHAR(40) NOT NULL,
 	lastupdate 		BIGINT DEFAULT NULL,
 	deleted 		CHAR(1) DEFAULT '0',
@@ -716,7 +716,7 @@ CREATE TABLE IF NOT EXISTS bestellung_entry (
 ALTER TABLE bestellung_entry 
 	ADD CONSTRAINT fk_bestellung_entry_bestellung_id FOREIGN KEY (bestellung) REFERENCES bestellungen (id);
 
-CREATE TABLE IF NOT EXISTS user_ (
+CREATE TABLE  user_ (
   id 				VARCHAR(40) NOT NULL,		# the username is the id
   deleted 			CHAR(1) DEFAULT '0',
   kontakt_id 		VARCHAR(40),				# foreign key to contact table
@@ -730,7 +730,7 @@ CREATE TABLE IF NOT EXISTS user_ (
   PRIMARY KEY (id)
 );
 
-CREATE TABLE IF NOT EXISTS role (
+CREATE TABLE  role (
   id 				VARCHAR(40) NOT NULL,
   lastupdate 		BIGINT DEFAULT 0,
   deleted 			CHAR(1) DEFAULT '0',
@@ -746,7 +746,7 @@ INSERT INTO ROLE (id, issystemrole) VALUES ('doctor', '1');
 INSERT INTO ROLE (id, issystemrole) VALUES ('assistant', '1');
 INSERT INTO ROLE (id, issystemrole) VALUES ('patient', '1');
 
-CREATE TABLE IF NOT EXISTS user_role_joint (
+CREATE TABLE  user_role_joint (
   id 				VARCHAR(40) NOT NULL,
   lastupdate 		BIGINT DEFAULT 0,
   deleted 			CHAR(1) DEFAULT NULL,
@@ -755,7 +755,7 @@ CREATE TABLE IF NOT EXISTS user_role_joint (
 );
 
 # We must not name the table RIGHT, as this is an SQL keyword
-CREATE TABLE IF NOT EXISTS right_ (
+CREATE TABLE  right_ (
   id 				VARCHAR(40) NOT NULL, 				# from ACE#getUniqueHashFromACE()
   lastupdate 		BIGINT DEFAULT 0,
   deleted 			CHAR(1) DEFAULT '0',
@@ -769,7 +769,7 @@ CREATE TABLE IF NOT EXISTS right_ (
 INSERT INTO right_ (id, name, parentid) VALUES ('root', 'root', '');
 
 # Join the roles with the rights
-CREATE TABLE IF NOT EXISTS role_right_joint (
+CREATE TABLE role_right_joint (
   id 				VARCHAR(40) NOT NULL,
   lastupdate 		BIGINT DEFAULT 0,
   deleted 			CHAR(1) DEFAULT NULL,
