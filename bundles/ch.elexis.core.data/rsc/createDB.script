@@ -737,7 +737,7 @@ CREATE TABLE zusatzadresse (
 ALTER TABLE zusatzadresse ADD CONSTRAINT fk_zusatzadresse_kontakt_id FOREIGN KEY (kontakt_id) REFERENCES kontakt(id);
 
 CREATE TABLE  user_ (
-  id 				VARCHAR(40) NOT NULL,		# the username is the id
+  id 				VARCHAR(40) primary key,	# the username is the id
   deleted 			CHAR(1) DEFAULT '0',
   kontakt_id 		VARCHAR(40),				# foreign key to contact table
   lastupdate 		BIGINT,
@@ -746,19 +746,17 @@ CREATE TABLE  user_ (
   is_active	 		CHAR(1) DEFAULT '1', 		# Is this account currently active? 
   is_administrator 	CHAR(1) DEFAULT '0',		# User is an administrator
   keystore 			TEXT,						# For key based authentication or signature purposes
-  totp				char(16) null default null
-  allow_external	char(1) not null default '0'
-  extinfo 			BLOB,
-  PRIMARY KEY (id)
+  totp				char(16) null default null,
+  allow_external	char(1) not null default '0',
+  extinfo 			BLOB
 );
 
 CREATE TABLE  role (
-  id 				VARCHAR(40) NOT NULL,
+  id 				VARCHAR(40) primary key,
   lastupdate 		BIGINT DEFAULT 0,
   deleted 			CHAR(1) DEFAULT '0',
   extinfo 			BLOB,
-  issystemrole 		CHAR(1) DEFAULT '0',
-  PRIMARY KEY (id)
+  issystemrole 		CHAR(1) DEFAULT '0'
 );
  
 INSERT INTO ROLE (id, issystemrole) VALUES ('user', '1');
