@@ -120,7 +120,7 @@ CREATE TABLE  behandlungen(
 	Zeit			CHAR(8),
 	diagnosen		VARCHAR(40),					# diagnoses
 	leistungen		VARCHAR(40),					# deprecated, do not use.
-	billable		char(1) default '1'
+	billable		char(1) default '1',
 	eintrag			BLOB							# treatment text (as VersionedResource)
 );
 
