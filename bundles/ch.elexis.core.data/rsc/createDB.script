@@ -101,7 +101,7 @@ CREATE TABLE   faelle(
 	datumbis		CHAR(8),						# end date
 	bezeichnung		VARCHAR(80),					# title of the case
 	grund			VARCHAR(80),					# reason for treatment
-	gesetz			VARCHAR(20),					# deprecated, do not use
+	gesetz			VARCHAR(40),					# deprecated, do not use
 	status			VARCHAR(80),					# deprecated, do not use
 	extinfo			BLOB							# additional informations (hashtable)
 );
@@ -120,11 +120,12 @@ CREATE TABLE  behandlungen(
 	Zeit			CHAR(8),
 	diagnosen		VARCHAR(40),					# diagnoses
 	leistungen		VARCHAR(40),					# deprecated, do not use.
+	billable		char(1) default '1'
 	eintrag			BLOB							# treatment text (as VersionedResource)
 );
 
-CREATE INDEX i4 on BEHANDLUNGEN (FallID);
-
+CREATE INDEX i4 on behandlungen (fallid);
+CREATE INDEX idxRnId on behandlungen (rechnungsid);
 # 
 CREATE TABLE  artikel(
 	id				VARCHAR(40) primary key,		# UUID
@@ -244,7 +245,7 @@ CREATE INDEX ekp2 ON EK_PREISE (DATUM_VON);
 
 CREATE TABLE  vk_preise(
 	typ				VARCHAR(80),
-	id				VARCHAR(40),
+	id				VARCHAR(40) primary key,
 	lastupdate      BIGINT,
 	datum_von		CHAR(8),
 	datum_bis		CHAR(8),
@@ -270,9 +271,9 @@ CREATE TABLE  behdl_dg_joint(
 	id				VARCHAR(40),
 	lastupdate      BIGINT,
 	deleted			CHAR(1) default '0',
-	Behandlungsid	VARCHAR(40),
-	Diagnoseid		VARCHAR(40),
-	PRIMARY KEY (Behandlungsid, Diagnoseid)
+	Behandlungsid	VARCHAR(40) not null,
+	Diagnoseid		VARCHAR(40) not null,
+	PRIMARY KEY (behandlungsid, diagnoseid)
 );
 
 # Verschiedene Konfigurationsdaten
@@ -372,15 +373,16 @@ CREATE TABLE  reminders(
 	message			TEXT,
 	priority		CHAR(1),
 	actiontype		CHAR(2),
-	subject			VARCHAR(160)
+	subject			VARCHAR(160),
+	extinfo			BLOB
 );
 
 CREATE TABLE  reminders_responsible_link(
 	id				VARCHAR(40),
 	lastupdate      BIGINT,
 	deleted			CHAR(1) default '0',
-	reminderid		VARCHAR(40),                  # foreign key from REMINDERS
-	responsibleid	VARCHAR(40),               # foreign key from KONTAKT
+	reminderid		VARCHAR(40) not null,              # foreign key from REMINDERS
+	responsibleid	VARCHAR(40) not null,              # foreign key from KONTAKT
 	PRIMARY KEY (reminderid, responsibleid)
 );
 
@@ -475,6 +477,7 @@ CREATE TABLE  laborwerte(
 	reffemale   VARCHAR(255),
 	originid    VARCHAR(40),
 	kommentar	TEXT,
+	pathodesc	VARCHAR(128),
 	extinfo		BLOB
 );
 
@@ -497,25 +500,26 @@ CREATE TABLE  labgroup_item_joint(
 ); 
 
 CREATE TABLE  laborder (
-	id VARCHAR(40) primary key,
-	lastupdate BIGINT,
-	deleted CHAR(1) default '0',
-	userid VARCHAR(128),
-	mandant VARCHAR(128),
-	patient VARCHAR(128),
-	item VARCHAR(128),
-	result VARCHAR(128),
-	orderid VARCHAR(128),
-	groupname VARCHAR(255),
-	time VARCHAR(24),
+	id 				VARCHAR(40) primary key,
+	lastupdate 		BIGINT default 0,
+	deleted 		CHAR(1) default '0',
+	userid 			VARCHAR(128),
+	mandant 		VARCHAR(128),
+	patient 		VARCHAR(128),
+	item 			VARCHAR(128),
+	result 			VARCHAR(128),
+	orderid 		VARCHAR(128),
+	groupname 		VARCHAR(255),
+	time 			VARCHAR(24),
 	observationtime VARCHAR(24),
-	state CHAR(1)		
+	state 			CHAR(1)		
 );
 
 CREATE INDEX laborder1 ON LABORDER (time);
 CREATE INDEX laborder2 ON LABORDER (mandant);
 CREATE INDEX laborder3 ON LABORDER (patient);
 CREATE INDEX laborder4 ON LABORDER (orderid);
+CREATE INDEX idxResult ON laborder(result);
 
 CREATE TABLE  rezepte(
 	id			VARCHAR(40) primary key,
@@ -666,7 +670,7 @@ CREATE TABLE  stock (
 	PRIMARY KEY (id)
 );
 
-INSERT INTO STOCK (ID, CODE, PRIORITY) VALUES ('STD', 'STD', '0');
+INSERT INTO stock (id, code, priority) VALUES ('STD', 'STD', '0');
 
 CREATE TABLE  stock_entry (
 	id 				VARCHAR(40) NOT NULL,
@@ -692,7 +696,7 @@ ALTER TABLE STOCK_ENTRY
 	
 CREATE TABLE  bestellungen (
 	id       	VARCHAR(80) NOT NULL,
- 	lastupdate 	BIGINT DEFAULT NULL,
+ 	lastupdate 	BIGINT DEFAULT 0,
   	deleted 	CHAR(1) DEFAULT '0',
 	datum  	    CHAR(8),
 	contents 	BLOB,
@@ -701,7 +705,7 @@ CREATE TABLE  bestellungen (
 
 CREATE TABLE  bestellung_entry (
 	id 				VARCHAR(40) NOT NULL,
-	lastupdate 		BIGINT DEFAULT NULL,
+	lastupdate 		BIGINT DEFAULT 0,
 	deleted 		CHAR(1) DEFAULT '0',
 	bestellung 		VARCHAR(80) NOT NULL, 
 	stock 			VARCHAR(40), 
@@ -716,6 +720,22 @@ CREATE TABLE  bestellung_entry (
 ALTER TABLE bestellung_entry 
 	ADD CONSTRAINT fk_bestellung_entry_bestellung_id FOREIGN KEY (bestellung) REFERENCES bestellungen (id);
 
+CREATE TABLE zusatzadresse (
+	id       		VARCHAR(40) NOT NULL primary key,
+ 	lastupdate 		BIGINT DEFAULT 0,
+  	deleted 		CHAR(1) DEFAULT '0',
+	kontakt_id		VARCHAR(40)  NOT NULL,
+	strasse1		VARCHAR(255),
+	strasse2		VARCHAR(255),
+	plz				VARCHAR(6),		
+	ort				VARCHAR(255),
+	land			CHAR(3),			
+	typ 			CHAR(4) DEFAULT '0',
+	anschrift		TEXT
+);
+
+ALTER TABLE zusatzadresse ADD CONSTRAINT fk_zusatzadresse_kontakt_id FOREIGN KEY (kontakt_id) REFERENCES kontakt(id);
+
 CREATE TABLE  user_ (
   id 				VARCHAR(40) NOT NULL,		# the username is the id
   deleted 			CHAR(1) DEFAULT '0',
@@ -726,6 +746,8 @@ CREATE TABLE  user_ (
   is_active	 		CHAR(1) DEFAULT '1', 		# Is this account currently active? 
   is_administrator 	CHAR(1) DEFAULT '0',		# User is an administrator
   keystore 			TEXT,						# For key based authentication or signature purposes
+  totp				char(16) null default null
+  allow_external	char(1) not null default '0'
   extinfo 			BLOB,
   PRIMARY KEY (id)
 );
@@ -745,6 +767,8 @@ INSERT INTO ROLE (id, issystemrole) VALUES ('executive_doctor', '1');
 INSERT INTO ROLE (id, issystemrole) VALUES ('doctor', '1');
 INSERT INTO ROLE (id, issystemrole) VALUES ('assistant', '1');
 INSERT INTO ROLE (id, issystemrole) VALUES ('patient', '1');
+INSERT INTO ROLE (ID, ISSYSTEMROLE) VALUES ('esadmin', '1');
+INSERT INTO ROLE (ID, ISSYSTEMROLE) VALUES ('fhir', '1');
 
 CREATE TABLE  user_role_joint (
   id 				VARCHAR(40) NOT NULL,
@@ -803,8 +827,63 @@ FROM
 		ON rrj.id = ri.id
 ORDER BY u.id;
 
-INSERT INTO CONFIG (param,wert) VALUES ('dbversion','3.2.5');
-INSERT INTO CONFIG (param,wert) VALUES ('ElexisVersion','3.2.0');
+CREATE OR REPLACE VIEW INVOICE_BILL_STATE AS
+    SELECT 
+        rz.id AS InvoiceId,
+        rz.RnNummer AS InvoiceNo,
+        rz.rndatum,
+        rz.rndatumvon,
+        rz.rndatumbis,
+        rz.statusdatum,
+        rz.InvoiceState,
+        rz.InvoiceTotal,
+        rz.MandantId,
+        f.patientid AS PatientId,
+        k.bezeichnung1 AS PatName1,
+        k.bezeichnung2 AS PatName2,
+        k.geschlecht AS PatSex,
+        k.geburtsdatum AS PatDob,
+        f.id AS FallId,
+        f.gesetz AS FallGesetz,
+        f.garantID AS FallGarantId,
+        f.KostentrID AS FallKostentrID,
+        rz.paymentCount,
+        rz.paidAmount,
+        rz.openAmount
+    FROM
+        (SELECT 
+            r.id,
+                r.rnnummer,
+                r.rndatum,
+                r.rndatumvon,
+                r.rndatumbis,
+                r.statusdatum,
+                r.fallid,
+                r.MandantId,
+                CAST(r.rnstatus AS SIGNED) AS InvoiceState,
+                CAST(r.betrag AS SIGNED) AS InvoiceTotal,
+                COUNT(z.id) AS paymentCount,
+                CASE
+                    WHEN COUNT(z.id) = 0 THEN 0
+                    ELSE SUM(CAST(z.betrag AS SIGNED))
+                END paidAmount,
+                CASE
+                    WHEN COUNT(z.id) = 0 THEN CAST(r.betrag AS SIGNED)
+                    ELSE (CAST(r.betrag AS SIGNED) - SUM(CAST(z.betrag AS SIGNED)))
+                END openAmount
+        FROM
+            RECHNUNGEN r
+        LEFT JOIN zahlungen z ON z.rechnungsID = r.id AND z.deleted = 0
+        WHERE
+            r.deleted = 0
+        GROUP BY r.id) rz
+            LEFT JOIN
+        faelle f ON rz.FallID = f.ID
+            LEFT JOIN
+        kontakt k ON f.PatientID = k.id;
+        
+INSERT INTO CONFIG (param,wert) VALUES ('dbversion','3.7.0');
+INSERT INTO CONFIG (param,wert) VALUES ('ElexisVersion','3.7.0');
 
 # Hack for Fall#Gesetz and cost-bearer transfer in 3.6
 # This script is clearly only executed on a new database, where we do not need
