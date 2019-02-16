@@ -271,8 +271,8 @@ CREATE TABLE  behdl_dg_joint(
 	id				VARCHAR(40),
 	lastupdate      BIGINT,
 	deleted			CHAR(1) default '0',
-	Behandlungsid	VARCHAR(40) not null,
-	Diagnoseid		VARCHAR(40) not null,
+	behandlungsid	VARCHAR(40) not null,
+	diagnoseid		VARCHAR(40) not null,
 	PRIMARY KEY (behandlungsid, diagnoseid)
 );
 
@@ -486,10 +486,10 @@ CREATE INDEX labor2 on LABORWERTE (datum);
 CREATE INDEX labor3 on LABORWERTE (itemid);
 
 CREATE TABLE  labgroups(
-   id VARCHAR(40) primary key,
+   id 			VARCHAR(40) primary key,
    lastupdate   BIGINT,
    deleted		CHAR(1) default '0',
-   name VARCHAR(30)
+   name 		VARCHAR(30)
 ); 
 
 CREATE TABLE  labgroup_item_joint(
