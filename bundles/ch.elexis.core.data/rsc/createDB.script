@@ -800,7 +800,7 @@ CREATE TABLE role_right_joint (
 );
 
 # We prepare a view to join the rights of a user for easy querying
-CREATE OR REPLACE VIEW RIGHTS_PER_ROLE AS SELECT 
+CREATE OR REPLACE VIEW rights_per_role AS SELECT 
 	r.id AS role_id, ri.id AS right_id
 FROM 
 	role r
