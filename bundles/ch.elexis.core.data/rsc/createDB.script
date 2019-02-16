@@ -26,7 +26,7 @@
 
 # Table for all kinds of contact information (Patients, Relations, Labs)
 CREATE TABLE kontakt(
-	id				VARCHAR(40) primary key,	# UUID
+	id				VARCHAR(40) primary key collate latin1_german1_ci,	# UUID
 	lastupdate      BIGINT,                     # timestamp of last update
 	deleted			CHAR(1) default '0',		# indicates that this object is marked deleted
 	istorganisation	CHAR(1) default '0',		# this object is an organization 
@@ -656,7 +656,7 @@ CREATE TABLE  dbimage (
 CREATE INDEX DBIMAGE1 on DBIMAGE(Title);     
 
 CREATE TABLE  stock (
-	id 				VARCHAR(40) NOT NULL,
+	id 				VARCHAR(40) NOT NULL collate latin1_german1_ci,
 	lastupdate 		BIGINT DEFAULT NULL,
 	deleted 		CHAR(1) DEFAULT '0',
 	priority 		INTEGER DEFAULT 255,
@@ -676,7 +676,7 @@ CREATE TABLE  stock_entry (
 	id 				VARCHAR(40) NOT NULL,
 	lastupdate 		BIGINT DEFAULT NULL,
 	deleted 		CHAR(1) DEFAULT '0',
-	stock 			VARCHAR(40) NOT NULL,
+	stock 			VARCHAR(40) NOT NULL collate latin1_german1_ci,
 	article_type 	VARCHAR(255) NOT NULL,
 	article_id 		VARCHAR(40) NOT NULL, 
 	min				integer DEFAULT 0, 
@@ -691,11 +691,11 @@ CREATE INDEX STOCK_ENTRY_STOCK0 ON STOCK_ENTRY(stock);
 CREATE INDEX STOCK_ENTRY_TYPE0 ON STOCK_ENTRY(article_type);
 CREATE INDEX STOCK_ENTRY_ID0 ON STOCK_ENTRY(article_id);
 
-ALTER TABLE STOCK_ENTRY 
+ALTER TABLE stock_entry 
 	ADD CONSTRAINT fk_stock_entry_stock_id FOREIGN KEY (stock) REFERENCES stock (id);
 	
 CREATE TABLE  bestellungen (
-	id       	VARCHAR(80) NOT NULL,
+	id       	VARCHAR(80) NOT NULL collate latin1_german1_ci,
  	lastupdate 	BIGINT DEFAULT 0,
   	deleted 	CHAR(1) DEFAULT '0',
 	datum  	    CHAR(8),
@@ -707,7 +707,7 @@ CREATE TABLE  bestellung_entry (
 	id 				VARCHAR(40) NOT NULL,
 	lastupdate 		BIGINT DEFAULT 0,
 	deleted 		CHAR(1) DEFAULT '0',
-	bestellung 		VARCHAR(80) NOT NULL, 
+	bestellung 		VARCHAR(80) NOT NULL collate latin1_german1_ci, 
 	stock 			VARCHAR(40), 
 	article_type 	VARCHAR(255) NOT NULL,
 	article_id 		VARCHAR(40) NOT NULL,
@@ -724,7 +724,7 @@ CREATE TABLE zusatzadresse (
 	id       		VARCHAR(40) NOT NULL primary key,
  	lastupdate 		BIGINT DEFAULT 0,
   	deleted 		CHAR(1) DEFAULT '0',
-	kontakt_id		VARCHAR(40)  NOT NULL,
+	kontakt_id		VARCHAR(40)  NOT NULL collate latin1_german1_ci,
 	strasse1		VARCHAR(255),
 	strasse2		VARCHAR(255),
 	plz				VARCHAR(6),		
