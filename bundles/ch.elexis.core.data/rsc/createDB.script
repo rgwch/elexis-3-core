@@ -717,7 +717,7 @@ CREATE TABLE  bestellung_entry (
 	PRIMARY KEY (id)
 );
 
-#ALTER TABLE bestellung_entry 
+# ALTER TABLE bestellung_entry 
 #	ADD CONSTRAINT fk_bestellung_entry_bestellung_id FOREIGN KEY (bestellung) REFERENCES bestellungen (id);
 
 CREATE TABLE zusatzadresse (
