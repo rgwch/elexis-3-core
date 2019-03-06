@@ -485,7 +485,17 @@ public abstract class PersistentObject implements IPersistentObject {
 		log.info("Gefundene Datenbankversion: " + vi.version());
 		if (vi.isOlder(CoreHub.DBVersion)) {
 			log.warn("Ältere Version der Datenbank gefunden ");
-			DBUpdate.doUpdate();
+			if (!DBUpdate.doUpdate()) {
+				String msg = String.format(
+						"Datenbank '%1s':\nUpdate auf '%2s' von '%3s' schlug fehlt.\nWollen Sie trotzdem fortsetzen?",
+						connection.getDBConnectString(), vi.version().toString(), CoreHub.DBVersion);
+				log.error(msg);
+				if (!cod.openQuestion("Datenbank update failed ", msg)) {
+					System.exit(8);
+				} else {
+					log.error("User continues with failed Elexis database update");
+				}
+			}
 		}
 		vi = new VersionInfo(CoreHub.globalCfg.get("ElexisVersion", "0.0.0"));
 		log.info("Verlangte Elexis-Version: " + vi.version());
@@ -2267,7 +2277,7 @@ public abstract class PersistentObject implements IPersistentObject {
 	 * @param rs
 	 * @return decoded string or null if decode was not possible
 	 */
-	private String decode(final String field, final ResultSet rs){
+	protected String decode(final String field, final ResultSet rs){
 		
 		try {
 			String mapped = map(field);

@@ -35,7 +35,7 @@ public class InteractionLink {
 
 	public InteractionLink(Composite parent, int style){
 		interactionLink = new Link(parent, style);
-		if (CoreHub.userCfg.get(Preferences.USR_SUPPRESS_INTERACTION_CHECK, false)) {
+		if (CoreHub.userCfg.get(Preferences.USR_SUPPRESS_INTERACTION_CHECK, true)) {
 			setSuppressed();
 		} else {
 			// parent.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false));
@@ -44,14 +44,14 @@ public class InteractionLink {
 	}
 	
 	private void setSuppressed() {
-		interactionLink.setText(Messages.SuppressInteractionActive);
+		interactionLink.setText(""); //$NON-NLS-1$
 		interactionLink.setToolTipText(Messages.SuppressInteractionCheckTooltip);
 		interactionLink.setForeground(UiDesk.getColorRegistry().get(UiDesk.COL_BLACK));
 
 	}
 	public String updateAtcs(ArrayList<Artikel> gtins){
-		interactionLink.setText("");
-		if (CoreHub.userCfg.get(Preferences.USR_SUPPRESS_INTERACTION_CHECK, false)) {
+		interactionLink.setText(""); //$NON-NLS-1$
+		if (CoreHub.userCfg.get(Preferences.USR_SUPPRESS_INTERACTION_CHECK, true)) {
 			setSuppressed();
 			return ""; //$NON-NLS-1$
 		}
