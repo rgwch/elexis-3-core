@@ -1348,13 +1348,18 @@ public abstract class PersistentObject implements IPersistentObject {
 	 */
 	public @Nullable Object getExtInfoStoredObjectByKey(final Object key){
 		// query cache?
+		/*
 		byte[] binaryRaw = getBinaryRaw(FLD_EXTINFO);
 		if (binaryRaw == null)
 			return null;
-		
+		*/
 		@SuppressWarnings("unchecked")
 		Map<Object, Object> ext = getMap(FLD_EXTINFO);
+		if(ext==null) {
+			return null;
+		}else {
 		return ext.get(key);
+		}
 	}
 	
 	/**
