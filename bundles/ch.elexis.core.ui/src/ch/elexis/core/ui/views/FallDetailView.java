@@ -91,7 +91,7 @@ public class FallDetailView extends ViewPart implements ISaveablePart2 {
 		parent.setLayout(new GridLayout());
 		fdb = new FallDetailBlatt2(parent);
 		fdb.setLayoutData(SWTHelper.getFillGridData(1, true, 1, true));
-		fdb.setUnlocked(false);
+		fdb.setUnlocked(true);
 		ElexisEventDispatcher.getInstance().addListeners(eeli_fall, eeli_user);
 	}
 	

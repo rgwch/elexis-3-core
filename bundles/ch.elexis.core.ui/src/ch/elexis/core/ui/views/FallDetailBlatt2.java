@@ -116,7 +116,7 @@ public class FallDetailBlatt2 extends Composite implements IUnlockable {
 	Button btnCopyForPatient;
 	
 	List<Focusreact> focusreacts = new ArrayList<Focusreact>();
-	boolean lockUpdate = true;
+	boolean lockUpdate = false;
 	
 	boolean invoiceCorrection = false;
 	
