@@ -56,7 +56,7 @@ public class Samdas {
 	public Samdas(String input){
 		SAXBuilder builder = new SAXBuilder();
 		try {
-			CharArrayReader car = new CharArrayReader(input.toCharArray());
+			CharArrayReader car = new CharArrayReader(input.trim().toCharArray());
 			doc = builder.build(car);
 			eRoot = doc.getRootElement();
 			
