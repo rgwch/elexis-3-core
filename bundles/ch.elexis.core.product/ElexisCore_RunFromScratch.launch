@@ -125,7 +125,6 @@
 <setEntry value="org.eclipse.core.databinding.property@default:default"/>
 <setEntry value="org.eclipse.core.databinding@default:default"/>
 <setEntry value="org.eclipse.core.expressions@default:default"/>
-<setEntry value="org.eclipse.core.filesystem.linux.x86_64@default:false"/>
 <setEntry value="org.eclipse.core.filesystem@default:default"/>
 <setEntry value="org.eclipse.core.jobs@default:default"/>
 <setEntry value="org.eclipse.core.resources@default:default"/>
@@ -149,7 +148,6 @@
 <setEntry value="org.eclipse.e4.ui.swt.gtk.nl_de@default:false"/>
 <setEntry value="org.eclipse.e4.ui.swt.gtk.nl_fr@default:false"/>
 <setEntry value="org.eclipse.e4.ui.swt.gtk.nl_it@default:false"/>
-<setEntry value="org.eclipse.e4.ui.swt.gtk@default:false"/>
 <setEntry value="org.eclipse.e4.ui.widgets@default:default"/>
 <setEntry value="org.eclipse.e4.ui.workbench.addons.swt@default:default"/>
 <setEntry value="org.eclipse.e4.ui.workbench.renderers.swt.nl_de@default:false"/>
@@ -185,7 +183,6 @@
 <setEntry value="org.eclipse.osgi.services@default:default"/>
 <setEntry value="org.eclipse.osgi.util@default:default"/>
 <setEntry value="org.eclipse.osgi@-1:true"/>
-<setEntry value="org.eclipse.swt.gtk.linux.x86_64@default:false"/>
 <setEntry value="org.eclipse.swt.nl_de@default:false"/>
 <setEntry value="org.eclipse.swt.nl_fr@default:false"/>
 <setEntry value="org.eclipse.swt.nl_it@default:false"/>
