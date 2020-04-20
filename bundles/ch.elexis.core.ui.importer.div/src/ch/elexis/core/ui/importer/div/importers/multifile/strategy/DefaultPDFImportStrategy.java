@@ -8,9 +8,11 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import ch.elexis.core.data.activator.CoreHub;
 import ch.elexis.core.data.beans.ContactBean;
 import ch.elexis.core.data.interfaces.text.IOpaqueDocument;
 import ch.elexis.core.data.services.GlobalServiceDescriptors;
@@ -68,6 +70,8 @@ public class DefaultPDFImportStrategy implements IFileImportStrategy {
 	
 	private boolean moveAfterImport;
 	
+	private String pdfImportCategory;
+
 	public DefaultPDFImportStrategy(){
 		Object os = Extensions.findBestService(GlobalServiceDescriptors.DOCUMENT_MANAGEMENT);
 		if (os != null) {
@@ -108,23 +112,36 @@ public class DefaultPDFImportStrategy implements IFileImportStrategy {
 		}
 		
 		String titel = generatePDFTitle(file.getName(), dateTime);
+		String orderId = "noorder";
 		
-		TransientLabResult importResult =
-			new TransientLabResult.Builder(patient, myLab, labItem, titel).date(dateTime)
-				.build(labImportUtil);
-				
 		ImportHandler importHandler;
 		if (testMode) {
 			importHandler = new OverwriteAllImportHandler();
 		} else {
 			importHandler = new DefaultLabImportUiHandler();
 		}
-		String orderId =
-			labImportUtil.importLabResults(Collections.singletonList(importResult), importHandler);
 			
 		// add doc to document manager
 		try {
-			addDocument(titel, labName, dateTime.toString(TimeTool.DATE_GER), file, file.getName());
+			String category = StringUtils.isNotBlank(pdfImportCategory) ? pdfImportCategory : labName;
+			if (addDocument(titel, category, dateTime.toString(TimeTool.DATE_GER), file, file.getName())) {
+				TransientLabResult importResult = new TransientLabResult.Builder(patient, myLab, labItem, titel)
+						.date(dateTime).build(labImportUtil);
+
+				orderId = labImportUtil.importLabResults(Collections.singletonList(importResult),
+						importHandler);
+			} else {
+				log.warn("pdf [{}] already present in document manager (omnivore), replacing", file.getAbsolutePath());
+				Patient pat = Patient.load(patient.getId());
+				List<IOpaqueDocument> documentList = this.docManager.listDocuments(pat, category, titel, null,
+						new TimeSpan(dateTime.toString(TimeTool.DATE_GER) + "-" + dateTime.toString(TimeTool.DATE_GER)), //$NON-NLS-1$
+						null);
+				documentList.forEach(iop -> {
+					this.docManager.removeDocument(iop.getGUID());
+				});
+				this.docManager.addDocument(new GenericDocument(pat, titel, category, file,
+						dateTime.toString(TimeTool.DATE_GER), file.getName(), FileTool.getExtension(file.getName())));
+			}
 		} catch (IOException | ElexisException e) {
 			log.error(
 				"error saving pdf [" + file.getAbsolutePath() + "] in document manager (omnivore)");
@@ -149,10 +166,16 @@ public class DefaultPDFImportStrategy implements IFileImportStrategy {
 			sbFailed.append("; ");
 		}
 		
-		labName = (String) context.get(IMultiFileParser.CTX_LABNAME);
-		if (labName == null) {
-			sbFailed.append(Messages.DefaultPDFImportStrategy_LabName);
-			sbFailed.append("; ");
+		if (CoreHub.localCfg.get(HL7Parser.CFG_IMPORT_ENCDATA, false)) {
+			labName = CoreHub.localCfg.get(HL7Parser.CFG_IMPORT_ENCDATA_CATEGORY, null);
+		}
+	
+		if (labName == null || labName.isEmpty()) {
+			labName = (String) context.get(IMultiFileParser.CTX_LABNAME);
+			if (labName == null) {
+				sbFailed.append(Messages.DefaultPDFImportStrategy_LabName);
+				sbFailed.append("; ");
+			}
 		}
 		
 		dateTime = (TimeTool) context.get(IMultiFileParser.CTX_TIME);
@@ -256,6 +279,11 @@ public class DefaultPDFImportStrategy implements IFileImportStrategy {
 	 */
 	public IFileImportStrategy setLabContactResolver(ILabContactResolver resolver){
 		// currently no use for a contact resolver here
+		return this;
+	}
+
+	public DefaultPDFImportStrategy setPDFImportCategory(String category) {
+		this.pdfImportCategory = category;
 		return this;
 	}
 }

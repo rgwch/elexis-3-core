@@ -35,22 +35,18 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.ColumnWeightData;
-import org.eclipse.jface.viewers.DoubleClickEvent;
-import org.eclipse.jface.viewers.FocusCellOwnerDrawHighlighter;
-import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
-import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.StructuredViewer;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
-import org.eclipse.jface.viewers.TableViewerFocusCellManager;
-import org.eclipse.jface.viewers.ViewerCell;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.dnd.DropTargetEvent;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
+import org.eclipse.swt.events.MouseAdapter;
+import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.Image;
@@ -58,6 +54,7 @@ import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.Table;
@@ -118,7 +115,6 @@ public class VerrechnungsDisplay extends Composite implements IUnlockable {
 	private final PersistentObjectDropTarget dropTarget;
 	private IAction applyMedicationAction, chPriceAction, chCountAction, chTextAction, removeAction,
 			removeAllAction;
-	private TableViewerFocusCellManager focusCellManager;
 	
 	private static final String INDICATED_MEDICATION =
 		Messages.VerrechnungsDisplay_indicatedMedication;
@@ -142,6 +138,7 @@ public class VerrechnungsDisplay extends Composite implements IUnlockable {
 		};
 	private TableColumnLayout tableLayout;
 	private ToolBarManager toolBarManager;
+	private TableViewerColumn partDisposalColumn;
 	
 	public VerrechnungsDisplay(final IWorkbenchPage p, Composite parent, int style){
 		super(parent, style);
@@ -162,7 +159,8 @@ public class VerrechnungsDisplay extends Composite implements IUnlockable {
 		interactionLink = new InteractionLink(this, SWT.NONE);
 		interactionLink.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false));
 		toolBarManager = new ToolBarManager(SWT.RIGHT);
-		toolBarManager.add(new Action() {
+		IAction newAction = new Action() {
+
 			@Override
 			public ImageDescriptor getImageDescriptor(){
 				return Images.IMG_NEW.getImageDescriptor();
@@ -189,7 +187,10 @@ public class VerrechnungsDisplay extends Composite implements IUnlockable {
 			public boolean isEnabled(){
 				return actEncounter != null && actEncounter.isBillable();
 			}
-		});
+		};
+		newAction.setToolTipText(Messages.VerrechnungsDisplay_AddItem);
+		toolBarManager.add(newAction);
+
 		toolBarManager.add(new Action("", Action.AS_CHECK_BOX) {
 			
 			@Override
@@ -199,7 +200,7 @@ public class VerrechnungsDisplay extends Composite implements IUnlockable {
 			
 			@Override
 			public String getText(){
-				return "keine Verrechnung";
+				return Messages.VerrechnungsDisplay_no_invoice;
 			}
 			
 			@Override
@@ -272,27 +273,40 @@ public class VerrechnungsDisplay extends Composite implements IUnlockable {
 			}
 		});
 		// connect double click on column to actions
-		focusCellManager =
-			new TableViewerFocusCellManager(viewer, new FocusCellOwnerDrawHighlighter(viewer));
-		viewer.addDoubleClickListener(new IDoubleClickListener() {
+		table.addMouseListener(new MouseAdapter() {
 			@Override
-			public void doubleClick(DoubleClickEvent event){
-				ViewerCell focusCell = focusCellManager.getFocusCell();
-				// make sure selection is correct
-				viewer.setSelection(new StructuredSelection(focusCell.getElement()));
-				int columnIndex = focusCell.getColumnIndex();
-				if (columnIndex == 0) {
-					chCountAction.run();
-				} else if (columnIndex == 3) {
-					chPriceAction.run();
-				} else if (columnIndex == 4) {
-					removeAction.run();
+			public void mouseDoubleClick(MouseEvent e){
+				int clickedIndex = -1;
+				// calculate column of click
+				int width = 0;
+				TableColumn[] columns = table.getColumns();
+				for (int i = 0; i < columns.length; i++) {
+					TableColumn tc = columns[i];
+					if (width < e.x && e.x < width + tc.getWidth()) {
+						clickedIndex = i;
+						break;
+					}
+					width += tc.getWidth();
+				}
+				if(clickedIndex != -1) {
+					if (clickedIndex == 1) {
+						chCountAction.run();
+					} else if (clickedIndex == 4) {
+						chPriceAction.run();
+					} else if (clickedIndex == 5) {
+						removeAction.run();
+					}
 				}
 			}
 		});
 		
 		dropTarget = new PersistentObjectDropTarget(Messages.VerrechnungsDisplay_doBill, table,
-			new DropReceiver()); //$NON-NLS-1$
+			new DropReceiver()) {
+			@Override
+			protected Control getHighLightControl(){
+				return VerrechnungsDisplay.this;
+			}
+		}; //$NON-NLS-1$
 		
 		// refresh the table if a update to a Verrechnet occurs
 		ElexisEventDispatcher.getInstance().addListeners(
@@ -310,13 +324,38 @@ public class VerrechnungsDisplay extends Composite implements IUnlockable {
 	
 	private void createColumns(){
 		String[] titles = {
-			"Anz.", "Code", "Bezeichnung", "Preis", ""
+				StringTool.leer,
+				Messages.Display_Column_Number,
+				Messages.Display_Column_Code,
+				Messages.Display_Column_Designation,
+				Messages.Display_Column_Price,
+				StringTool.leer
 		};
 		int[] weights = {
-			8, 20, 50, 15, 7
+			0, 8, 20, 50, 15, 7
 		};
 		
-		TableViewerColumn col = createTableViewerColumn(titles[0], weights[0], 0, SWT.NONE);
+		partDisposalColumn = createTableViewerColumn(titles[0], weights[0], 0, SWT.LEFT);
+		partDisposalColumn.setLabelProvider(new ColumnLabelProvider() {
+			
+			@Override
+			public String getText(Object element){
+				return "";
+			}
+			
+			@Override
+			public Image getImage(Object element){
+				if (element instanceof Verrechnet) {
+					Verrechnet billed = (Verrechnet) element;
+					if (isPartDisposal(billed)) {
+						return Images.IMG_BLOCKS_SMALL.getImage();
+					}
+				}
+				return super.getImage(element);
+			}
+		});
+		
+		TableViewerColumn col = createTableViewerColumn(titles[1], weights[1], 1, SWT.LEFT);
 		col.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element){
@@ -326,25 +365,9 @@ public class VerrechnungsDisplay extends Composite implements IUnlockable {
 				}
 				return "";
 			}
-			
-			@Override
-			public Image getImage(Object element){
-				if (element instanceof Verrechnet) {
-					Verrechnet billed = (Verrechnet) element;
-					IVerrechenbar billable = billed.getVerrechenbar();
-					if (billable instanceof Artikel) {
-						Artikel a = (Artikel) billable;
-						int abgabeEinheit = a.getAbgabeEinheit();
-						if (abgabeEinheit > 0 && abgabeEinheit < a.getPackungsGroesse()) {
-							return Images.IMG_BLOCKS_SMALL.getImage();
-						}
-					}
-				}
-				return super.getImage(element);
-			}
 		});
 		
-		col = createTableViewerColumn(titles[1], weights[1], 1, SWT.NONE);
+		col = createTableViewerColumn(titles[2], weights[2], 2, SWT.NONE);
 		col.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element){
@@ -356,7 +379,7 @@ public class VerrechnungsDisplay extends Composite implements IUnlockable {
 			}
 		});
 		
-		col = createTableViewerColumn(titles[2], weights[2], 2, SWT.NONE);
+		col = createTableViewerColumn(titles[3], weights[3], 3, SWT.NONE);
 		col.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element){
@@ -369,6 +392,7 @@ public class VerrechnungsDisplay extends Composite implements IUnlockable {
 			
 			@Override
 			public Color getBackground(final Object element){
+				System.out.println("Getting bg of " + element);
 				if (element instanceof Verrechnet) {
 					Verrechnet billed = (Verrechnet) element;
 					return getBackgroundColor(billed);
@@ -377,7 +401,7 @@ public class VerrechnungsDisplay extends Composite implements IUnlockable {
 			}
 		});
 		
-		col = createTableViewerColumn(titles[3], weights[3], 3, SWT.RIGHT);
+		col = createTableViewerColumn(titles[4], weights[4], 4, SWT.RIGHT);
 		col.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element){
@@ -390,7 +414,7 @@ public class VerrechnungsDisplay extends Composite implements IUnlockable {
 			}
 		});
 		
-		col = createTableViewerColumn(titles[4], weights[4], 4, SWT.NONE);
+		col = createTableViewerColumn(titles[5], weights[5], 5, SWT.NONE);
 		col.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element){
@@ -452,8 +476,8 @@ public class VerrechnungsDisplay extends Composite implements IUnlockable {
 			}
 			interactionLink.updateAtcs(gtins);
 			billedLabel.setText(String.format("%s %s / %s %s", //$NON-NLS-1$
-					Messages.PatHeuteView_accAmount, sum.getAmountAsString(),
-					Messages.PatHeuteView_accTime, actEncounter.getMinutes()));
+				Messages.VerrechnungsDisplay_Amount, sum.getAmountAsString(),
+				Messages.VerrechnungsDisplay_Time, actEncounter.getMinutes()));
 		} else {
 			billedLabel.setText(""); //$NON-NLS-1$
 		}
@@ -501,11 +525,39 @@ public class VerrechnungsDisplay extends Composite implements IUnlockable {
 							result.toString()); //$NON-NLS-1$
 					}
 					viewer.setInput(actKons.getLeistungen());
+					updatePartDisposalColumn(actKons.getLeistungen());
 				}
 			} else if (o instanceof IDiagnose) {
 				actKons.addDiagnose((IDiagnose) o);
 			}
 		}
+	}
+	
+	private void updatePartDisposalColumn(List<Verrechnet> list){
+		boolean hasDisposal = false;
+		for (Verrechnet billed : list) {
+			if (isPartDisposal(billed)) {
+				hasDisposal = true;
+				break;
+			}
+		}
+		if (hasDisposal) {
+			partDisposalColumn.getColumn().setWidth(18);
+		} else {
+			partDisposalColumn.getColumn().setWidth(0);
+		}
+	}
+	
+	private boolean isPartDisposal(Verrechnet billed){
+		IVerrechenbar billable = billed.getVerrechenbar();
+		if (billable instanceof Artikel) {
+			Artikel a = (Artikel) billable;
+			int abgabeEinheit = a.getAbgabeEinheit();
+			if (abgabeEinheit > 0 && abgabeEinheit < Math.abs(a.getPackungsGroesse())) {
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	private final class DropReceiver implements PersistentObjectDropTarget.IReceiver {
@@ -541,6 +593,7 @@ public class VerrechnungsDisplay extends Composite implements IUnlockable {
 	public void setEncounter(Konsultation encounter){
 		actEncounter = encounter;
 		viewer.setInput(encounter.getLeistungen());
+		updatePartDisposalColumn(encounter.getLeistungen());
 		updateBilledLabel();
 		updateUi();
 	}

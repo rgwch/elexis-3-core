@@ -179,6 +179,7 @@ public class Messages {
 	public static String RnActions_stornoActionTooltip = ch.elexis.core.l10n.Messages.RnActions_stornoActionTooltip;
 	public static String RnActions_sum = ch.elexis.core.l10n.Messages.RnActions_sum;
 	public static String RnActions_transferMoneyCaption = ch.elexis.core.l10n.Messages.RnActions_transferMoneyCaption;
+	public static String RnActions_stornoActionNotPossibleText = ch.elexis.core.l10n.Messages.RnActions_stornoActionNotPossibleText;
 	public static String RnContentProvider_collectInvoices = ch.elexis.core.l10n.Messages.RnContentProvider_collectInvoices;
 	public static String RnContentProvider_databseRequest = ch.elexis.core.l10n.Messages.RnContentProvider_databseRequest;
 	public static String RnContentProvider_errorRetriveingBillds = ch.elexis.core.l10n.Messages.RnContentProvider_errorRetriveingBillds;
@@ -263,6 +264,8 @@ public class Messages {
 	public static String RnFilterDialog_fromDate = ch.elexis.core.l10n.Messages.RnFilterDialog_fromDate;
 	public static String RnFilterDialog_stateDate = ch.elexis.core.l10n.Messages.RnFilterDialog_stateDate;
 	public static String RnFilterDialog_untilDate = ch.elexis.core.l10n.Messages.RnFilterDialog_untilDate;
+	public static String RnFilterDialog_outputDate = ch.elexis.core.l10n.Messages.RnFilterDialog_outputDate;
+	public static String RnFilterDialog_outputDateInfo = ch.elexis.core.l10n.Messages.RnFilterDialog_outputDateInfo;
 	public static String RnOutputDialog_markAsCopy = ch.elexis.core.l10n.Messages.RnOutputDialog_markAsCopy;
 	public static String RnOutputDialog_outputBillCaption = ch.elexis.core.l10n.Messages.RnOutputDialog_outputBillCaption;
 	public static String RnOutputDialog_outputBillMessage = ch.elexis.core.l10n.Messages.RnOutputDialog_outputBillMessage;

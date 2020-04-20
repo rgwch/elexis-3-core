@@ -95,7 +95,8 @@ public class LabResult extends PersistentObject implements ILabResult {
 		
 		StringBuilder sb = new StringBuilder();
 		sb.append("SELECT LW.ID, LW." + OBSERVATIONTIME + ", LW." + DATE + ", LW." + TIME + ", ");
-		sb.append("LI." + LabItem.GROUP + ", LI." + LabItem.SHORTNAME + " ");
+		sb.append("LI." + LabItem.GROUP + ", LI." + LabItem.SHORTNAME + ", ");
+		sb.append("LW." + PATHODESC + ", LW." + ITEM_ID  + ", LW." + FLAGS + ", LW." + RESULT + " ");
 		sb.append("FROM " + TABLENAME + " AS LW LEFT JOIN ");
 		sb.append(LabItem.LABITEMS + " AS LI ON LW." + ITEM_ID + "=LI.ID ");
 		sb.append("WHERE LW." + PATIENT_ID + " LIKE ? AND LW.DELETED = '0'");
@@ -745,11 +746,57 @@ public class LabResult extends PersistentObject implements ILabResult {
 		// return getResult();
 	}
 	
+	/**
+	 * @deprecated date is used use observationtime
+	 * @since 3.7
+	 * @param pat
+	 * @param date
+	 * @param item
+	 * @return
+	 */
 	public static LabResult getForDate(final Patient pat, final TimeTool date, final LabItem item){
 		Query<LabResult> qbe = new Query<LabResult>(LabResult.class);
 		qbe.add(ITEM_ID, Query.EQUALS, item.getId());
 		qbe.add(PATIENT_ID, Query.EQUALS, pat.getId());
 		qbe.add(DATE, Query.EQUALS, date.toString(TimeTool.DATE_COMPACT));
+		List<LabResult> res = qbe.execute();
+		if ((res != null) && (res.size() > 0)) {
+			return res.get(0);
+		}
+		return null;
+	}
+	
+	/**
+	 * Gets a {@link LabResult} for observationTime timespan.
+	 * @param pat
+	 * @param fromObservationTime
+	 * @param toObservationTime
+	 * @param item
+	 * @return
+	 */
+	public static LabResult getForObservationTime(final Patient pat, final TimeTool fromObservationTime,  final TimeTool toObservationTime, final LabItem item){
+		Query<LabResult> qbe = new Query<LabResult>(LabResult.class);
+		qbe.add(ITEM_ID, Query.EQUALS, item.getId());
+		qbe.add(PATIENT_ID, Query.EQUALS, pat.getId());
+		
+		if (fromObservationTime != null) {
+			fromObservationTime.set(TimeTool.HOUR_OF_DAY, 0);
+			fromObservationTime.set(TimeTool.MINUTE, 0);
+			fromObservationTime.set(TimeTool.SECOND, 0);
+			fromObservationTime.set(TimeTool.MILLISECOND, 0);
+			qbe.add(OBSERVATIONTIME, Query.GREATER_OR_EQUAL,
+				fromObservationTime.toString(TimeTool.TIMESTAMP));
+		}
+		
+		if (toObservationTime != null) {
+			toObservationTime.set(TimeTool.HOUR_OF_DAY, 23);
+			toObservationTime.set(TimeTool.MINUTE, 59);
+			toObservationTime.set(TimeTool.SECOND, 59);
+			toObservationTime.set(TimeTool.MILLISECOND, 999);
+			qbe.add(OBSERVATIONTIME, Query.LESS_OR_EQUAL,
+				toObservationTime.toString(TimeTool.TIMESTAMP));
+		}
+		qbe.orderBy(true, OBSERVATIONTIME);
 		List<LabResult> res = qbe.execute();
 		if ((res != null) && (res.size() > 0)) {
 			return res.get(0);
@@ -969,8 +1016,13 @@ public class LabResult extends PersistentObject implements ILabResult {
 					resultList = new ArrayList<LabResult>();
 					itemMap.put(date, resultList);
 				}
-				
-				resultList.add(new LabResult(val_id));
+				LabResult labResult = new LabResult(val_id);
+				labResult.putInCache(OBSERVATIONTIME, resi.getString(2));
+				labResult.putInCache(PATHODESC, resi.getString(7));
+				labResult.putInCache(ITEM_ID, resi.getString(8));
+				labResult.putInCache(FLAGS, resi.getString(9));
+				labResult.putInCache(RESULT, resi.getString(10));
+				resultList.add(labResult);
 			}
 		} catch (SQLException e) {
 			log.error("Error in fetching labitem groups", e);

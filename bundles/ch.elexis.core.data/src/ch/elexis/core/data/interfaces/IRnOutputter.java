@@ -38,6 +38,14 @@ public interface IRnOutputter {
 	 */
 	public static final String PROP_OUTPUT_METHOD = "OutputMethod";
 	
+	public static final String PROP_OUTPUT_WITH_ESR = "OutputWithEsr";
+	
+	public static final String PROP_OUTPUT_WITH_RECLAIM = "OutputWithReclaim";
+	
+	public static final String PROP_OUTPUT_WITH_MAIL = "OutputWithMail";
+	
+	public static final String PROP_OUTPUT_MODIFY_INVOICESTATE = "OutputModifyInvoiceState";
+	
 	/**
 	 * A short textual description for this output (as Label)
 	 */

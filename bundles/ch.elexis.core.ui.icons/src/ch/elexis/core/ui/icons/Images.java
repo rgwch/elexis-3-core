@@ -154,6 +154,8 @@ public enum Images {
 		IMG_LOCK_CLOSED_GREY,
 		/** An opened lock */
 		IMG_LOCK_OPEN,
+		/** View lock */
+		IMG_LOCK_CO,
 		/** Clipboard symbol */
 		IMG_CLIPBOARD,
 		/** Arrow right */
@@ -202,6 +204,8 @@ public enum Images {
 		IMG_PERSPECTIVE_BBS,
 		/** Perspective orders */
 		IMG_PERSPECTIVE_ORDERS,
+		/** a document of type pdf */
+		IMG_DOCUMENT_PDF,
 		/** a document of type text */
 		IMG_DOCUMENT_TEXT,
 		/** a multi document with clip */

@@ -247,6 +247,7 @@ public class Messages extends NLS {
 	public static String RnActions_stornoActionTooltip;
 	public static String RnActions_sum;
 	public static String RnActions_transferMoneyCaption;
+	public static String RnActions_stornoActionNotPossibleText;
 	public static String RnContentProvider_collectInvoices;
 	public static String RnContentProvider_databseRequest;
 	public static String RnContentProvider_errorRetriveingBillds;
@@ -331,6 +332,8 @@ public class Messages extends NLS {
 	public static String RnFilterDialog_fromDate;
 	public static String RnFilterDialog_stateDate;
 	public static String RnFilterDialog_untilDate;
+	public static String RnFilterDialog_outputDate;
+	public static String RnFilterDialog_outputDateInfo;
 	public static String RnOutputDialog_markAsCopy;
 	public static String RnOutputDialog_outputBillCaption;
 	public static String RnOutputDialog_outputBillMessage;
@@ -958,6 +961,8 @@ public class Messages extends NLS {
 	public static String BriefAuswahlStressTestButtonText2;
 	public static String BriefAuswahlColumnDate;
 	public static String BriefAuswahlColumnTitle;
+	public static String DiagnosenDisplay_AddDiagnosis;
+	public static String DiagnosenDisplay_AddTextDiagnosis;
 	public static String DiagnosenDisplay_DiagnoseTarget;
 	public static String DiagnosenDisplay_Diagnoses;
 	public static String DiagnosenDisplay_ErrorStartingCodeSystem;
@@ -1463,6 +1468,14 @@ public class Messages extends NLS {
 	public static String TextView_showMenu;
 	public static String TextView_showMenuBar;
 	public static String TextView_showToolbar;
+	public static String VerrechnungsDisplay_AddItem;
+	public static String VerrechnungsDisplay_Amount;
+	public static String VerrechnungsDisplay_no_invoice;
+	public static String Display_Column_Number;
+	public static String Display_Column_Code;
+	public static String Display_Column_Designation;
+	public static String Display_Column_Price;
+	public static String VerrechnungsDisplay_Time;
 	public static String VerrechnungsDisplay_Orininalpackungen;
 	public static String VerrechnungsDisplay_PositionCanootBeRemoved;
 	public static String VerrechnungsDisplay_badAmountBody;
@@ -1496,6 +1509,7 @@ public class Messages extends NLS {
 	public static String BriefAuswahlNotAllowedToRunStresstess;
 	public static String ReminderView_txtSearch_message;
 	public static String ReminderPref_defaultPatientRelated;
+	public static String ReminderPref_defaultReponsibleSelf;
 	public static String LimitedText_MaxLengthReached;
 	public static String CreatePrescriptionHelper_InfoDispensationArtikelstammTitel;
 	public static String CreatePrescriptionHelper_InfoDispensationArtikelstammUpate;
@@ -1912,7 +1926,8 @@ public class Messages extends NLS {
 	public static String EigenartikelTyp_NONPHARMA;
 	public static String EigenartikelTyp_PHARMA;
 	public static String EigenartikelTyp_UNKNOWN;
-	public static String EigenartikelTyp_COMPLEMENTARY; 
+	public static String EigenartikelTyp_COMPLEMENTARY;
+	public static String EigenartikelTyp_COMPLEMENTARY_REDUCED;
 	public static String EigenartikelTyp_ADDITIVE;
 	public static String EigendiagnoseSelector_Shortcut_Label;
 	public static String EigendiagnoseSelector_Text_Label;
@@ -2170,7 +2185,6 @@ public class Messages extends NLS {
 	public static String LaborMappingComposite_labelSelektorMessage;
 	public static String LaborMappingComposite_labelSelektorTitle;
 	public static String LaborOrdersComposite_NoPatientSelected;
-	public static String LaborOrdersComposite_actionTitelRemoveWithResult;
 	public static String LaborOrdersComposite_actionTooltipShowHistory;
 	public static String LaborOrdersComposite_columnDate;
 	public static String LaborOrdersComposite_columnGroup;
@@ -2238,6 +2252,7 @@ public class Messages extends NLS {
 	public static String LaborResultsComposite_columnParameter;
 	public static String LaborResultsComposite_columnReference;
 	public static String LaborResultsComposite_textResultTitle;
+	public static String LabResultOrOrderDeleteAction_title;
 	public static String LaborVerordnungDialog_alreadyOrdered;
 	public static String LaborVerordnungDialog_errorOrderNumber;
 	public static String LaborVerordnungDialog_labelOrderNumber;
@@ -2386,6 +2401,7 @@ public class Messages extends NLS {
 	public static String MaritalStatus_UNKNOWN;
 	public static String MaritalStatus_UNMARRIED;
 	public static String MaritalStatus_WIDOWED;
+	public static String Medication_headerComment;
 	public static String MedicationComposite_btnCheckButton_text;
 	public static String MedicationComposite_btnConfirm;
 	public static String MedicationComposite_btnIsFixmedication_toolTipText;
@@ -2593,7 +2609,6 @@ public class Messages extends NLS {
 	public static String TimeTool_yearToFormat;
 	public static String TimeTool_yearsAgoFormat;
 	public static String TimeTool_yearsToFormat;
-	public static String LabResultDeleteAction_title;
 	public static String LabResultEvaluator_LabItemNoRefValue;
 	public static String SetPathologic;
 	public static String SetNonPathologic;

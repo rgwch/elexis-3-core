@@ -60,9 +60,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import ch.elexis.core.constants.Preferences;
-import ch.elexis.core.constants.StringConstants;
 import ch.elexis.core.data.activator.CoreHub;
 import ch.elexis.core.data.constants.ExtensionPointConstantsData;
+import ch.elexis.core.data.events.ElexisEvent;
 import ch.elexis.core.data.events.ElexisEventDispatcher;
 import ch.elexis.core.data.interfaces.text.ITextResolver;
 import ch.elexis.core.data.interfaces.text.ReplaceCallback;
@@ -76,8 +76,10 @@ import ch.elexis.core.ui.UiDesk;
 import ch.elexis.core.ui.constants.ExtensionPointConstantsUi;
 import ch.elexis.core.ui.dialogs.DocumentSelectDialog;
 import ch.elexis.core.ui.dialogs.KontaktSelektor;
+import ch.elexis.core.ui.dialogs.SelectFallDialog;
 import ch.elexis.core.ui.preferences.TextTemplatePreferences;
 import ch.elexis.core.ui.util.SWTHelper;
+import ch.elexis.core.ui.views.textsystem.model.TextTemplate;
 import ch.elexis.data.Brief;
 import ch.elexis.data.Fall;
 import ch.elexis.data.Konsultation;
@@ -179,21 +181,9 @@ public class TextContainer {
 	}
 	
 	private Brief loadTemplate(String name){
-		Query<Brief> qbe = new Query<Brief>(Brief.class);
-		qbe.add(Brief.FLD_TYPE, Query.EQUALS, Brief.TEMPLATE);
-		qbe.and();
-		qbe.add(Brief.FLD_SUBJECT, Query.EQUALS, name);
-		qbe.startGroup();
-		qbe.add(Brief.FLD_DESTINATION_ID, Query.EQUALS, CoreHub.actMandant.getId());
-		qbe.or();
-		qbe.add(Brief.FLD_DESTINATION_ID, Query.EQUALS, StringTool.leer);
-		qbe.endGroup();
-		List<Brief> list = qbe.execute();
-		if ((list == null) || (list.size() == 0)) {
-			return null;
-		}
-		Brief template = list.get(0);
-		return template;
+		Mandant mandator = ElexisEventDispatcher.getSelectedMandator();
+		return TextTemplate.findExistingTemplate(name,
+			(mandator != null ? mandator.getId() : null));
 	}
 	
 	/**
@@ -959,6 +949,8 @@ public class TextContainer {
 			// set sticker for this template if not to ask for addressee
 			DocumentSelectDialog.setDontAskForAddresseeForThisTemplate(brief,
 				std.dontShowAddresseeSelection);
+			ElexisEventDispatcher.getInstance()
+				.fire(new ElexisEvent(null, Brief.class, ElexisEvent.EVENT_RELOAD));
 		}
 	}
 	
@@ -1104,25 +1096,12 @@ public class TextContainer {
 					selectedMand = lMands.get(i - 1);
 				}
 			}
-			Query<Brief> qbe = new Query<Brief>(Brief.class);
-			qbe.add(Brief.FLD_TYPE, Query.EQUALS, Brief.TEMPLATE);
-			if (selectedMand != null) {
-				qbe.startGroup();
-				qbe.add(Brief.FLD_DESTINATION_ID, Query.EQUALS, selectedMand.getId());
-				qbe.or();
-				qbe.add(Brief.FLD_DESTINATION_ID, Query.EQUALS, StringTool.leer);
-				qbe.endGroup();
-				qbe.and();
-			}
-			qbe.add(Brief.FLD_GELOESCHT, Query.NOT_EQUAL, StringConstants.ONE);
-			qbe.add(Brief.FLD_SUBJECT, Query.EQUALS, title);
-			List<Brief> l = qbe.execute();
-			if (l.size() > 0) {
+			List<Brief> existing = TextTemplate.findExistingTemplates(bSysTemplate, title, null, (selectedMand != null ? selectedMand.getId() : null));
+			if (existing.size() > 0) {
 				if (MessageDialog.openQuestion(getShell(),
 					Messages.TextContainer_TemplateExistsCaption,
 					Messages.TextContainer_TemplateExistsBody)) {
-					Brief old = l.get(0);
-					old.delete();
+					existing.forEach(b -> b.delete());
 				} else {
 					return;
 				}
@@ -1304,4 +1283,32 @@ public class TextContainer {
 		
 	}
 	
+	/**
+	 * Get the active cons of the selected patient, creates coverage and cons if no coverage is
+	 * available. If coverage without cons is available the user is asked in which coverage the cons
+	 * should be created. This should be used to get the cons for
+	 * {@link TextContainer#createFromTemplate(Konsultation, Brief, String, Kontakt, String)} and
+	 * {@link TextContainer#createFromTemplateName(Konsultation, String, String, Kontakt, String)}
+	 * 
+	 * @return
+	 */
+	public Konsultation getAktuelleKons(){
+		Konsultation ret = Konsultation.getAktuelleKons();
+		if (ret == null) {
+			SelectFallDialog sfd = new SelectFallDialog(UiDesk.getTopShell());
+			sfd.open();
+			if (sfd.result != null) {
+				ElexisEventDispatcher.fireSelectionEvent(sfd.result);
+			} else {
+				MessageDialog.openInformation(UiDesk.getTopShell(),
+					ch.elexis.core.ui.views.Messages.TextView_NoCaseSelected, //$NON-NLS-1$
+					ch.elexis.core.ui.views.Messages.TextView_SaveNotPossibleNoCaseAndKonsSelected); //$NON-NLS-1$
+				return null;
+			}
+			ret = ((Fall) ElexisEventDispatcher.getSelected(Fall.class)).neueKonsultation();
+			ret.setMandant(CoreHub.actMandant);
+			ElexisEventDispatcher.fireSelectionEvent(ret);
+		}
+		return ret;
+	}
 }

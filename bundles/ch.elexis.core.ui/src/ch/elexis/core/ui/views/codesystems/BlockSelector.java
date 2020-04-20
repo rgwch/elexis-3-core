@@ -18,6 +18,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.apache.commons.lang3.StringUtils;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
@@ -67,8 +68,9 @@ import ch.elexis.data.Query;
 
 public class BlockSelector extends CodeSelectorFactory {
 	protected static final String BLOCK_ONLY_FILTER_ENABLED = "blockselector/blockonlyfilter";
+	protected static final String BLOCK_FILTER_ONLY_MANDATOR = "blockselector/blockfilteronlymandator";
 	
-	private IAction deleteAction, createAction, exportAction, copyAction, searchBlocksOnly;
+	private IAction deleteAction, createAction, exportAction, copyAction, searchBlocksOnly, searchFilterMandator;
 	private CommonViewer cv;
 	private MenuManager mgr;
 	static SelectorPanelProvider slp;
@@ -130,7 +132,7 @@ public class BlockSelector extends CodeSelectorFactory {
 		}
 		
 		slp = new SelectorPanelProvider(lbName, true);
-		slp.addActions(createAction, exportAction, searchBlocksOnly);
+		slp.addActions(createAction, exportAction, searchBlocksOnly, searchFilterMandator);
 		ViewerConfigurer vc =
 			new ViewerConfigurer(new BlockContentProvider(this, cv),
 				new BlockTreeViewerItem.ColorizedLabelProvider(), slp,
@@ -176,9 +178,9 @@ public class BlockSelector extends CodeSelectorFactory {
 		deleteAction = new Action("Block löschen") {
 			@Override
 			public void run(){
-				Object o = cv.getSelection()[0];
-				if (o instanceof Leistungsblock) {
-					((Leistungsblock) o).delete();
+				BlockTreeViewerItem o = (BlockTreeViewerItem) cv.getSelection()[0];
+				if (o != null && o.getBlock() != null) {
+					o.getBlock().delete();
 					cv.notify(CommonViewer.Message.update);
 				}
 			}
@@ -222,9 +224,9 @@ public class BlockSelector extends CodeSelectorFactory {
 			
 			@Override
 			public void run(){
-				Object o = cv.getSelection()[0];
-				if (o instanceof Leistungsblock) {
-					Leistungsblock sourceBlock = (Leistungsblock) o;
+				BlockTreeViewerItem o = (BlockTreeViewerItem) cv.getSelection()[0];
+				if (o != null && o.getBlock() != null) {
+					Leistungsblock sourceBlock = o.getBlock();
 					InputDialog inputDlg = new InputDialog(Display.getDefault().getActiveShell(),
 						"Block kopieren", "Bitte den Namen der Kopie eingeben bzw. bestätigen",
 						sourceBlock.getName() + " Kopie", new IInputValidator() {
@@ -255,6 +257,23 @@ public class BlockSelector extends CodeSelectorFactory {
 			public void run(){
 				CoreHub.userCfg.set(BLOCK_ONLY_FILTER_ENABLED, isChecked());
 			};
+		};
+		searchFilterMandator = new Action("Nur Blöcke des aktiven Mandanten", Action.AS_CHECK_BOX) {
+			{
+				setImageDescriptor(Images.IMG_PERSON.getImageDescriptor());
+				setToolTipText("Nur Blöcke des aktiven Mandanten");
+				setChecked(CoreHub.userCfg.get(BLOCK_FILTER_ONLY_MANDATOR, false));
+			}
+
+			public void run() {
+				CoreHub.userCfg.set(BLOCK_FILTER_ONLY_MANDATOR, isChecked());
+
+				if (cv.getConfigurer().getContentProvider() instanceof BlockContentProvider) {
+					BlockContentProvider blockContentProvider = (BlockContentProvider) cv.getConfigurer()
+							.getContentProvider();
+					blockContentProvider.refreshViewer();
+				}
+			}
 		};
 	}
 	
@@ -317,7 +336,7 @@ public class BlockSelector extends CodeSelectorFactory {
 			}
 			qbe.orderBy(false, Leistungsblock.FLD_NAME);
 			blockItemMap = new HashMap<>();
-			List<BlockTreeViewerItem> list = qbe.execute().stream().map(b -> {
+			List<BlockTreeViewerItem> list = qbe.execute().stream().filter(b -> applyMandatorFilter(b)).map(b -> {
 				BlockTreeViewerItem item = BlockTreeViewerItem.of(b);
 				blockItemMap.put(b, item);
 				return item;
@@ -325,6 +344,17 @@ public class BlockSelector extends CodeSelectorFactory {
 			return list.toArray();
 		}
 		
+		private boolean applyMandatorFilter(Leistungsblock b) {
+			if (selector.searchFilterMandator.isChecked()) {
+				Mandant mandator = ElexisEventDispatcher.getSelectedMandator();
+				String blockMandantId = b.get(Leistungsblock.FLD_MANDANT_ID);
+				if (StringUtils.isNotBlank(blockMandantId) && mandator != null) {
+					return blockMandantId.equals(mandator.getId());
+				}
+			}
+			return true;
+		}
+
 		public void dispose(){
 			stopListening();
 		}
