@@ -38,11 +38,11 @@ public class CompEx {
 	public static final Logger log = LoggerFactory.getLogger(CompEx.class);
 	
 	public static final int NONE = 0;
-	public static final int GLZ = 1 << 29;
-	public static final int RLL = 2 << 29;
-	public static final int HUFF = 3 << 29;
-	public static final int BZIP2 = 4 << 29;
-	public static final int ZIP = 5 << 29;
+	public static final int GLZ = 1 << 29;		// 001
+	public static final int RLL = 2 << 29;		// 010	
+	public static final int HUFF = 3 << 29;	    // 011
+	public static final int BZIP2 = 4 << 29;    // 100
+	public static final int ZIP = 5 << 29;      // 101
 	
 	public static final byte[] Compress(String in, int mode){
 		if (StringTool.isNothing(in)) {
