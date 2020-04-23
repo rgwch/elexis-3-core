@@ -1,8 +1,8 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Elexis Product
+Bundle-Name: Elexis Ungrad
 Bundle-SymbolicName: ch.elexis.core.product;singleton:=true
 Bundle-Version: 3.7.0.qualifier
-Bundle-Vendor: elexis.info
+Bundle-Vendor: elexis.ch/ungrad
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Eclipse-BundleShape: dir

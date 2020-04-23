@@ -787,6 +787,8 @@ public abstract class PersistentObject implements IPersistentObject {
 				return INEXISTENT;
 			}
 		} catch (JdbcLinkSyntaxException ex) {
+			ExHandler.handle(ex);
+			ex.printStackTrace();
 			return INEXISTENT;
 		}
 	}
