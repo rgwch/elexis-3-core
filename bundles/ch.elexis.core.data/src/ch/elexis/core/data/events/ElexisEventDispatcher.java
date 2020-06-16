@@ -36,7 +36,7 @@ import ch.elexis.data.PersistentObject;
 
 /**
  * The Elexis event dispatcher system manages and distributes the information of changing, creating,
- * deleting and selecting PersistentObjects. An event is fired when such an action occures. This
+ * deleting and selecting PersistentObjects. An event is fired when such an action occurs. This
  * might be due to a user interaction or to an non-interactive job.
  * 
  * A view that handles user selection of PersistentObjects MUST fire an appropriate Event through
@@ -45,7 +45,7 @@ import ch.elexis.data.PersistentObject;
  * 
  * A client that wishes to be informed on such events must register an ElexisEventListener. The
  * catchElexisEvent() Method of this listener is called in a non-UI-thread an should be finished as
- * fast as possible. If lengthy operations are neccessary, these must be sheduled in a separate
+ * fast as possible. If lengthy operations are necessary, these must be scheduled in a separate
  * thread, The Listener can specify objects, classes and event types it wants to be informed. If no
  * such filter is given, it will be informed about all events.
  * 
@@ -374,11 +374,11 @@ public final class ElexisEventDispatcher implements Runnable {
 	
 	/**
 	 * Let the dispatcher Thread empty the queue. If the queue is empty, this method returns
-	 * immediately. Otherwise, the current thread waits until it is empty or the provided wasit time
+	 * immediately. Otherwise, the current thread waits until it is empty or the provided wait time
 	 * has expired.
 	 * 
 	 * @param millis
-	 *            The time to wait bevor returning
+	 *            The time to wait before returning
 	 * @return false if waiting was interrupted
 	 */
 	public boolean waitUntilEventQueueIsEmpty(long millis){
