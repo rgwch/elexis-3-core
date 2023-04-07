@@ -9,6 +9,7 @@ location "https://www.elexis.ch/ungrad2023/ungrad-target"{
 		org.apache.commons.dbcp
 		org.apache.commons.pool
 		bouncycastle.bcprov-jdk14 138.0.0
+		javax.transaction.jta 1.1.0
 }
 location "https://download.elexis.info/elexis/target/2022-09-java17/" {
 	

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?pde?>
 <!-- generated with https://github.com/eclipse-cbi/targetplatform-dsl -->
-<target name="Elexis IDE 2022-09-java17" sequenceNumber="1680872896">
+<target name="Elexis IDE 2022-09-java17" sequenceNumber="1680874516">
   <locations>
     <location includeMode="slicer" includeAllPlatforms="true" includeSource="true" includeConfigurePhase="false" type="InstallableUnit">
       <unit id="org.jdom" version="1.1.0"/>
@@ -11,6 +11,7 @@
       <unit id="org.apache.commons.dbcp" version="1.4.0.v201204271417"/>
       <unit id="org.apache.commons.pool" version="1.6.0.v201204271246"/>
       <unit id="bouncycastle.bcprov-jdk14" version="138.0.0"/>
+      <unit id="javax.transaction.jta" version="1.1.0"/>
       <repository location="https://www.elexis.ch/ungrad2023/ungrad-target"/>
     </location>
     <location includeMode="slicer" includeAllPlatforms="true" includeSource="true" includeConfigurePhase="false" type="InstallableUnit">
