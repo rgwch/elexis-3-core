@@ -1,5 +1,6 @@
 package ch.elexis.core.ui.dialogs;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.jface.dialogs.Dialog;
@@ -21,7 +22,7 @@ public class StockSelectorDialog extends ListDialog {
 	
 	public StockSelectorDialog(Shell parent, boolean includeCommissioningSystems){
 		super(parent);
-		List<Stock> allStocks = CoreHub.getStockService().getAllStocks(includeCommissioningSystems);
+		List<Stock> allStocks = new ArrayList<Stock>(); // CoreHub.getStockService().getAllStocks(includeCommissioningSystems);
 		if (allStocks.size() == 1) {
 			onlyOneStock = allStocks.get(0);
 		}

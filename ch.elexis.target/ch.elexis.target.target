@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?pde?>
-<!-- generated with https://github.com/eclipse-cbi/targetplatform-dsl -->
-<target name="Elexis Ungrad" sequenceNumber="1678018797">
+<!-- generated with https://github.com/eclipse-cbi/targetplatform-dsl --><target name="Elexis Ungrad" sequenceNumber="1678018797">
   <locations>
-    <location includeMode="slicer" includeAllPlatforms="false" includeSource="false" includeConfigurePhase="false" type="InstallableUnit">
+    <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="slicer" includeSource="false" type="InstallableUnit">
       <unit id="org.eclipse.equinox.executable.feature.group" version="3.7.2.v20171108-1834"/>
       <unit id="org.eclipse.rcp.feature.group" version="4.7.3.v20180330-0640"/>
       <unit id="org.eclipse.platform.feature.group" version="4.7.3.v20180330-0640"/>
@@ -268,7 +267,7 @@
       <unit id="xpp3.min" version="1.1.3.4_O"/>
       <repository location="https://www.elexis.ch/ungrad2023/ungrad-target"/>
     </location>
-    <location includeMode="slicer" includeAllPlatforms="false" includeSource="false" includeConfigurePhase="false" type="InstallableUnit">
+    <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="slicer" includeSource="false" type="InstallableUnit">
       <unit id="com.fasterxml.jackson.core.jackson-core" version="2.7.4"/>
       <unit id="com.fasterxml.jackson.core.jackson-databind" version="2.7.4"/>
       <unit id="com.fasterxml.jackson.core.jackson-annotations" version="2.7.4"/>

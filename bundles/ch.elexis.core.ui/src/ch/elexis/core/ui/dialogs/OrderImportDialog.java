@@ -106,8 +106,8 @@ public class OrderImportDialog extends TitleAreaDialog {
 			if (item.getState() != BestellungEntry.STATE_DONE) {
 				Stock stock = item.getStock();
 				if (stock != null) {
-					IStockEntry stockEntry = CoreHub.getStockService()
-						.findStockEntryForArticleInStock(stock, item.getArticle().storeToString());
+					IStockEntry stockEntry = null; // CoreHub.getStockService()
+						/* .findStockEntryForArticleInStock(stock, item.getArticle().storeToString()); */
 					if (stockEntry != null) {
 						OrderElement orderElement =
 							new OrderElement(item, stockEntry, item.getCount());
@@ -115,9 +115,9 @@ public class OrderImportDialog extends TitleAreaDialog {
 					}
 				} else {
 					// check if a stock entry was created since the order was created
-					IStockEntry stockEntry = CoreHub.getStockService()
-						.findPreferredStockEntryForArticle(item.getArticle().storeToString(),
-							ElexisEventDispatcher.getSelectedMandator().getId());
+					IStockEntry stockEntry = null; // CoreHub.getStockService()
+						/*.findPreferredStockEntryForArticle(item.getArticle().storeToString(),
+							ElexisEventDispatcher.getSelectedMandator().getId()); */
 					if (stockEntry != null) {
 						OrderElement orderElement =
 							new OrderElement(item, stockEntry, item.getCount());
@@ -642,7 +642,7 @@ public class OrderImportDialog extends TitleAreaDialog {
 		
 		public IStockEntry create(OrderElement orderElement){
 			Stock stock = Stock.load(Stock.DEFAULT_STOCK_ID);
-			created = CoreHub.getStockService().storeArticleInStock(stock, article.storeToString());
+			created = null; // CoreHub.getStockService().storeArticleInStock(stock, article.storeToString());
 			created.setMinimumStock(0);
 			created.setMaximumStock(0);
 			return created;

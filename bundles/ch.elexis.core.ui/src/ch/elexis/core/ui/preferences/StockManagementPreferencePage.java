@@ -1,5 +1,6 @@
 package ch.elexis.core.ui.preferences;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -339,8 +340,8 @@ public class StockManagementPreferencePage extends PreferencePage
 				if (s == null) {
 					return;
 				}
-				List<UUID> allDrivers =
-					CoreHub.getStockCommissioningSystemService().listAllAvailableDrivers();
+				List<UUID> allDrivers = new ArrayList<UUID>();
+					// CoreHub.getStockCommissioningSystemService().listAllAvailableDrivers();
 				if (allDrivers.size() == 0) {
 					MessageDialog.openInformation(UiDesk.getTopShell(), "No drivers found",
 						"There are no stock commissioning system drivers available.");
@@ -355,8 +356,8 @@ public class StockManagementPreferencePage extends PreferencePage
 				ld.setLabelProvider(new LabelProvider() {
 					@Override
 					public String getText(Object element){
-						return CoreHub.getStockCommissioningSystemService()
-							.getInfoStringForDriver((UUID) element, true);
+						return "" ; /*CoreHub.getStockCommissioningSystemService()
+							.getInfoStringForDriver((UUID) element, true); */
 					}
 				});
 				ld.setInput(allDrivers);
@@ -374,8 +375,8 @@ public class StockManagementPreferencePage extends PreferencePage
 				}
 				if (ics != null) {
 					s.setDriverUuid(ics.toString());
-					lblMachineuuid.setText(CoreHub.getStockCommissioningSystemService()
-						.getInfoStringForDriver(ics, false));
+					lblMachineuuid.setText(""); /* CoreHub.getStockCommissioningSystemService()
+						.getInfoStringForDriver(ics, false)); */
 				} else {
 					s.setDriverUuid(null);
 					lblMachineuuid.setText(StringConstants.EMPTY);
@@ -493,8 +494,8 @@ public class StockManagementPreferencePage extends PreferencePage
 				}
 				String machineUuid = stock.getDriverUuid();
 				if (machineUuid != null && !machineUuid.isEmpty()) {
-					String info = CoreHub.getStockCommissioningSystemService()
-						.getInfoStringForDriver(UUID.fromString(machineUuid), false);
+					String info = ""; /*CoreHub.getStockCommissioningSystemService()
+						.getInfoStringForDriver(UUID.fromString(machineUuid), false); */
 					lblMachineuuid.setText(info);
 				} else {
 					lblMachineuuid.setText("");

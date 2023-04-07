@@ -9,7 +9,6 @@ import org.eclipse.swt.graphics.Image;
 
 import ch.elexis.core.constants.StringConstants;
 import ch.elexis.core.data.activator.CoreHub;
-import ch.elexis.core.data.service.StockService;
 import ch.elexis.core.model.IOrderEntry;
 import ch.elexis.core.services.IStockService.Availability;
 import ch.elexis.core.ui.UiDesk;
@@ -75,7 +74,7 @@ public class StockEntryLabelProvider extends LabelProvider
 		if (element instanceof StockEntry) {
 			StockEntry se = (StockEntry) element;
 			
-			Availability availability = StockService.determineAvailability(se);
+			Availability availability = null; //StockService.determineAvailability(se);
 			if (availability != null) {
 				switch (availability) {
 				case CRITICAL_STOCK:

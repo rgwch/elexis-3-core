@@ -81,7 +81,7 @@ public class ArtikelSelektor extends ViewPart implements ISaveablePart2 {
 		tv.setContentProvider(new IStructuredContentProvider() {
 			
 			public Object[] getElements(final Object inputElement){
-				return CoreHub.getStockService().getAllStockEntries().toArray();
+				return new Object[0]; // CoreHub.getStockService().getAllStockEntries().toArray();
 			}
 			
 			public void dispose(){}
@@ -96,8 +96,8 @@ public class ArtikelSelektor extends ViewPart implements ISaveablePart2 {
 				StockEntry se = (StockEntry) element;
 				if (se.getArticle() != null) {
 					String ret = se.getArticle().getName();
-					Integer amount =
-						CoreHub.getStockService().getCumulatedStockForArticle(se.getArticle());
+					Integer amount = 1;
+						// CoreHub.getStockService().getCumulatedStockForArticle(se.getArticle());
 					if (amount != null) {
 						ret += " (" + Integer.toString(amount) + ")"; //$NON-NLS-1$ //$NON-NLS-2$
 					}

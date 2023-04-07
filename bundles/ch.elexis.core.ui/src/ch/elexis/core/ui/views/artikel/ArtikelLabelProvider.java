@@ -39,10 +39,12 @@ public class ArtikelLabelProvider extends DefaultLabelProvider implements ITable
 		if (element instanceof Artikel) {
 			Artikel art = (Artikel) element;
 			String ret = art.getInternalName();
+			/*
 			Integer amount = CoreHub.getStockService().getCumulatedStockForArticle(art);
 			if (amount != null) {
 				ret += " (" + Integer.toString(amount) + ")"; //$NON-NLS-1$ //$NON-NLS-2$
 			}
+			*/
 			return ret;
 		}
 		return super.getColumnText(element, columnIndex);
@@ -52,6 +54,7 @@ public class ArtikelLabelProvider extends DefaultLabelProvider implements ITable
 	 * Lagerartikel are shown in blue, articles that should be ordered are shown in red
 	 */
 	public Color getForeground(Object element, int columnIndex){
+		/*
 		if (element instanceof Artikel) {
 			Artikel art = (Artikel) element;
 			Availability availability =
@@ -66,7 +69,7 @@ public class ArtikelLabelProvider extends DefaultLabelProvider implements ITable
 				}
 			}
 		}
-		
+		*/
 		return null;
 	}
 	

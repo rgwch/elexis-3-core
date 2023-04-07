@@ -4,7 +4,7 @@ package ch.elexis.core.data.propertyTester;
 import org.eclipse.core.expressions.PropertyTester;
 
 import ch.elexis.core.data.activator.CoreHub;
-import ch.elexis.core.lock.ILocalLockService.Status;
+import ch.elexis.core.lock.ILockService.Status;
 
 public class ElexisPropertyTester extends PropertyTester {
 

@@ -10,7 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import ch.elexis.core.data.activator.CoreHub;
-import ch.elexis.core.lock.ILocalLockService;
+import ch.elexis.core.lock.ILockService;
 import ch.elexis.core.lock.types.LockResponse;
 import ch.elexis.core.model.IPersistentObject;
 
@@ -18,7 +18,7 @@ public class AcquireLockBlockingUi {
 	private static Logger logger = LoggerFactory.getLogger(AcquireLockBlockingUi.class);
 	
 	public static void aquireAndRun(IPersistentObject lockPo, ILockHandler handler){
-		if (CoreHub.getLocalLockService().getStatus() == ILocalLockService.Status.STANDALONE) {
+		if (CoreHub.getLocalLockService().getStatus() == ILockService.Status.STANDALONE) {
 			handler.lockAcquired();
 			return;
 		}

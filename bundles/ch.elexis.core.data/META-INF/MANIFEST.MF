@@ -12,12 +12,9 @@ Require-Bundle: org.slf4j.api;bundle-version="1.7.2";visibility:=reexport,
  org.apache.commons.lang;bundle-version="2.6.0",
  org.jdom;bundle-version="1.1.0",
  com.google.guava;bundle-version="15.0.0",
- com.eclipsesource.jaxrs.jersey-all-nojavax;bundle-version="2.24.1",
- com.eclipsesource.jaxrs.consumer;bundle-version="5.3.1",
  ch.rgw.utility;bundle-version="3.2.0",
  ch.elexis.core;bundle-version="3.2.0";visibility:=reexport,
- ch.elexis.core.l10n;bundle-version="3.5.0",
- org.jboss.aerogear.otp-java;bundle-version="1.0.0"
+ ch.elexis.core.l10n;bundle-version="3.5.0"
 Bundle-ActivationPolicy: lazy
 Export-Package: .,
  ch.elexis.admin,
@@ -45,9 +42,6 @@ Service-Component: OSGI-INF/*.xml
 Bundle-Activator: ch.elexis.core.data.activator.CoreHub
 Import-Package: ch.elexis.core.findings.migration,
  com.google.gson,
- javax.ws.rs;version="[2.0.0,2.1.0)",
- javax.ws.rs.core;version="1.1.1",
- javax.ws.rs.ext;version="1.1.1",
  org.apache.commons.io;version="2.4.0",
  org.apache.commons.io.filefilter
 Automatic-Module-Name: ch.elexis.core.data

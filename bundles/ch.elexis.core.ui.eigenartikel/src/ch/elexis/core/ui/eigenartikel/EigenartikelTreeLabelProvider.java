@@ -20,8 +20,8 @@ public class EigenartikelTreeLabelProvider extends LabelProvider {
 			} else {
 				label += ea.getPackungsGroesse() + " " + ea.getMeasurementUnit();
 			}
-			Availability availability =
-				CoreHub.getStockService().getCumulatedAvailabilityForArticle(ea);
+			Availability availability = Availability.IN_STOCK;
+				// CoreHub.getStockService().getCumulatedAvailabilityForArticle(ea);
 			if (availability != null) {
 				label += " (" + availability.toString() + ")";
 			}

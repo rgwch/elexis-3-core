@@ -282,16 +282,17 @@ public class ImportArticleDialog extends TitleAreaDialog {
 						
 						if (opArticle.isPresent()) {
 							// check if article is present in stock
-							IStockEntry stockEntry = CoreHub.getStockService()
+							
+							IStockEntry stockEntry = null; /*CoreHub.getStockService()
 								.findStockEntryForArticleInStock(stock,
 									((Artikel) opArticle.get())
 										.storeToString());
-							
+							 */
 							String result = "MODIFY";
 							if(stockEntry == null) {
 								PersistentObject article = (PersistentObject) opArticle.get();
-								stockEntry = CoreHub.getStockService()
-									.storeArticleInStock(stock, article.storeToString());
+								stockEntry = null; /*CoreHub.getStockService()
+									.storeArticleInStock(stock, article.storeToString()); */
 								result = "ADDITION";
 							}
 							

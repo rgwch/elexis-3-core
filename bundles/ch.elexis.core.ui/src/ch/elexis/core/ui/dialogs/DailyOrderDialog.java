@@ -183,9 +183,9 @@ public class DailyOrderDialog extends TitleAreaDialog {
 				if (vv instanceof Artikel) {
 					Artikel art = (Artikel) vv;
 					Mandant mandator = ElexisEventDispatcher.getSelectedMandator();
-					IStockEntry stockEntry =
-						CoreHub.getStockService().findPreferredStockEntryForArticle(
-							art.storeToString(), (mandator != null) ? mandator.getId() : null);
+					IStockEntry stockEntry = null;
+						/*CoreHub.getStockService().findPreferredStockEntryForArticle(
+							art.storeToString(), (mandator != null) ? mandator.getId() : null); */
 					
 					int zahl = v.getZahl();
 					if (!add) {

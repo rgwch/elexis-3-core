@@ -20,7 +20,7 @@ import org.eclipse.ui.part.ViewPart;
 
 import ch.elexis.core.data.activator.CoreHub;
 import ch.elexis.core.data.events.ElexisEventDispatcher;
-import ch.elexis.core.lock.ILocalLockService;
+import ch.elexis.core.lock.ILockService;
 import ch.elexis.core.ui.actions.GlobalActions;
 import ch.elexis.core.ui.actions.GlobalEventDispatcher;
 import ch.elexis.core.ui.actions.IActivationListener;
@@ -99,7 +99,7 @@ public class PatientDetailView2 extends ViewPart implements ISaveablePart2, IAct
 	public void activation(boolean mode){
 		if (!mode) {
 			// save does not happen via locking in standalone mode
-			if (CoreHub.getLocalLockService().getStatus() == ILocalLockService.Status.STANDALONE) {
+			if (CoreHub.getLocalLockService().getStatus() == ILockService.Status.STANDALONE) {
 				pb.save();
 			}
 		} else {

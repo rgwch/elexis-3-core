@@ -25,7 +25,6 @@ import org.slf4j.LoggerFactory;
 
 import ch.elexis.core.data.activator.CoreHub;
 import ch.elexis.core.data.interfaces.events.MessageEvent;
-import ch.elexis.core.data.server.ServerEventMapper;
 import ch.elexis.core.data.status.ElexisStatus;
 import ch.elexis.core.jdt.Nullable;
 import ch.elexis.core.model.IPersistentObject;
@@ -189,12 +188,6 @@ public final class ElexisEventDispatcher implements Runnable {
 				eventQueue.offer(ee);
 			}
 			
-			if (CoreHub.getElexisServerEventService().deliversRemoteEvents()) {
-				ch.elexis.core.common.ElexisEvent mapEvent = ServerEventMapper.mapEvent(ee);
-				if(mapEvent!=null) {
-					CoreHub.getElexisServerEventService().postEvent(mapEvent);
-				}
-			}
 		}
 	}
 	

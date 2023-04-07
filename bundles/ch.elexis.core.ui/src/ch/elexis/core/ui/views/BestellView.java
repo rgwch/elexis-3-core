@@ -207,7 +207,8 @@ public class BestellView extends ViewPart implements ISaveablePart2 {
 							return;
 						}
 						// use StockEntry if possible
-						if (CoreHub.getStockService() != null) {
+						/*
+						if (CoreHub.getStockService()  != null) {
 							IStockEntry se = CoreHub.getStockService()
 								.findPreferredStockEntryForArticle(obj, null);
 							if (se != null) {
@@ -215,6 +216,7 @@ public class BestellView extends ViewPart implements ISaveablePart2 {
 								continue;
 							}
 						}
+						*/
 						// SINGLE SHOT ORDER
 						actBestellung.addBestellungEntry((Artikel) dropped, null, null, 1);
 					}

@@ -46,11 +46,8 @@ import ch.elexis.core.data.interfaces.events.MessageEvent;
 import ch.elexis.core.data.interfaces.scripting.Interpreter;
 import ch.elexis.core.data.lock.LocalLockService;
 import ch.elexis.core.data.preferences.CorePreferenceInitializer;
-import ch.elexis.core.data.server.ElexisServerEventService;
 import ch.elexis.core.data.service.OrderService;
-import ch.elexis.core.data.service.StockCommissioningSystemService;
-import ch.elexis.core.data.service.StockService;
-import ch.elexis.core.lock.ILocalLockService;
+import ch.elexis.core.lock.ILockService;
 import ch.elexis.core.services.IOrderService;
 import ch.elexis.core.services.IStockCommissioningSystemService;
 import ch.elexis.data.Anwender;
@@ -139,23 +136,12 @@ public class CoreHub implements BundleActivator {
 	public static final AbstractAccessControl acl = new RoleBasedAccessControl();
 
 	/** Lock Service **/
-	private static ILocalLockService localLockService;
-
-	/** Stock Service **/
-	private static final StockService stockService = new StockService();
+	private static ILockService localLockService;
 
 	/** Order Service **/
 	private static final IOrderService orderService = new OrderService();
 
-	/** Event Service to transport Events to the Elexis Server */
-	private static ElexisServerEventService elexisServerEventService;
-
-	/**
-	 * Stock commissioning system service
-	 */
-	private static final IStockCommissioningSystemService stockCommissioningSystemService = new StockCommissioningSystemService();
-
-	/**
+		/**
 	 * The listener for patient events
 	 */
 	private final PatientEventListener eeli_pat = new PatientEventListener();
@@ -239,7 +225,6 @@ public class CoreHub implements BundleActivator {
 		plugin = this;
 
 		localLockService = new LocalLockService();
-		elexisServerEventService = new ElexisServerEventService();
 
 		startUpBundle();
 		setUserDir(userDir);
@@ -491,23 +476,12 @@ public class CoreHub implements BundleActivator {
 		CoreHub.userCfg = CoreHub.localCfg;
 	}
 
-	public static ILocalLockService getLocalLockService() {
+	public static ILockService getLocalLockService() {
 		return localLockService;
 	}
 
-	public static StockService getStockService() {
-		return stockService;
-	}
-
-	public static IStockCommissioningSystemService getStockCommissioningSystemService() {
-		return stockCommissioningSystemService;
-	}
-
+	
 	public static IOrderService getOrderService() {
 		return orderService;
-	}
-
-	public static ElexisServerEventService getElexisServerEventService() {
-		return elexisServerEventService;
 	}
 }

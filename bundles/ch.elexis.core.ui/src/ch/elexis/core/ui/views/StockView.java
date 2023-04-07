@@ -63,7 +63,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import ch.elexis.core.data.activator.CoreHub;
-import ch.elexis.core.data.service.StockService;
 import ch.elexis.core.data.status.ElexisStatus;
 import ch.elexis.core.lock.types.LockResponse;
 import ch.elexis.core.model.IOrderEntry;
@@ -309,8 +308,9 @@ public class StockView extends ViewPart implements ISaveablePart2, IActivationLi
 							if (ssd.getResult().length > 0) {
 								Stock stock = (Stock) ssd.getResult()[0];
 								if (stock != null) {
+									/*
 									CoreHub.getStockService().storeArticleInStock(stock,
-										art.storeToString());
+										art.storeToString()); */
 									viewer.refresh();
 								}
 							}
@@ -485,12 +485,14 @@ public class StockView extends ViewPart implements ISaveablePart2, IActivationLi
 		
 		public void run(){
 			StockEntry stockEntry = fetchSelection();
+			/*
 			IStatus status = CoreHub.getStockCommissioningSystemService()
 				.synchronizeInventory(stockEntry.getStock(), null, null);
 			if (!status.isOK()) {
 				ElexisStatus elStatus = new ElexisStatus(status);
 				StatusManager.getManager().handle(elStatus, StatusManager.SHOW);
 			}
+			*/
 		}
 		
 		private StockEntry fetchSelection(){
@@ -528,6 +530,7 @@ public class StockView extends ViewPart implements ISaveablePart2, IActivationLi
 		}
 		
 		public void run(){
+			/*
 			StockEntry stockEntry = fetchSelection();
 			IStatus status = CoreHub.getStockCommissioningSystemService()
 				.performArticleOutlay(stockEntry, 1, null);
@@ -535,6 +538,7 @@ public class StockView extends ViewPart implements ISaveablePart2, IActivationLi
 				ElexisStatus elStatus = new ElexisStatus(status);
 				StatusManager.getManager().handle(elStatus, StatusManager.SHOW);
 			}
+			*/
 		}
 		
 		private StockEntry fetchSelection(){
@@ -702,6 +706,7 @@ public class StockView extends ViewPart implements ISaveablePart2, IActivationLi
 		}
 		
 		private boolean selectOrderOnly(StockEntry se){
+			/*
 			Availability availability = StockService.determineAvailability(se);
 			if (availability != null) {
 				switch (availability) {
@@ -712,6 +717,7 @@ public class StockView extends ViewPart implements ISaveablePart2, IActivationLi
 					return false;
 				}
 			}
+			*/
 			return false;
 		}
 		

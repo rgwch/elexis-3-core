@@ -18,7 +18,7 @@ import org.eclipse.ui.PlatformUI;
 import ch.elexis.core.data.activator.CoreHub;
 import ch.elexis.core.data.util.BriefExternUtil;
 import ch.elexis.core.data.util.LocalLock;
-import ch.elexis.core.lock.ILocalLockService.Status;
+import ch.elexis.core.lock.ILockService.Status;
 import ch.elexis.core.model.IPersistentObject;
 import ch.elexis.core.services.IConflictHandler;
 import ch.elexis.core.services.ILocalDocumentService;

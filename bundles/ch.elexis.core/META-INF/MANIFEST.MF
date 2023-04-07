@@ -6,12 +6,13 @@ Bundle-Version: 3.7.2.qualifier
 Bundle-ClassPath: .
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Require-Bundle: org.eclipse.core.runtime;bundle-version="3.5.0",
- org.eclipse.emf.ecore;visibility:=reexport,
+Bundle-RequiredExecutionEnvironment: JavaSE-17
+Require-Bundle: org.eclipse.core.runtime;bundle-version="3.26.0",
+ org.eclipse.emf.ecore;bundle-version="2.28.0";visibility:=reexport,
  ch.rgw.utility;bundle-version="3.0.0",
- org.jdom,
- ch.elexis.core.l10n
+ org.jdom;bundle-version="1.1.0",
+ ch.elexis.core.l10n,
+ jaxb-api;bundle-version="2.3.1"
 Bundle-ActivationPolicy: lazy
 Export-Package: ch.elexis.core.common,
  ch.elexis.core.constants,
@@ -32,7 +33,6 @@ Export-Package: ch.elexis.core.common,
  ch.elexis.core.model.util,
  ch.elexis.core.model.verrechnet,
  ch.elexis.core.preferences,
- ch.elexis.core.server,
  ch.elexis.core.services,
  ch.elexis.core.status,
  ch.elexis.core.text,
@@ -42,8 +42,6 @@ Export-Package: ch.elexis.core.common,
  ch.elexis.core.types.util,
  ch.elexis.core.utils
 Import-Package: ch.elexis.core.constants,
- javax.ws.rs;version="[2.0.0,2.1.0)",
- javax.ws.rs.core;version="[2.0.0,2.1.0)",
  org.apache.commons.lang3;version="3.1.0",
  org.osgi.service.component;version="1.1.0";resolution:=optional,
  org.slf4j;version="1.6.6"

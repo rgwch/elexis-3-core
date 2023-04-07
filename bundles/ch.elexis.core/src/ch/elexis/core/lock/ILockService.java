@@ -7,7 +7,6 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import ch.elexis.core.lock.types.LockInfo;
 import ch.elexis.core.lock.types.LockResponse;
 import ch.elexis.core.model.IPersistentObject;
-import ch.elexis.core.server.ILockService;
 
 /**
  * Additional convinience methods for locking with PersistentObject.
@@ -15,7 +14,7 @@ import ch.elexis.core.server.ILockService;
  * @author thomas
  *
  */
-public interface ILocalLockService extends ILockService {
+public interface ILockService {
 
 	public enum Status {
 			LOCAL, REMOTE, STANDALONE

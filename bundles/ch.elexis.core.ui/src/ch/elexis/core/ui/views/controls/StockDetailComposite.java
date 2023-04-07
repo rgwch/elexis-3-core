@@ -34,7 +34,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import ch.elexis.core.data.activator.CoreHub;
-import ch.elexis.core.data.service.StockService;
 import ch.elexis.core.lock.types.LockResponse;
 import ch.elexis.core.model.IStock;
 import ch.elexis.core.model.IStockEntry;
@@ -55,7 +54,7 @@ public class StockDetailComposite extends Composite {
 	private Map<Stock, IStockEntry> stockEntries = new HashMap<Stock, IStockEntry>();
 	private CheckboxTableViewer checkboxTableViewer;
 	
-	private StockService stockService = CoreHub.getStockService();
+	// private StockService stockService = CoreHub.getStockService();
 	
 	/**
 	 * Create the composite.
@@ -288,6 +287,7 @@ public class StockDetailComposite extends Composite {
 			
 			@Override
 			public void checkStateChanged(CheckStateChangedEvent event){
+				/*
 				IStock stock = (Stock) event.getElement();
 				Artikel art = (Artikel) wvArtikel.getValue();
 				if (stock != null && art != null && stock.getDriverUuid().length() == 0) {
@@ -298,7 +298,9 @@ public class StockDetailComposite extends Composite {
 					}
 				}
 				refreshData();
+				*/
 			}
+		
 		});
 		
 		checkboxTableViewer.setCheckStateProvider(new ICheckStateProvider() {
@@ -318,14 +320,14 @@ public class StockDetailComposite extends Composite {
 				return (stockEntries.get(stock) != null);
 			}
 		});
-		
+		/*
 		List<Stock> stocks = stockService.getAllStocks(true);
 		for (Stock stock : stocks) {
 			stockEntries.put(stock, null);
 		}
 		
 		checkboxTableViewer.setInput(stocks);
-		
+		*/
 		TableViewer ret = new TableViewer(table);
 		TableViewerFocusCellManager focusCellManager = new TableViewerFocusCellManager(ret, new FocusCellHighlighter(ret) {});
 		ColumnViewerEditorActivationStrategy editorActivationStrategy = new ColumnViewerEditorActivationStrategy(ret) {
@@ -345,12 +347,14 @@ public class StockDetailComposite extends Composite {
 		boolean enabled = (article != null && !article.isProduct());
 		table.setEnabled(enabled);
 		stockEntries.replaceAll((k, v) -> null);
+		/*
 		if (article != null) {
 			stockEntries.keySet().forEach(k -> {
 				stockEntries.put(k,
 					stockService.findStockEntryForArticleInStock(k, article.storeToString()));
 			});
 		}
+		*/
 		checkboxTableViewer.refresh(true);
 	}
 	

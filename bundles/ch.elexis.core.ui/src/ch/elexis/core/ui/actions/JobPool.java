@@ -56,8 +56,8 @@ public class JobPool implements BackgroundJobListener {
 	private static JobPool thePool;
 	
 	private JobPool(){
-		IJobManager jobman = Platform.getJobManager();
-		changeLock = jobman.newLock();
+		// IJobManager jobman = Platform.getJobManager();
+		// changeLock = jobman.newLock();
 		
 	}
 	
