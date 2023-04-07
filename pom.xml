@@ -128,7 +128,6 @@
 						<artifactId>target-platform-configuration</artifactId>
 						<version>${tycho.version}</version>
 						<configuration>
-							<executionEnvironment>JavaSE-1.8</executionEnvironment>
 							<environments>
 								<environment>
 									<os>linux</os>
@@ -315,7 +314,7 @@
 					<version>3.1</version>
 					<configuration>
 						<source>1.8</source>
-						<target>1.8 </target>
+						<target>1.17</target>
 						<compilerId>jdt</compilerId>
 						<compilerArgument>-err:nullAnnot,null </compilerArgument>
 						<!-- insert your warn/err configuration here -->
@@ -361,7 +360,7 @@ Without it Maven would put two versions of each class file into the jars
 								<version>3.0</version>
 							</artifact>
 						</target>
-						<executionEnvironment>JavaSE-1.8</executionEnvironment>
+						<executionEnvironment>JavaSE-1.17</executionEnvironment>
 					</configuration>
 				</plugin>
 				<plugin>

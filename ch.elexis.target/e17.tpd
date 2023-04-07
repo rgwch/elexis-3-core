@@ -10,6 +10,9 @@ location "https://www.elexis.ch/ungrad2023/ungrad-target"{
 		org.apache.commons.pool
 		bouncycastle.bcprov-jdk14 138.0.0
 		javax.transaction.jta 1.1.0
+		org.beanshell.bsh
+		ca.uhn.hapi.osgi-base
+		com.ibm.icu.4j 2.6.1
 }
 location "https://download.elexis.info/elexis/target/2022-09-java17/" {
 	
@@ -120,7 +123,7 @@ location "https://download.elexis.info/elexis/target/2022-09-java17/" {
 	com.google.gson
 	com.google.guava
 	org.jsoup
-	org.apache.poi
+	org.apache.poi [1.0.0, 4.9.9)
 	org.apache.poi.ooxml
 	org.apache.poi.ooxml.schemas
 	org.apache.xmlbeans

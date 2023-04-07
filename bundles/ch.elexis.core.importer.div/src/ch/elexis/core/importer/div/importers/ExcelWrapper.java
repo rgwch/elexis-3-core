@@ -19,6 +19,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -115,13 +116,13 @@ public class ExcelWrapper {
 			Cell cell = row.getCell(i);
 			if (cell != null) {
 				switch (cell.getCellType()) {
-				case Cell.CELL_TYPE_BLANK:
+				case BLANK:
 					ret.add(""); //$NON-NLS-1$
 					break;
-				case Cell.CELL_TYPE_BOOLEAN:
+				case BOOLEAN:
 					ret.add(Boolean.toString(cell.getBooleanCellValue()));
 					break;
-				case Cell.CELL_TYPE_NUMERIC:
+				case NUMERIC:
 					if (types != null) {
 						if (types[i].equals(Integer.class)) {
 							ret.add(Long.toString(Math.round(cell.getNumericCellValue())));
@@ -151,10 +152,10 @@ public class ExcelWrapper {
 						}
 						break;
 					} // else fall thru
-				case Cell.CELL_TYPE_FORMULA:
+				case FORMULA:
 					ret.add(Double.toString(cell.getNumericCellValue()));
 					break;
-				case Cell.CELL_TYPE_STRING:
+				case STRING:
 					ret.add(cell.toString());
 					break;
 				default:

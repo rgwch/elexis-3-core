@@ -3,7 +3,6 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Elexis HL7 v2.x Import/Export
 Bundle-SymbolicName: ch.elexis.core.hl7.v2x;singleton:=true
 Bundle-Version: 3.2.0.qualifier
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ClassPath: .
 Export-Package: ch.elexis.hl7,
  ch.elexis.hl7.data,
@@ -15,14 +14,14 @@ Export-Package: ch.elexis.hl7,
  ch.elexis.hl7.v2x
 Bundle-Vendor: elexis.info
 Require-Bundle: org.apache.commons.codec,
- ca.uhn.hapi.osgi-base;bundle-version="1.2.0",
  org.apache.commons.lang3;bundle-version="3.1.0",
- ch.elexis.core.l10n;bundle-version="3.5.0"
+ ch.elexis.core.l10n;bundle-version="3.5.0",
+ ca.uhn.hapi.osgi-base;bundle-version="2.3.0",
+ com.ibm.icu.4j;bundle-version="3.4.4"
 Import-Package: ch.elexis.core.constants,
  ch.elexis.core.exceptions,
  ch.elexis.core.jdt,
  ch.elexis.core.model,
  ch.elexis.core.types,
  ch.rgw.tools,
- com.ibm.icu.text;version="4.4.2.2",
  org.slf4j;version="1.6.6"
