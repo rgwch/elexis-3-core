@@ -5,14 +5,18 @@ location "https://www.elexis.ch/ungrad2023/ungrad-target"{
 		org.jdom 1.1.0
 		org.apache.commons.lang
 		org.apache.commons.lang3
+		org.apache.commons.logging
 		net.sf.opencsv 1.8.0
 		org.apache.commons.dbcp
 		org.apache.commons.pool
+		commons-logging 1.1.1
 		bouncycastle.bcprov-jdk14 138.0.0
 		javax.transaction.jta 1.1.0
 		org.beanshell.bsh
 		ca.uhn.hapi.osgi-base
 		com.ibm.icu.4j 2.6.1
+		com.google.code.gson
+		
 }
 location "https://download.elexis.info/elexis/target/2022-09-java17/" {
 	

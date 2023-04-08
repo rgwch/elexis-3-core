@@ -1,20 +1,23 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?pde?>
 <!-- generated with https://github.com/eclipse-cbi/targetplatform-dsl -->
-<target name="Elexis IDE 2022-09-java17" sequenceNumber="1680876444">
+<target name="Elexis IDE 2022-09-java17" sequenceNumber="1680983849">
   <locations>
     <location includeMode="slicer" includeAllPlatforms="true" includeSource="true" includeConfigurePhase="false" type="InstallableUnit">
       <unit id="org.jdom" version="1.1.0"/>
       <unit id="org.apache.commons.lang" version="2.6.0.v201404270220"/>
       <unit id="org.apache.commons.lang3" version="3.1.0.v201403281430"/>
+      <unit id="org.apache.commons.logging" version="1.1.1.v201101211721"/>
       <unit id="net.sf.opencsv" version="1.8.0"/>
       <unit id="org.apache.commons.dbcp" version="1.4.0.v201204271417"/>
       <unit id="org.apache.commons.pool" version="1.6.0.v201204271246"/>
+      <unit id="commons-logging" version="1.1.1"/>
       <unit id="bouncycastle.bcprov-jdk14" version="138.0.0"/>
       <unit id="javax.transaction.jta" version="1.1.0"/>
       <unit id="org.beanshell.bsh" version="2.0.0.0b4"/>
       <unit id="ca.uhn.hapi.osgi-base" version="2.3.0"/>
       <unit id="com.ibm.icu.4j" version="3.4.4"/>
+      <unit id="com.google.code.gson" version="2.8.0"/>
       <repository location="https://www.elexis.ch/ungrad2023/ungrad-target"/>
     </location>
     <location includeMode="slicer" includeAllPlatforms="true" includeSource="true" includeConfigurePhase="false" type="InstallableUnit">
