@@ -1,3 +1,5 @@
+**Note:** This Repository is obsolete as of August 2024. See [Ugrad-2024](https://github.com/rgwch/elexis-ungrad/tree/ungrad-2024) for more informations.
+
 # Elexis Ungrad Core Repository
 
 This is a fork of [Elexis classic core](http://github.com/elexis/elexis-3-core) from the original creator of Elexis.
