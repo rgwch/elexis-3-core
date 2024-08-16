@@ -206,8 +206,12 @@ public class Leistungscodes extends PreferencePage implements IWorkbenchPreferen
 									BillingLaw.KVG.name());
 							pre[8] = BillingSystem.getConfigurationValue(s1, BillingSystem.CFG_NOCOSTBEARER,
 									Boolean.FALSE.toString());
-							pre[9] = BillingSystemServiceHolder.get().getDefaultInsuranceReason(
-									BillingSystemServiceHolder.get().getBillingSystem(s1).get());
+							try {
+								pre[9] = BillingSystemServiceHolder.get().getDefaultInsuranceReason(
+										BillingSystemServiceHolder.get().getBillingSystem(s1).get());
+							} catch (Exception ex) {
+								pre[9] = "";
+							}
 
 							AbrechnungsTypDialog at = new AbrechnungsTypDialog(getShell(), pre);
 							if (at.open() == Dialog.OK) {
@@ -1824,8 +1828,8 @@ public class Leistungscodes extends PreferencePage implements IWorkbenchPreferen
 					Messages.GlobalActions_Redate, Messages.Leistungscodes_comboHL, Messages.Core_List_ellipsis,
 					Messages.Leistungscodes_checkboxHL, Messages.Leistungscodes_radioHL };
 			AbrechnungsTypDialog_InputDialog inputDlg = new AbrechnungsTypDialog_InputDialog(getShell(),
-					ll + (isChanging ? Messages.Core_doChange : Messages.Leistungscodes_add), msg,
-					fieldName, noDuplicatesListCreate, optionsIn, isNumericChecked, isStyledChecked, isMultilineChecked,
+					ll + (isChanging ? Messages.Core_doChange : Messages.Leistungscodes_add), msg, fieldName,
+					noDuplicatesListCreate, optionsIn, isNumericChecked, isStyledChecked, isMultilineChecked,
 					isChanging ? changeItems : null);
 			if (inputDlg.open() == Dialog.OK) {
 				String[] result = inputDlg.getResult();
