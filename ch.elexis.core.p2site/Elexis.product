@@ -85,8 +85,11 @@
    </configurations>
 
    <repositories>
-      <repository location="https://download.elexis.info/elexis/3.12/p2/elexis-3-base" enabled="true" />
-      <repository location="https://download.elexis.info/elexis/3.12/p2/elexis-3-core" enabled="true" />
+      <!-- repository location="https://download.elexis.info/elexis/3.12/p2/elexis-3-base" enabled="true" />
+      <repository location="https://download.elexis.info/elexis/3.12/p2/elexis-3-core" enabled="true" / -->
+      <repository location="https://www.elexis.ch/ungrad2024/3.12/base/" enabled="true" />
+      <repository location="https://www.elexis.ch/ungrad2024/3.12/core/" enabled="true" />
+      <repository location="https://www.elexis.ch/ungrad2024/3.12/ungrad/" enabled="true" />
    </repositories>
 
    <preferencesInfo>
