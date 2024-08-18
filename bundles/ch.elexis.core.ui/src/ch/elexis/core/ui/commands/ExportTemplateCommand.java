@@ -46,7 +46,7 @@ public class ExportTemplateCommand extends AbstractHandler {
 						byte[] contents = textTemplate.getTemplate().loadBinary();
 
 						try (ByteArrayInputStream bais = new ByteArrayInputStream(contents);
-								FileOutputStream fos = new FileOutputStream(file)) {
+								FileOutputStream fos = new FileOutputStream(fileString)) {
 							FileTool.copyStreams(bais, fos);
 						} catch (IOException e) {
 							logger.error("Error creating template", e); //$NON-NLS-1$
