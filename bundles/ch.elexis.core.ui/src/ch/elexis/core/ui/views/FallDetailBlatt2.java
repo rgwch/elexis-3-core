@@ -135,7 +135,7 @@ public class FallDetailBlatt2 extends Composite implements IUnlockable {
 	Combo cAbrechnung;
 	ComboViewer cReason;
 	CDateTime dpVon, dpBis, dpGestationWeek13;
-	Text tBezeichnung, tGarant, tCostBearer;
+	private Text tBezeichnung, tGarant, tCostBearer;
 	Hyperlink autoFill, hlGarant, hlCostBearer;
 	List<Control> lReqs = new ArrayList<>();
 	List<Control> keepEditable = new ArrayList<>();
@@ -151,7 +151,7 @@ public class FallDetailBlatt2 extends Composite implements IUnlockable {
 
 	@Override
 	public void setUnlocked(boolean unlock) {
-		allowFieldUpdate(unlock);
+		allowFieldUpdate(true);
 	}
 
 	/**
@@ -1072,7 +1072,7 @@ public class FallDetailBlatt2 extends Composite implements IUnlockable {
 			enable = lockEnabled && (noExistingInvoicesForThisCoverage || invoiceCorrection);
 		}
 
-		tBezeichnung.setEditable(lockEnabled);
+		tBezeichnung.setEditable(true); // lockEnabled);
 
 		dpVon.setEnabled(enable);
 		dpBis.setEnabled(lockEnabled); // coverage must be endable - even if invoices exist
