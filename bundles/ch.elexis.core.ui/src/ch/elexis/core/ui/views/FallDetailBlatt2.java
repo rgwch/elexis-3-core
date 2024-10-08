@@ -23,6 +23,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.lang3.StringUtils;
 import org.eclipse.jface.dialogs.Dialog;
@@ -621,6 +622,11 @@ public class FallDetailBlatt2 extends Composite implements IUnlockable {
 						if (fall instanceof PersistentObject) {
 							PersistentObject.clearCache();
 							fall.setInfoString(field, newValue);
+							try {
+								TimeUnit.MILLISECONDS.sleep(100);
+							} catch (InterruptedException e) {
+
+							}
 							ElexisEventDispatcher.update((PersistentObject) fall);
 						} else if (fall instanceof FallDTO) {
 							fall.setInfoString(field, newValue);
@@ -1552,7 +1558,7 @@ public class FallDetailBlatt2 extends Composite implements IUnlockable {
 	}
 
 	private void ignoreFocusReact(String field) {
-		ignoreFocusreacts.add(field);
+		// ignoreFocusreacts.add(field);
 	}
 
 	private void addFocusReact(Control dataField, String field) {
