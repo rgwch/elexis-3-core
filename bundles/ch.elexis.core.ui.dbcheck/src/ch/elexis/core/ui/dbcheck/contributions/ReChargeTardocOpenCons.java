@@ -1,8 +1,12 @@
 package ch.elexis.core.ui.dbcheck.contributions;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.apache.commons.lang3.StringUtils;
@@ -13,6 +17,7 @@ import org.eclipse.swt.widgets.Display;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.FrameworkUtil;
 import org.osgi.framework.ServiceReference;
+import org.slf4j.LoggerFactory;
 
 import ch.elexis.core.constants.Preferences;
 import ch.elexis.core.data.service.LocalLockServiceHolder;
@@ -55,7 +60,7 @@ public class ReChargeTardocOpenCons extends ExternalMaintenance {
 			boolean presetBillingStrict = ConfigServiceHolder.getUser(Preferences.LEISTUNGSCODES_BILLING_STRICT, false);
 			ConfigServiceHolder.setUser(Preferences.LEISTUNGSCODES_BILLING_STRICT, false);
 
-			List<Konsultation> consultations = getKonsultation(getBeginOfYear(), getEndOfYear());
+			List<Konsultation> consultations = getKonsultation(getBeginOfYear(), getYesterday());
 			pm.beginTask("Bitte warten, TARDOC Leistungen werden neu verrechnet", consultations.size());
 			for (Konsultation konsultation : consultations) {
 				// only still open Konsultation
@@ -69,24 +74,16 @@ public class ReChargeTardocOpenCons extends ExternalMaintenance {
 					return getProblemsString();
 				}
 				List<IBilled> tardocVerrechnet = getTardocOnly(encounter.getBilled());
-				for (IBilled tardocVerr : tardocVerrechnet) {
-					IBillable verrechenbar = tardocVerr.getBillable();
-					if (verrechenbar != null) {
-						// make sure we verrechenbar is matching for the kons
-						Optional<ICodeElement> matchingVerrechenbar = codeElementService.loadFromString(
-								verrechenbar.getCodeSystemName(), verrechenbar.getCode(), getContext(encounter));
-						if (matchingVerrechenbar.isPresent()) {
-							double amount = tardocVerr.getAmount();
-							removeVerrechnet(encounter, tardocVerr);
-							addVerrechnet(encounter, matchingVerrechenbar, amount);
-						} else {
-							addProblem("Could not find matching Verrechenbar for [" + verrechenbar.getCodeSystemName()
-									+ "->" + verrechenbar.getCode() + "]", encounter);
-						}
-					} else {
-						addProblem("Could not find Verrechenbar for [" + tardocVerr.getLabel() + "]", encounter);
-					}
-				}
+				// make sure Zuschlagleistung is re charged after Hauptleistung
+				List<IBilled> tardocZuschlagVerrechnet = tardocVerrechnet.stream().filter(v -> isZuschlag(v)).toList();
+				tardocVerrechnet.removeAll(tardocZuschlagVerrechnet);
+				// make sure Referenzleistung is re charged after Hauptleistung
+				List<IBilled> tardocReferenzVerrechnet = tardocVerrechnet.stream().filter(v -> isReferenz(v)).toList();
+				tardocVerrechnet.removeAll(tardocReferenzVerrechnet);
+
+				reCharge(tardocVerrechnet, encounter);
+				reCharge(tardocZuschlagVerrechnet, encounter);
+				reCharge(tardocReferenzVerrechnet, encounter);
 				count++;
 				pm.worked(1);
 			}
@@ -99,6 +96,77 @@ public class ReChargeTardocOpenCons extends ExternalMaintenance {
 
 		return "TARDOC Leistungen von [" + count + "] Konsultationen des Jahres [" + getBeginOfYear().get(TimeTool.YEAR)
 				+ "] neu verrechnet" + getProblemsString();
+	}
+
+	private Optional<ICodeElement> getMatchingVerrechenbar(IBilled tardocVerr, IEncounter encounter) {
+		IBillable verrechenbar = tardocVerr.getBillable();
+		if (verrechenbar != null) {
+			// make sure we verrechenbar is matching for the kons
+			Optional<ICodeElement> matchingVerrechenbar = codeElementService
+					.loadFromString(verrechenbar.getCodeSystemName(), verrechenbar.getCode(), getContext(encounter));
+			if (matchingVerrechenbar.isEmpty()) {
+				addProblem("Could not find matching Verrechenbar for [" + verrechenbar.getCodeSystemName() + "->"
+						+ verrechenbar.getCode() + "]", encounter);
+			} else {
+				return matchingVerrechenbar;
+			}
+		} else {
+			addProblem("Could not find Verrechenbar for [" + tardocVerr.getLabel() + "]", encounter);
+		}
+		return Optional.empty();
+	}
+
+	private void reCharge(List<IBilled> tardocVerrechnet, IEncounter encounter) {
+		Map<IBilled, Double> amountMap = new HashMap<>();
+		Map<IBilled, ICodeElement> verrechenbarMap = new HashMap<>();
+		tardocVerrechnet.forEach(v -> amountMap.put(v, v.getAmount()));
+		tardocVerrechnet.forEach(v -> getMatchingVerrechenbar(v, encounter).ifPresent(c -> verrechenbarMap.put(v, c)));
+		// do not remove or add if there is no ICodeElement match found
+		tardocVerrechnet = tardocVerrechnet.stream().filter(v -> verrechenbarMap.containsKey(v)).toList();
+		// remove all
+		tardocVerrechnet.forEach(v -> removeVerrechnet(encounter, v));
+		// add all 
+		tardocVerrechnet.forEach(v -> addVerrechnet(encounter, verrechenbarMap.get(v), amountMap.get(v)));
+	}
+
+	private boolean isReferenz(IBilled tardocVerr) {
+		IBillable verrechenbar = tardocVerr.getBillable();
+		String serviceTyp = getServiceTypReflective(verrechenbar);
+		return serviceTyp != null && serviceTyp.equals("R");
+	}
+
+	private boolean isZuschlag(IBilled tardocVerr) {
+		IBillable verrechenbar = tardocVerr.getBillable();
+		Boolean serviceTyp = getIsZuschlagsleistungReflective(verrechenbar);
+		return serviceTyp != null && serviceTyp;
+	}
+
+	private String getServiceTypReflective(IBillable billable) {
+		try {
+			Method getterMethod = billable.getClass().getMethod("getServiceTyp", (Class[]) null);
+			Object typ = getterMethod.invoke(billable, (Object[]) null);
+			if (typ instanceof String) {
+				return (String) typ;
+			}
+		} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
+				| InvocationTargetException e) {
+			LoggerFactory.getLogger(getClass()).warn("Could not get service typ of [" + billable + "]", e.getMessage());
+		}
+		return null;
+	}
+
+	private Boolean getIsZuschlagsleistungReflective(IBillable billable) {
+		try {
+			Method getterMethod = billable.getClass().getMethod("isZuschlagsleistung", (Class[]) null);
+			Object typ = getterMethod.invoke(billable, (Object[]) null);
+			if (typ instanceof Boolean) {
+				return (Boolean) typ;
+			}
+		} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
+				| InvocationTargetException e) {
+			LoggerFactory.getLogger(getClass()).warn("Could not get service typ of [" + billable + "]", e.getMessage());
+		}
+		return null;
 	}
 
 	private void getCurrentMandantOnly() {
@@ -123,13 +191,17 @@ public class ReChargeTardocOpenCons extends ExternalMaintenance {
 		return endOfYear;
 	}
 
-	private void addVerrechnet(IEncounter encounter, Optional<ICodeElement> matchingVerrechenbar, double amount) {
+	private TimeTool getYesterday() {
+		return new TimeTool(LocalDate.now().minusDays(1));
+	}
+
+	private void addVerrechnet(IEncounter encounter, ICodeElement matchingVerrechenbar, double amount) {
 		// no locking required, PersistentObject create events are passed to server (RH)
 		for (int i = 0; i < amount; i++) {
-			Result<IBilled> addRes = BillingServiceHolder.get().bill((IBillable) matchingVerrechenbar.get(), encounter,
+			Result<IBilled> addRes = BillingServiceHolder.get().bill((IBillable) matchingVerrechenbar, encounter,
 					1);
 			if (!addRes.isOK()) {
-				addProblem("Could not add Verrechenbar [" + matchingVerrechenbar.get().getCode() + "]" + "["
+				addProblem("Could not add Verrechenbar [" + matchingVerrechenbar.getCode() + "]" + "["
 						+ addRes.toString() + "]", encounter);
 			}
 		}

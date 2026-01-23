@@ -5324,6 +5324,11 @@ public class Messages extends NLS {
 	public static String ReminderPrefences_Visible;
 	public static String ReminderPrefences_Hidden;
 	public static String ReminderPrefences_ColInfo;
+	public static String BestellView_OrderSentWithPluginTitle;
+	public static String BestellView_OrderSentWithPluginBody;
+	public static String OrderManagement_DeleteOrder;
+	public static String OrderManagement_DeleteOrder_Title;
+	public static String OrderManagement_DeleteOrder_Message;
 	public static String MandatorFilter_lockedMandatorTooltip;
 	public static String TardocSpecialistComposite_selectDignitiesTitle;
 	public static String RechnungsPrefs_TardocSpecialistLink;
@@ -5390,6 +5395,10 @@ public class Messages extends NLS {
 	public static String RegiomedCheckTemplate_BtnDelete;
 	public static String LaborOrdersComposite_btnGroupHighlighting;
 	public static String LaborOrdersComposite_btnGroupHighlightingTooltip;
+	public static String AgendaFarben_Terminliste;
+	public static String AgendaFarben_PastAppointments;
+	public static String AgendaFarben_FutureAppointments;
+	public static String AgendaFarben_DoubleClickToChange;
 
 	static { // load message values from bundle file
 		NLS.initializeMessages(BUNDLE_NAME, Messages.class);
