@@ -96,12 +96,14 @@ import ch.elexis.core.model.IPatient;
 import ch.elexis.core.model.IUser;
 import ch.elexis.core.model.InvoiceState;
 import ch.elexis.core.model.ModelPackage;
+import ch.elexis.core.rcp.utils.OsgiServiceUtil;
 import ch.elexis.core.services.IQuery;
 import ch.elexis.core.services.IQuery.COMPARATOR;
 import ch.elexis.core.services.holder.AccessControlServiceHolder;
 import ch.elexis.core.services.holder.ConfigServiceHolder;
 import ch.elexis.core.services.holder.ContextServiceHolder;
 import ch.elexis.core.services.holder.CoreModelServiceHolder;
+import ch.elexis.core.services.holder.InvoiceServiceHolder;
 import ch.elexis.core.ui.Hub;
 import ch.elexis.core.ui.UiDesk;
 import ch.elexis.core.ui.actions.GlobalEventDispatcher;
@@ -117,7 +119,6 @@ import ch.elexis.core.ui.util.WidgetFactory;
 import ch.elexis.core.ui.util.viewers.DefaultLabelProvider;
 import ch.elexis.core.ui.views.contribution.IViewContribution;
 import ch.elexis.core.ui.views.contribution.ViewContributionHelper;
-import ch.elexis.core.utils.OsgiServiceUtil;
 import ch.elexis.data.Fall;
 import ch.elexis.data.Konsultation;
 import ch.elexis.data.Kontakt;
@@ -226,7 +227,26 @@ public class RechnungsBlatt extends Composite implements IActivationListener {
 			}), new InputData(Messages.RechnungsBlatt_treatmentsFrom, Rechnung.BILL_DATE_FROM, Typ.STRING, null),
 			new InputData(Messages.RechnungsBlatt_treatmentsUntil, Rechnung.BILL_DATE_UNTIL, Typ.STRING, null),
 			new InputData(Messages.RechnungsBlatt_amountTotal, Rechnung.BILL_AMOUNT_CENTS, Typ.CURRENCY, null),
-			new InputData(Messages.Invoice_Amount_Unpaid, Rechnung.BILL_AMOUNT_CENTS, openAmountContentProvider) };
+			new InputData(Messages.Invoice_Amount_Unpaid, Rechnung.BILL_AMOUNT_CENTS, openAmountContentProvider),
+			new InputData("Request ID", new LabeledInputField.IContentProvider() {
+
+				@Override
+				public void displayContent(Object po, InputData ltf) {
+					Rechnung r = (Rechnung) po;
+					IInvoice invoice = NoPoUtil.loadAsIdentifiable(r, IInvoice.class).orElse(null);
+					if (invoice != null) {
+						ltf.setText(InvoiceServiceHolder.get().getCombinedId(invoice));
+					} else {
+						ltf.setText(StringUtils.EMPTY);
+					}
+				}
+
+				@Override
+				public void reloadContent(Object po, InputData ltf) {
+					displayContent(po, ltf);
+				}
+			}), };
+	
 	private LabeledInputField.AutoForm rnform;
 
 	@Optional
@@ -823,6 +843,7 @@ public class RechnungsBlatt extends Composite implements IActivationListener {
 				Kontakt adressat = actRn.getFall().getInvoiceRecipient();
 				rnAdressat.setText(Messages.RechnungsBlatt_adressee
 						+ ((adressat != null) ? adressat.getLabel() : StringUtils.EMPTY));
+
 				form.setText(actRn.getLabel());
 				List<String> trace = actRn.getTrace(Rechnung.STATUS_CHANGED);
 				List<String> mandatorTrace = actRn.getTrace(Rechnung.MANDATOR);

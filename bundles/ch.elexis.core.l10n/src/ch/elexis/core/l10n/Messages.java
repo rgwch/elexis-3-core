@@ -1157,6 +1157,18 @@ public class Messages extends NLS {
 	public static String Core_undefined;
 	public static String Core_loading;
 	public static String Corr_No;
+	public static String CovercardImporter_EnterNumberLabel;
+	public static String CovercardImporter_InvalidCodeTitle;
+	public static String CovercardImporter_InvalidCodeMessage;
+	public static String CovercardImporter_Description;
+	public static String CovercardImporter_ErrorTitle;
+	public static String CovercardImporter_ErrorMessage;
+	public static String CovercardImporter_ExclusionTitle;
+	public static String CovercardImporter_ExclusionCaseCreated;
+	public static String CovercardImporter_InfoTitle;
+	public static String CovercardImporter_CardExistsMessage;
+	public static String CovercardImporter_NewCardTitle;
+	public static String CovercardImporter_NewCardQuestion;
 	public static String CreateChart;
 	public static String Create_Lab_attachment;
 	public static String CreateLicenseJob_Creating;
@@ -2109,6 +2121,7 @@ public class Messages extends NLS {
 	public static String HeaderCodeSystemTL;
 	public static String HeaderCodeSystemTotal;
 	public static String HeaderCodeTL;
+	public static String HeaderCodeIPL;
 	public static String HeaderDate;
 	public static String HeaderDayTotal;
 	public static String HeaderInvoicingParty;
@@ -2141,6 +2154,8 @@ public class Messages extends NLS {
 	public static String HeaderSumTotal;
 	public static String HeaderSumVat;
 	public static String HeaderTarmedPart;
+	public static String HeaderTardocPart;
+	public static String HeaderAmbulatoryAllowancePart;
 	public static String HeaderTaxPointValue;
 	public static String HeaderText;
 	public static String HeaderTotal;
@@ -3483,6 +3498,7 @@ public class Messages extends NLS {
 	public static String Patientenblatt2_civilState;
 	public static String Patientenblatt2_contactForAdditionalAddress;
 	public static String Patientenblatt2_increasedTreatment;
+	public static String Patientenblatt2_palliativeCare;
 	public static String Patientenblatt2_kindOfRelation;
 	public static String Patientenblatt2_legalGuardian;
 	public static String Patientenblatt2_persAnamnesisLbl;
@@ -4620,6 +4636,11 @@ public class Messages extends NLS {
 	public static String TarmedZeitMpa;
 	public static String TarmedZeitTotal;
 	public static String TarmedZeit_Name;
+	public static String TardocZeitAbsent;
+	public static String TardocZeitMandator;
+	public static String TardocZeitMpa;
+	public static String TardocZeitTotal;
+	public static String TardocZeit_Name;
 	public static String TemplateComposite_OutputHeader;
 	public static String TemplateComposite_is_template;
 	public static String TemplateComposite_template_settings;
@@ -5327,6 +5348,11 @@ public class Messages extends NLS {
 	public static String ReminderPrefences_Visible;
 	public static String ReminderPrefences_Hidden;
 	public static String ReminderPrefences_ColInfo;
+	public static String PreferencesServer_patientSourceLabel;
+	public static String PreferencesServer_patientSource_filePrefix;
+	public static String PreferencesServer_patientSource_folder;
+	public static String PreferencesServer_patientSource_hierarchy;
+	public static String PreferencesServer_patientSource_hybrid;
 	public static String BestellView_OrderSentWithPluginTitle;
 	public static String BestellView_OrderSentWithPluginBody;
 	public static String OrderManagement_DeleteOrder;
@@ -5380,10 +5406,13 @@ public class Messages extends NLS {
 	public static String RegiomedPreferencePage_InvalidMailTitle;
 	public static String RegiomedPreferencePage_EnterMailOrDisable;
 	public static String RegiomedPreferencePage_InvalidMailMessage;
+	public static String RegiomedPreferencePage_EditSettingsFor;
+	public static String RegiomedPreferencePage_OverrideGlobal;
+	public static String RegiomedPreferencePage_GlobalSettings;
+	public static String RegiomedPreferencePage_MandatorPrefix;
 	public static String RegiomedCheckDialog_Title;
 	public static String RegiomedCheckDialog_OrderBinding;
 	public static String RegiomedCheckDialog_Cancel;
-
 	public static String RegiomedCheckTemplate_OrderTitle;
 	public static String RegiomedCheckTemplate_CheckResult;
 	public static String RegiomedCheckTemplate_HintText;
@@ -5420,6 +5449,9 @@ public class Messages extends NLS {
 	public static String RegiomedCheckDialog_ItemRejected;
 	public static String RegiomedCheckDialog_Reason;
 	public static String RegiomedCheckDialog_NotOrderable;
+	public static String RegiomedCheckDialog_ConfirmOrderTitle;
+	public static String RegiomedCheckDialog_ConfirmOrderMsgPrefix;
+	public static String RegiomedCheckDialog_ConfirmOrderMsgSuffix;
 	public static String RegiomedCheckTemplate_SuccessApplied;
 	public static String RegiomedCheckTemplate_AllChecksSuccess;
 	public static String RegiomedCheckTemplate_NoResults;
@@ -5447,6 +5479,42 @@ public class Messages extends NLS {
 	public static String RegiomedCheckTemplate_SuccessAppliedPrefix;
 	public static String RegiomedCheckTemplate_QtyExceedsStock;
 	public static String RegiomedCheckTemplate_CorrectedItems;
+	public static String RegiomedSearchView_CartLabel;
+	public static String RegiomedSearchView_CreateOrderBtn;
+	public static String RegiomedSearchView_ColProductName;
+	public static String RegiomedSearchView_ColQuantity;
+	public static String RegiomedSearchView_ColLocalStock;
+	public static String RegiomedSearchView_ColRegioStock;
+	public static String RegiomedSearchView_ColEan;
+	public static String RegiomedSearchView_ColPrice;
+	public static String RegiomedSearchView_NotFoundTitle;
+	public static String RegiomedSearchView_NotFoundMessage;
+	public static String RegiomedSearchView_OrderPrefix;
+	public static String RegiomedSearchView_NewOrderTitle;
+	public static String RegiomedSearchView_NewOrderMessage;
+	public static String CovercardImportDialog_TitleNew;
+	public static String CovercardImportDialog_MessageNew;
+	public static String CovercardImportDialog_TitleCompare;
+	public static String CovercardImportDialog_MessageCompare;
+	public static String CovercardImportDialog_ColPatientDetailsCovercard;
+	public static String CovercardImportDialog_ColPatientInputDB;
+	public static String CovercardImportDialog_ColCovercard;
+	public static String CovercardImportDialog_CaseInfo;
+	public static String CovercardImportDialog_HealthInsurance;
+	public static String CovercardImportDialog_BsvNumber;
+	public static String CovercardImportDialog_CardNumber;
+	public static String CovercardImportDialog_InsuredNumber;
+	public static String CovercardImportDialog_ClassAmbulatory;
+	public static String CovercardImportDialog_ClassHospital;
+	public static String CovercardImportDialog_ClassMaternity;
+	public static String CovercardImportDialog_BasicInsurance;
+	public static String CovercardImportDialog_NonListPreparations;
+	public static String CovercardImportDialog_ComplementaryMedicine;
+	public static String CovercardImportDialog_AccidentIncluded;
+	public static String CovercardImportDialog_WarningNoBasicInsurance;
+	public static String BestellView_ArticleNotFoundTitle;
+	public static String BestellView_ArticleNotFoundMessage;
+
 
 	static { // load message values from bundle file
 		NLS.initializeMessages(BUNDLE_NAME, Messages.class);
