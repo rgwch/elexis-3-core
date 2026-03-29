@@ -11,6 +11,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
+import org.osgi.service.component.annotations.ReferenceCardinality;
+import org.osgi.service.component.annotations.ReferencePolicyOption;
 import org.slf4j.LoggerFactory;
 
 import ch.elexis.core.model.BriefConstants;
@@ -21,23 +23,33 @@ import ch.elexis.core.services.internal.text.RecipeDocumentTemplateReplacement;
 import ch.elexis.core.status.ObjectStatus;
 import ch.elexis.core.text.ITextPlugin;
 import ch.elexis.core.text.ReplaceCallback;
+import io.quarkus.arc.All;
+import jakarta.annotation.PostConstruct;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 
+@ApplicationScoped
 @Component
 public class DocumentService implements IDocumentService {
 
 	public static final String MATCH_DIRECTTEMPLATE = "\\[[-a-zA-ZäöüÄÖÜéàè_]+\\]";
 
+	@Inject
 	@Reference
-	private ITextPlugin textPlugin;
+	ITextPlugin textPlugin;
 
+	@Inject
 	@Reference
 	private ITextReplacementService textReplacementService;
 
-	@Reference
-	private List<IDocumentStore> documentStores;
+	@Inject
+	@All
+	@Reference(cardinality = ReferenceCardinality.MULTIPLE, policyOption = ReferencePolicyOption.GREEDY)
+	volatile List<IDocumentStore> documentStores;
 
 	private Map<String, IDirectTemplateReplacement> directTemplateReplacement;
 
+	@PostConstruct
 	@Activate
 	public void activate() {
 		directTemplateReplacement = new HashMap<>();
