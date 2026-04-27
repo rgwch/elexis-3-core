@@ -1,4 +1,4 @@
-package ch.elexis.core.findings.fhir.model.service;
+package ch.elexis.core.findings.fhir.model.internal;
 
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;

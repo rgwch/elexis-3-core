@@ -400,6 +400,24 @@ public class Messages extends NLS {
 	public static String ArtikelContextMenu_propertiesTooltip;
 	public static String ArtikelDetailDialog_enterArticleDetails;
 	public static String ArtikelSelector_stockArticles;
+	public static String ArtikelstammPref_MargeGroup_Title;
+	public static String ArtikelstammPref_Marge_Label;
+	public static String ArtikelstammPref_Marge_FromCHF;
+	public static String ArtikelstammPref_Marge_ToCHF;
+	public static String ArtikelstammPref_Marge_AdditionPercent;
+	public static String ArtikelstammPref_Marge_IgnoreInfo;
+	public static String ArtikelstammPref_ATCLang_Label;
+	public static String ArtikelstammPref_ATCLang_de;
+	public static String ArtikelstammPref_ATCLang_en;
+	public static String ArtikelstammPref_ShowPriceInOverview;
+	public static String ArtikelstammPref_ShowEmptyATCGroups;
+	public static String ArtikelstammPref_ShowGenericWarning;
+	public static String ArtikelstammPref_ShowGenericWarning_MediList;
+	public static String ArtikelstammPref_ShowGenericWarning_Recipe;
+	public static String ArtikelstammPref_RDUS_Group;
+	public static String ArtikelstammPref_RDUS_EnableAutoImport;
+	public static String ArtikelstammPref_RDUS_CheckInterval_Label;
+	public static String ArtikelstammPref_RDUS_AutoAdjust;
 	public static String Artikeldetail_EAN;
 	public static String Artikeldetail_Einkaufspreis;
 	public static String Artikeldetail_Verkaufspreis;
@@ -1434,6 +1452,8 @@ public class Messages extends NLS {
 	public static String DeviceView_tblclmnNoKommastellen_toolTipText;
 	public static String DiagnoseSelektorDialog_Message;
 	public static String DiagnoseSelektorDialog_Title;
+	public static String ServiceSelektorDialog_Message;
+	public static String ServiceSelektorDialog_Title;
 	public static String DiagnosenDisplay_AddDiagnosis;
 	public static String DiagnosenDisplay_AddTextDiagnosis;
 	public static String DiagnosenDisplay_Diagnoses;
@@ -2367,6 +2387,7 @@ public class Messages extends NLS {
 	public static String InvoiceListView_tblclmnInvoiceNo_text;
 	public static String InvoiceListView_tblclmnReceiver_text;
 	public static String InvoiceListView_tblclmnTreatmentperiod_text;
+	public static String InvoiceOutputter_Copy;
 	public static String InvoiceOutputter_Error;
 	public static String InvoiceOutputter_ErrorCreateZip;
 	public static String InvoiceOutputter_ErrorHttpPost;
@@ -2787,6 +2808,7 @@ public class Messages extends NLS {
 	public static String LagerView_vkPreis;
 	public static String LagerverwaltungPrefs_checkForInvalid;
 	public static String LagerverwaltungPrefs_ignoreOrderedArticleOnNextOrder;
+	public static String LagerverwaltungPrefs_activeMandatorStockOnAutoOrder;
 	public static String LagerverwaltungPrefs_markOrdered;
 	public static String LagerverwaltungPrefs_orderCriteria;
 	public static String LagerverwaltungPrefs_orderWhenAtMin;
@@ -5235,6 +5257,11 @@ public class Messages extends NLS {
 	public static String OrderManagement_Button_Book;
 	public static String OrderManagement_SelectSupplier_Title;
 	public static String OrderManagement_SelectSupplier_Message;
+	public static String OrderManagement_ChangeSupplier_Message;
+	public static String OrderManagement_SelectStock_Title;
+	public static String OrderManagement_ChangeStock_Message;
+	public static String OrderManagement_Action_ChangeSupplier;
+	public static String OrderManagement_Action_ChangeStock;
 	public static String OrderManagement_Button_MissingSupplier;
 	public static String OrderManagement_CreatedLabel;
 	public static String OrderManagement_DispatchedLabel;
@@ -5515,6 +5542,29 @@ public class Messages extends NLS {
 	public static String CovercardImportDialog_WarningNoBasicInsurance;
 	public static String BestellView_ArticleNotFoundTitle;
 	public static String BestellView_ArticleNotFoundMessage;
+	public static String ImageViewAll_Confirm_delete;
+	public static String ImageViewAll_DeleteEmptyGroup;
+	public static String ImageViewAll_DeleteGroupWithImages;
+	public static String ImageViewAll_DeleteMultipleGroups;
+	public static String ImageViewAll_DeleteMultipleImages;
+	public static String ImageViewAll_DeleteSingleImage;
+	public static String ImageViewAll_DeleteSelectedElements;
+	public static String ImageViewAll_FileAction;
+	public static String ImageViewAll_FileExistsAction;
+	public static String ImageViewAll_Overwrite;
+	public static String ImageViewAll_Rename;
+	public static String ImageViewAll_Cancel;
+	public static String ImageViewAll_CreateThumbnails;
+	public static String ImageViewAll_CreateThumbnailFor;
+	public static String ImageViewAll_EnterNewFilename;
+	public static String ImageViewAll_PleaseEnterNewFilename;
+	public static String AgendaDefinitionen_useColorizedPatientSearch;
+	public static String Zeitvorgaben_LegendBlueDeviations;
+	public static String Zeitvorgaben_HintRightClickReset;
+	public static String Zeitvorgaben_RestoreDefaultsForArea;
+	public static String Zeitvorgaben_SelectAreaToReset;
+	public static String PreferencesServer_suffixModeLabel;
+
 
 
 	static { // load message values from bundle file

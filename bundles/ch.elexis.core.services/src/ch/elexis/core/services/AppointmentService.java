@@ -69,7 +69,6 @@ public class AppointmentService implements IAppointmentService {
 	public static final String AG_BEREICH_TYPE_POSTFIX = "/type"; //$NON-NLS-1$
 	public static final String AG_TIMEPREFERENCES = "agenda/zeitvorgaben"; //$NON-NLS-1$
 	public static final String AG_KOMBITERMINE = "agenda/kombitermine/"; // $NON-NLS-1$
-
 	private static final int TYPE_FREE = 0; // frei
 	private static final int TYPE_RESERVED = 1; // reserviert
 	private static final int TYPE_DEFAULT = 2; // standard
@@ -245,8 +244,8 @@ public class AppointmentService implements IAppointmentService {
 					return false;
 				}
 				String[] parts = string.split("-");
-				if(parts == null || parts.length != 2) {
-					LoggerFactory.getLogger(getClass()).warn("Invalid block time " + string + " for " + dow);					
+				if (parts == null || parts.length != 2) {
+					LoggerFactory.getLogger(getClass()).warn("Invalid block time " + string + " for " + dow);
 					return false;
 				}
 				try {
@@ -271,9 +270,9 @@ public class AppointmentService implements IAppointmentService {
 		query.and("tag", COMPARATOR.EQUALS, date);
 		String typReserved = getType(AppointmentType.BOOKED);
 		query.and(ModelPackage.Literals.IAPPOINTMENT__TYPE, COMPARATOR.EQUALS, typReserved);
+		query.and(ModelPackage.Literals.IAPPOINTMENT__CREATED_BY, COMPARATOR.EQUALS, null);
 		List<IAppointment> resList = query.execute();
 		if (resList.isEmpty()) {
-
 			// we did not find any entries of type reserved for this day,
 			// thus we initialize them
 			String stateEmpty = getState(AppointmentState.EMPTY);
@@ -475,9 +474,7 @@ public class AppointmentService implements IAppointmentService {
 		IAppointment appointment = PortableServiceLoader.getCoreModelService().create(IAppointment.class);
 		// set some default values
 		appointment.setSchedule(getAreas().get(0).getName());
-		PortableServiceLoader.get(IContextService.class).getActiveUser().ifPresent(au -> {
-			appointment.setCreatedBy(au.getLabel());
-		});
+		appointment.setCreatedBy(PortableServiceLoader.get(IContextService.class).getActiveUserId());
 		LocalDate monday = LocalDate.now().with(DayOfWeek.MONDAY);
 		appointment.setStartTime(LocalDateTime.of(monday, LocalTime.of(8, 0, 0)));
 		appointment.setEndTime(LocalDateTime.of(monday, LocalTime.of(8, 30, 0)));
@@ -666,7 +663,8 @@ public class AppointmentService implements IAppointmentService {
 	@Override
 	public void deleteAppointmentSeries(IAppointmentSeries appointmentSeries) {
 		if (appointmentSeries != null && appointmentSeries.isPersistent()) {
-			IQuery<IAppointment> query = PortableServiceLoader.getCoreModelService().getQuery(IAppointment.class, true, false);
+			IQuery<IAppointment> query = PortableServiceLoader.getCoreModelService().getQuery(IAppointment.class, true,
+					false);
 			query.and("linkgroup", COMPARATOR.EQUALS, appointmentSeries.getRootAppointment().getId());
 			List<IAppointment> appointments = query.execute();
 			PortableServiceLoader.getCoreModelService().delete(appointments);
@@ -696,11 +694,18 @@ public class AppointmentService implements IAppointmentService {
 					}
 				}
 			}
-			if (ret.get("std") == null) { //$NON-NLS-1$
-				ret.put("std", 30); //$NON-NLS-1$
-			}
 		}
+		ret.putIfAbsent(AG_KEY_STD, 30);
 		return ret;
+	}
+
+	@Override
+	public void setPreferredDurations(String areaName, Map<String, Integer> durations) {
+		if (StringUtils.isNotBlank(areaName) && durations != null) {
+			String formattedString = durations.entrySet().stream().map(entry -> entry.getKey() + "=" + entry.getValue())
+					.collect(Collectors.joining("::"));
+			configService.set(AG_TIMEPREFERENCES + "/" + areaName, formattedString);
+		}
 	}
 
 	@Override
@@ -724,7 +729,7 @@ public class AppointmentService implements IAppointmentService {
 				return PortableServiceLoader.getCoreModelService().load(contactId, IContact.class);
 			}
 		}
-		
+
 		return Optional.empty();
 	}
 
@@ -898,8 +903,8 @@ public class AppointmentService implements IAppointmentService {
 	 *                           only collisions are checked.
 	 * @return A list of generated {@link IAppointment} objects (transient).
 	 */
-	private List<IAppointment> buildKombiAppointments(IAppointment baseAppointment, IContact patient,
-			String freetext, String appointmentType, boolean checkCollisionOnly) {
+	private List<IAppointment> buildKombiAppointments(IAppointment baseAppointment, IContact patient, String freetext,
+			String appointmentType, boolean checkCollisionOnly) {
 		List<String> kombiList = PortableServiceLoader.get(IConfigService.class)
 				.getAsList(AG_KOMBITERMINE + appointmentType);
 		if (kombiList.isEmpty()) {
@@ -935,8 +940,8 @@ public class AppointmentService implements IAppointmentService {
 	 * @return A newly created {@link IAppointment}, or null if the definition is
 	 *         invalid.
 	 */
-	private IAppointment parseAndBuildKombiAppointment(IAppointment baseAppointment, IContact patient,
-			String freetext, String kombiDefinition) {
+	private IAppointment parseAndBuildKombiAppointment(IAppointment baseAppointment, IContact patient, String freetext,
+			String kombiDefinition) {
 		if (StringUtils.isBlank(kombiDefinition)) {
 			return null;
 		}
@@ -986,8 +991,8 @@ public class AppointmentService implements IAppointmentService {
 	}
 
 	@Override
-	public List<IAppointment> getKombiTermineIfApplicable(IAppointment mainAppointment, IContact patient,
-			String type, String freetext) {
+	public List<IAppointment> getKombiTermineIfApplicable(IAppointment mainAppointment, IContact patient, String type,
+			String freetext) {
 		if (!AppointmentExtensionHandler.getLinkedAppointments(mainAppointment).isEmpty()) {
 			return Collections.emptyList();
 		}
