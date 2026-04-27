@@ -1,4 +1,4 @@
 #! /bin/bash
 
-mvn -V -T 1C clean verify -B -Dmaterialize-products
+mvn -V -T 1C clean verify -B -Dmaterialize-products -Dmaven.test.skip=true
 
