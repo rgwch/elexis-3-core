@@ -7,7 +7,7 @@
       <image path="rsc/elexislogo2.png"/>
       <text>
          Elexis 3.13 - www.elexis.info
-         Copyright 2005-2025 G. Weirich und Elexis-Team
+         Copyright 2005-2026 G. Weirich und Elexis-Team
       </text>
    </aboutInfo>
 
@@ -73,7 +73,6 @@
       <repository location="https://elexis.ch/ungrad2026/ungrad_2026/core/" name="" enabled="true" />
       <repository location="https://elexis.ch/ungrad2026/ungrad_2026/base/" name="" enabled="true" />
       <repository location="https://elexis.ch/ungrad2026/ungrad_2026/ungrad/" name="" enabled="true" />
- 
    </repositories>
 
    <preferencesInfo>

@@ -3,9 +3,11 @@ package ch.elexis.core.findings.util.importer;
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.hl7.fhir.r4.model.Extension;
@@ -15,6 +17,7 @@ import org.osgi.service.component.annotations.Reference;
 import org.slf4j.LoggerFactory;
 
 import ch.elexis.core.cdi.PortableServiceLoader;
+import ch.elexis.core.constants.XidConstants;
 import ch.elexis.core.interfaces.AbstractReferenceDataImporter;
 import ch.elexis.core.interfaces.IReferenceDataImporter;
 import ch.elexis.core.model.IImage;
@@ -64,7 +67,7 @@ public class InsurancesReferenceDataImporter extends AbstractReferenceDataImport
 
 		// perform import with update consumer
 		IStatus ret = ((FhirBundleReferenceDataImporter) fhirBundleImporter).performImport(ipm, input, newVersion,
-				(o, f) -> {
+				List.of(XidConstants.DOMAIN_RECIPIENT_EAN), (o, f) -> {
 					if (o instanceof IOrganization && f instanceof Organization) {
 						IOrganization insurance = (IOrganization) o;
 						Organization fhirInsurance = (Organization) f;
@@ -73,6 +76,8 @@ public class InsurancesReferenceDataImporter extends AbstractReferenceDataImport
 							Extension extension = fhirInsurance.getMeta()
 									.getExtensionByUrl("http://fhir.ch/ig/ch-orf/CodeSystem/ch-orf-cs-coveragetype");
 							insurance.setInsuranceLawCode(extension.getValue().toString());
+							// clear description2 of insurance
+							insurance.setDescription2(StringUtils.EMPTY);
 							CoreModelServiceHolder.get().save(insurance);
 						}
 						if (!stickerService.hasSticker(insurance, sticker)) {

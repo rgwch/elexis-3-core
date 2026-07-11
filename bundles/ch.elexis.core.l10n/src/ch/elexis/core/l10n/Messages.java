@@ -1949,6 +1949,7 @@ public class Messages extends NLS {
 	public static String FeedbackPreferencePage_ElexisLogLabel;
 	public static String FeedbackPreferencePage_EnableAutoLabel;
 	public static String FeedbackPreferencePage_Include_ID;
+	public static String FeedbackPreferencePage_Global_Include_ID;
 	public static String FeedbackPreferencePage_RedmineURLLabel;
 	public static String FeedbackPreferencePage_With_DBcheck;
 	public static String FieldDisplayView_BadDefinitionBody;
@@ -3525,6 +3526,7 @@ public class Messages extends NLS {
 	public static String Patientenblatt2_kindOfRelation;
 	public static String Patientenblatt2_legalGuardian;
 	public static String Patientenblatt2_persAnamnesisLbl;
+	public static String Patientenblatt2_socialAnamnesisLbl;
 	public static String Patientenblatt2_famAnamnesisLbl;
 	public static String Patientenblatt2_phone1;
 	public static String Patientenblatt2_phone2;
@@ -5461,6 +5463,10 @@ public class Messages extends NLS {
 	public static String AgendaFarben_PastAppointments;
 	public static String AgendaFarben_FutureAppointments;
 	public static String AgendaFarben_DoubleClickToChange;
+	public static String TerminListeView_PrintSelected;
+	public static String TerminListeView_PrintSelectedTooltip;
+	public static String TerminListeView_PrintSeries;
+	public static String TerminListeView_PrintSeriesTooltip;
 	public static String RegiomedSender_AlternativeNotFoundLocally;
 	public static String RegiomedCheckTemplate_AvailableAlternatives;
 	public static String RegiomedCheckTemplate_NoAlternativeAvailable;
@@ -5564,8 +5570,17 @@ public class Messages extends NLS {
 	public static String Zeitvorgaben_RestoreDefaultsForArea;
 	public static String Zeitvorgaben_SelectAreaToReset;
 	public static String PreferencesServer_suffixModeLabel;
-
-
+	public static String ReminderPrefences_DatePast;
+	public static String ReminderPrefences_DateToday;
+	public static String ReminderPrefences_DateFuture;
+	public static String ReminderPrefences_DateNoDate;
+	public static String ReminderPrefences_CustomStatusesTitle;
+	public static String ReminderPrefences_NewStatusMessage;
+	public static String ReminderPrefences_AddStatusTooltip;
+	public static String ReminderPrefences_RemoveStatusTooltip;
+	public static String ReminderStatusSubMenu_NoSelection;
+	public static String AgendaFarben_SpecialAppointments;
+	public static String AgendaFarben_RecurringAppointment;
 
 	static { // load message values from bundle file
 		NLS.initializeMessages(BUNDLE_NAME, Messages.class);
